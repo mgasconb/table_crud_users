@@ -31,6 +31,7 @@
 //							<a class='boton' onclick='submit_post_request_form(\"".\core\URL::generar("usuarios/form_borrar")."\", {$fila['id']});' >borrar</a>
 							.\core\HTML_Tag::a_boton_onclick("boton", array("usuarios", "form_borrar", $fila['id']), "borrar").
 //							<a class='boton' onclick='submit_post_request_form(\"".\core\URL::generar("usuarios/form_cambiar_password")."\", {$fila['id']});' >modificar password</a>
+							\core\HTML_Tag::a_boton("boton", array("usuarios_permisos", "index", $fila['login']), "permisos&nbsp;asignados").
 						"</td>
 					</tr>
 					";

@@ -1,27 +1,59 @@
 <?php
 namespace modelos;
 
-class roles extends \modelos\Modelo_SQL {
+class roles_permisos extends \modelos\Modelo_SQL {
 
 
 	/* Rescritura de propiedades de validación */
 	public static $validaciones_insert = array(
-		'rol' => 'errores_requerido && errores_identificador && errores_unicidad_insertar:rol/roles/rol',
-		"controlador" => "errores_requerido && errores_identificador",
-		"metodo" => "errores_requerido && errores_identificador",
 	);
 	
+	
 	public static $validaciones_update = array(
-		"id" => "errores_requerido && errores_numero_entero_positivo && errores_referencia:id/roles/id",
-		'rol' => 'errores_requerido && errores_identificador && errores_unicidad_modificar:id,rol/roles/id,rol',
-		"descripcion" => "errores_texto",
+		'rol' => 'errores_requerido && errores_identificador && errores_referencia:rol/roles/rol',
 	);
 	
 
-	
 	public static $validaciones_delete = array(
-		"id" => "errores_requerido && errores_numero_entero_positivo && errores_referencia:id/roles/id"
+		
 	);
 	
+	
+	public static function recuperar_rol_permisos($rol) {
+		
+		$sql = "
+				select
+					mt.controlador, mt.metodo, rp.rol
+					from ".self::get_prefix_tabla("metodos")." mt left join ".self::get_prefix_tabla("roles_permisos")." rp on mt.controlador=rp.controlador and mt.metodo = rp.metodo and rp.rol = '$rol'
+order by mt.controlador,mt.metodo
+					";
+		return(\modelos\Datos_SQL::execute($sql));
+		
+	}
+
+
+	public static function modificar_permisos($rol, $permisos = array()) {
+//		var_dump($rol); var_dump($permisos); exit();
+		$validacion = true;
+		self::start_transacction();
+		foreach ($permisos as $key => $value) {
+			if (preg_match("/^permiso/i", $key)) {
+				$partes = explode(",", trim($value));
+				$validacion = self::insert(array("rol" => $rol, "controlador" => $partes[0], "metodo" => $partes[1]), "roles_permisos");	
+			}
+			if ( ! $validacion) {
+				break;
+			}
+		}
+		if ($validacion) {
+			self::commit_transacction();
+		}
+		else {
+			self::rollback_transacction();
+		}
+		
+		return $validacion;
+		
+	}
 	
 }

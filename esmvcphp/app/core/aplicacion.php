@@ -36,7 +36,9 @@ class Aplicacion extends \core\Clase_Base {
 		
 		\core\sgbd\bd::connect();
 		
+		// Activamos o recuperamos el array $_SESSION
 		\core\SESSION::iniciar();
+		
 		\core\URL::registrar();
 		
 			
