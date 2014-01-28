@@ -7,9 +7,15 @@
 		
 		function modificar_permisos() {
 			$(" [type=checkbox] ").removeAttr("disabled");
-			$(" [type=submit], [type=reset], [type=button] ").css("display", "inline");
+			$(" [type=submit], [type=reset], [type=button], button#btn_checked_all ").css("display", "inline");
 			$(" button#btn_modificar, button#btn_cancelar ").css("display", "none");
 		}
+		
+		function chequear_todo() {
+			$(" [type=checkbox] ").attr("checked", "checked");
+			
+		}
+		
 	</script>
 	<button id='btn_cancelar'type='button' onclick='location.assign("<?php echo\core\URL::generar("roles/index"); ?>");'>Cancelar</button>
 	<button id='btn_modificar' type='button' onclick='modificar_permisos();'>Modificar Permisos</button>

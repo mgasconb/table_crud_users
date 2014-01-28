@@ -77,7 +77,7 @@ class roles_permisos extends \core\Controlador {
 			$this->cargar_controlador("mensajes", "mensaje", $datos);
 		
 		else {
-			$_SESSION["alerta"] = "Se ha modificado correctamente el rol";
+			$_SESSION["alerta"] = "Se ha modificado correctamente los permisos del rol";
 			//header("Location: ".\core\URL::generar("roles/index"));
 			\core\HTTP_Respuesta::set_header_line("location", \core\URL::generar("roles_permisos/index/{$datos["values"]["rol"]}"));
 			\core\HTTP_Respuesta::enviar();
