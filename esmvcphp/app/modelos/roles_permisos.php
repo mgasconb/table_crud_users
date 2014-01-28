@@ -33,9 +33,9 @@ order by mt.controlador,mt.metodo
 
 
 	public static function modificar_permisos($rol, $permisos = array()) {
-//		var_dump($rol); var_dump($permisos); exit();
+
 		$validacion = true;
-		self::start_transacction();
+		
 		foreach ($permisos as $key => $value) {
 			if (preg_match("/^permiso/i", $key)) {
 				$partes = explode(",", trim($value));
@@ -44,12 +44,6 @@ order by mt.controlador,mt.metodo
 			if ( ! $validacion) {
 				break;
 			}
-		}
-		if ($validacion) {
-			self::commit_transacction();
-		}
-		else {
-			self::rollback_transacction();
 		}
 		
 		return $validacion;

@@ -60,8 +60,9 @@ class roles_permisos extends \core\Controlador {
 			
 		}
 		else {
+			\modelos\Modelo_SQL::start_transacction();
 			$clausulas["where"] = " rol = '{$datos["values"]["rol"]}' ";
-			if ( ! $validacion = \modelos\Datos_SQL::table("roles_permisos")->delete($clausulas)) {
+			if ( ! $validacion = \modelos\Modelo_SQL::table("roles_permisos")->delete($clausulas)) {
 					
 				$datos["mensaje"] = "No se han podido grabar la modificaciones en la bd.";				
 				
@@ -71,6 +72,12 @@ class roles_permisos extends \core\Controlador {
 				if ( ! $validacion = \modelos\roles_permisos::modificar_permisos($datos["values"]["rol"], $permisos)) {
 					$datos["mensaje"] = "No se han podido grabar la modificaciones en la bd.";
 				}
+			}
+			if ($validacion) {
+				\modelos\Modelo_SQL::commit_transacction();
+			}
+			else {
+				\modelos\Modelo_SQL::rollback_transacction();
 			}
 		}
 		if ( ! $validacion) //Devolvemos el formulario para que lo intente corregir de nuevo

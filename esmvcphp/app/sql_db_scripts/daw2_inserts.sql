@@ -45,9 +45,12 @@ insert into daw2_metodos
 , ('inicio'			,'index')
 , ('inicio'			,'internacional')
 , ('usuarios'		,'*')
+, ('usuarios'		,'index')
 , ('usuarios'		,'desconectar')
 , ('usuarios'		,'form_login')
 , ('usuarios'		,'form_login_validar')
+, ('usuarios'		,'form_login_email')
+, ('usuarios'		,'form_login_email_validar')
 , ('usuarios'		,'confirmar_alta')
 , ('usuarios'		,'form_insertar_interno')
 , ('usuarios'		,'form_insertar_externo')
@@ -60,9 +63,10 @@ insert into daw2_metodos
 , ('roles'		,'form_modificar')
 , ('roles_permisos'		,'*')
 , ('roles_permisos'		,'index')
-, ('roles_permisos'		,'form_borrar')
-, ('roles_permisos'		,'form_insertar')
 , ('roles_permisos'		,'form_modificar')
+, ('usuarios_permisos'		,'*')
+, ('usuarios_permisos'		,'index')
+, ('usuarios_permisos'		,'form_modificar')
 
 ;
 
@@ -74,7 +78,7 @@ insert into daw2_roles_permisos
 , ('usuarios_logueados' ,'usuarios'			,'desconectar')
 , ('usuarios_logueados' ,'usuarios'			,'form_cambiar_password')
 , ('usuarios_logueados' ,'usuarios'			,'form_cambiar_password_validar')
-, ('usuarios_logueados' ,'categorias'			,'index')
+, ('usuarios_logueados' ,'categorias'		,'index')
 
 ;
 
@@ -93,12 +97,9 @@ insert into daw2_usuarios_roles
 insert into daw2_usuarios_permisos
   (login			,controlador			,metodo) values
   ('anonimo'		,'usuarios'				,'form_login')
-, ('anonimo'		,'usuarios'				,'form_login_validar')
 , ('anonimo'		,'usuarios'				,'form_login_email')
-, ('anonimo'		,'usuarios'				,'form_login_email_validar')
 , ('anonimo'		,'usuarios'				,'confirmar_alta')
 , ('anonimo'		,'usuarios'				,'form_insertar_externo')
-, ('anonimo'		,'usuarios'				,'form_insertar_externo_validar')
 ;
 
 

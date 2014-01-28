@@ -53,33 +53,42 @@ class usuarios_permisos extends \core\Controlador {
 	 */
 	public function form_modificar_validar(array $datos=array()) {	
 		
-		
-		if ( ! $validacion = ! \core\Validaciones::errores_validacion_request(\modelos\roles_permisos::$validaciones_update, $datos)) {
+		if ( ! $validacion = ! \core\Validaciones::errores_validacion_request(\modelos\usuarios_permisos::$validaciones_update, $datos)) {
 			
             $datos["mensaje"] = "Imposible identificar el rol al que modificar los permios.";
 			
 		}
 		else {
+
+			\modelos\Modelo_SQL::start_transacction();
 			$clausulas["where"] = " login = '{$datos["values"]["login"]}' ";
-			if ( ! $validacion = \modelos\Datos_SQL::table("usuarios_permisos")->delete($clausulas)) {
+			if ( ! $validacion = \modelos\Modelo_SQL::table("usuarios_permisos")->delete($clausulas)) {
 					
 				$datos["mensaje"] = "No se han podido grabar la modificaciones en la bd.";				
 				
 			}
 			else {
 				$permisos = \core\HTTP_Requerimiento::post();
-				if ( ! $validacion = \modelos\roles_permisos::modificar_permisos($datos["values"]["login"], $permisos)) {
+				if ( ! $validacion = \modelos\usuarios_permisos::modificar_permisos($datos["values"]["login"], $permisos)) {
 					$datos["mensaje"] = "No se han podido grabar la modificaciones en la bd.";
 				}
+
+			}
+			if ($validacion) {
+				\modelos\Modelo_SQL::commit_transacction();
+			}
+			else {
+				\modelos\Modelo_SQL::rollback_transacction();
 			}
 		}
+
 		if ( ! $validacion) //Devolvemos el formulario para que lo intente corregir de nuevo
 			$this->cargar_controlador("mensajes", "mensaje", $datos);
 		
 		else {
 			$_SESSION["alerta"] = "Se ha modificado correctamente los permisos del usuario";
 			//header("Location: ".\core\URL::generar("roles/index"));
-			\core\HTTP_Respuesta::set_header_line("location", \core\URL::generar("roles_permisos/index/{$datos["values"]["login"]}"));
+			\core\HTTP_Respuesta::set_header_line("location", \core\URL::generar("usuarios_permisos/index/{$datos["values"]["login"]}"));
 			\core\HTTP_Respuesta::enviar();
 		}
 		

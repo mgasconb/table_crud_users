@@ -103,7 +103,7 @@ create table daw2_roles_permisos
 , primary key (id)
 , unique(rol, controlador, metodo) -- Evita que a un rol se le asinge más de una vez un mismo permiso
 , foreign key (rol) references daw2_roles(rol) on delete cascade on update cascade
--- , foreign key (controlador, metodo) references daw2_metodos(controlador, metodo) on delete cascade on update cascade
+, foreign key (controlador, metodo) references daw2_metodos(controlador, metodo) on delete cascade on update cascade
 )
 CHARACTER SET utf8 COLLATE utf8_general_ci
 engine=myisam;
@@ -152,7 +152,7 @@ create table daw2_usuarios_permisos
 , primary key (id)
 , unique(login, controlador, metodo) -- Evita que a un usuario se le asignen más de una vez un permiso
 , foreign key (login) references daw2_usuarios(login) on delete cascade on update cascade
--- , foreign key (controlador, metodo) references daw2_metodos(controlador, metodo) on delete cascade on update cascade
+, foreign key (controlador, metodo) references daw2_metodos(controlador, metodo) on delete cascade on update cascade
 
 )
 CHARACTER SET utf8 COLLATE utf8_general_ci
