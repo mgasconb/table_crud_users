@@ -1,12 +1,12 @@
 <div >
-	<h2>Listado de permisos del rol <?php echo $datos["rol"]; ?></h2>
+	<h2>Listado de permisos del usuario <?php echo $datos["login"]; ?></h2>
 	<?php include "form_and_inputs.php"; ?>
 	<script type='text/javascript'>
 		$(" [type=checkbox] ").attr("disabled", "disabled");
 		$(" [type=submit], [type=reset], [type=button] ").css("display", "none");
 		
 		function modificar_permisos() {
-			$(" [type=checkbox] ").removeAttr("disabled");
+			$(" [origen='directo'] ").removeAttr("disabled");
 			$(" [type=submit], [type=reset], [type=button] ").css("display", "inline");
 			$(" button#btn_modificar, button#btn_cancelar ").css("display", "none");
 		}

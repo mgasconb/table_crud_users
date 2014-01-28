@@ -84,6 +84,10 @@ class mysqli implements \core\sgbd\SQL_interface {
 		
 		self::$db_name = \core\Configuracion::$db['db_name'];
 		
+		$sql = "set names utf8;";
+		
+		self::execute($sql);
+		
 		return self::$connection;
 		
 	}

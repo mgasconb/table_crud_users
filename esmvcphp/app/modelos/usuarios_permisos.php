@@ -1,7 +1,7 @@
 <?php
 namespace modelos;
 
-class roles_permisos extends \modelos\Modelo_SQL {
+class usuarios_permisos extends \modelos\Modelo_SQL {
 
 
 	/* Rescritura de propiedades de validación */
@@ -10,7 +10,7 @@ class roles_permisos extends \modelos\Modelo_SQL {
 	
 	
 	public static $validaciones_update = array(
-		'rol' => 'errores_requerido && errores_identificador && errores_referencia:rol/roles/rol',
+		'login' => 'errores_requerido && errores_identificador && errores_referencia:login/usuarios/login',
 	);
 	
 
@@ -19,12 +19,12 @@ class roles_permisos extends \modelos\Modelo_SQL {
 	);
 	
 	
-	public static function recuperar_permisos($rol) {
+	public static function recuperar_permisos($login) {
 		
 		$sql = "
 				select
-					mt.controlador, mt.metodo, rp.rol
-					from ".self::get_prefix_tabla("metodos")." mt left join ".self::get_prefix_tabla("roles_permisos")." rp on mt.controlador=rp.controlador and mt.metodo = rp.metodo and rp.rol = '$rol'
+					mt.controlador, mt.metodo, vupr.login, vupr.rol
+					from ".self::get_prefix_tabla("metodos")." mt left join ".self::get_prefix_tabla("v_usuarios_permisos_roles")." vupr on mt.controlador=vupr.controlador and mt.metodo = vupr.metodo and vupr.login = '$login'
 order by mt.controlador,mt.metodo
 					";
 		return(\modelos\Datos_SQL::execute($sql));
@@ -32,14 +32,14 @@ order by mt.controlador,mt.metodo
 	}
 
 
-	public static function modificar_permisos($rol, $permisos = array()) {
-//		var_dump($rol); var_dump($permisos); exit();
+	public static function modificar_permisos($login, $permisos = array()) {
+//		var_dump($login); var_dump($permisos); exit();
 		$validacion = true;
 		self::start_transacction();
 		foreach ($permisos as $key => $value) {
 			if (preg_match("/^permiso/i", $key)) {
 				$partes = explode(",", trim($value));
-				$validacion = self::insert(array("rol" => $rol, "controlador" => $partes[0], "metodo" => $partes[1]), "roles_permisos");	
+				$validacion = self::insert(array("login" => $login, "controlador" => $partes[0], "metodo" => $partes[1]), "usuarios_permisos");	
 			}
 			if ( ! $validacion) {
 				break;
