@@ -3,6 +3,9 @@ namespace core;
 
 class Configuracion {
 	
+	// Visualización de errores
+	public static $display_errors = true;
+	
 	// Respuesta por defecto
 	public static $controlador_por_defecto = 'inicio';
 	public static $metodo_por_defecto = 'index';
@@ -14,22 +17,31 @@ class Configuracion {
 		'text/html', 'text/xml', 'text/json', 'application/excel', 
 	);
 	
+	// Usar sesiones de trabajo (activar array $_SESSION)
+	public static $activar_session = true;
+	
+	// URL amigables
+	public static $url_amigable = true;
+	
+	// URL registrar url_anterior btn_volver
+	public static $url_registrar_anterior = true;
+	
+	
+	// Gestión de usuarios si hay usuarios distintos
+	public static $usuarios = true;
+	// Control acceso a recursos
+	public static $control_acceso_recursos = true;
 	
 	// Gestión de inactividad
 	public static $sesion_inactividad_controlada = false;
 	public static $sesion_minutos_inactividad = 20; // Minutos
 	public static $sesion_minutos_maxima_duracion = 120;
 	
-	// URL amigables
-	public static $url_amigable = true;
 	
-	// Control acceso a recursos
-	public static $control_acceso_recursos = true;
 	
-	// Visualización de errores
-	public static $display_errors = "on"; // Valores posibles "on" "off""
-
+	
 	// Gestión de idiomas
+	public static $idioma_sensibilidad = true;
 	public static $idioma_por_defecto = "es";
 	public static $idioma_seleccionado;
 	public static $idiomas_reconocidos = "es|en|fr";
@@ -45,6 +57,7 @@ class Configuracion {
 	
 	
 	// Base de datos
+	public static $use_db = true;
 	// localhost
 	public static $db = array(
 		'server'   => 'localhost',
@@ -86,11 +99,11 @@ class Configuracion {
 							'*' => ' * ',
 							),
 		'usuarios' => array(
-							'*' => ' juan pedro ',
-							'index' => ' anais ana olga ',
+							'*' => ' juan, pedro ',
+							'index' => ' anais, ana, olga ',
 							'desconectar' => ' ** ',
 							'form_login_email' => ' anonimo ',
-							'validar_form_login_email' => ' anonimo ',
+							'form_login' => ' anonimo ',
 							)
 	
 	);

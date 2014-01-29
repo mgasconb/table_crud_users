@@ -54,7 +54,9 @@ class Distribuidor {
 		$metodo = ($metodo ? $metodo : "index"); // Asignamos el método por defecto
 		
 		// Comprobamos que el usuario tiene permisos. Si no los tiene se redirige hacia otro controlador.
-		if (\core\Usuario::tiene_permiso($controlador, $metodo) === false ) {
+		if (\core\Configuracion::$usuarios
+				and \core\Configuracion::$control_acceso_recursos
+				and \core\Usuario::tiene_permiso($controlador, $metodo) === false ) {
 			if (\core\Usuario::$login == 'anonimo') {
 				$controlador = 'usuarios';
 				$metodo = 'form_login';
