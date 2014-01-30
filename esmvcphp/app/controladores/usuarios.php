@@ -43,7 +43,7 @@ class usuarios extends \core\Controlador {
 	
 	
 	public function form_login_validar(array $datos = array()) {
-//		print(__METHOD__.__LINE__); exit();
+		
 		if (\core\Usuario::$login != "anonimo") {
 			$datos["mensaje"] = "Ya te encuentras conectado. Utiliza el menú para navegar.";
 			\core\Distribuidor::cargar_controlador("mensajes", "mensaje", $datos);
@@ -58,7 +58,7 @@ class usuarios extends \core\Controlador {
 				// El formulario sí se ha enviado desde el servidor
 				$validaciones = array(
 					'login' => 'errores_requerido && errores_login',
-					'password' => 'errores_requerido && errores_password'
+					'password' => 'errores_requerido '
 				);
 
 				$validacion = ! \core\Validaciones::errores_validacion_request($validaciones, $datos);
@@ -78,7 +78,13 @@ class usuarios extends \core\Controlador {
 
 				}
 				if ($validacion) {
+					if (\core\Configuracion::$usuarios_origen == "bd") {
 					$respuesta =  \modelos\Modelo_SQL::tabla("usuarios")->validar_usuario($datos['values']['login'], $datos['values']['password']);
+					}
+					else {
+						$respuesta = \core\Usuario::validar_en_ACL($datos['values']['login'], $datos['values']['password']);
+					}
+					
 
 					if  ($respuesta == 'existe') {
 							$datos['errores']['validacion'] = 'Error en login o password';

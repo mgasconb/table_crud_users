@@ -35,7 +35,7 @@ class Usuario extends \core\Clase_Base {
 			self::$permisos = $_SESSION['usuario']['permisos'];
 		}
 		else {
-			self::recuperar_permisos_bd(self::$login);
+			self::recuperar_permisos(self::$login);
 		}
 		
 //		var_dump(self::$permisos);
@@ -64,14 +64,16 @@ class Usuario extends \core\Clase_Base {
 		
 		self::$login = $login;
 		self::$id = $id;
-		\core\SESSION::regenerar_id(); // Seguridad
+		if (\core\Configuracion::$regenerar_session_id) {
+			\core\SESSION::regenerar_id(); // Seguridad
+		}
 		$_SESSION["usuario"]["contador_paginas_visitadas"] = 1;
 		$_SESSION["usuario"]["login"] = $login;
 		$_SESSION["usuario"]["id"] = $id;
 		$_SESSION["usuario"]["sesion_inicio"] = $_SERVER["REQUEST_TIME"];
 		$_SESSION["usuario"]["REMOTE_ADDR"] = $_SERVER["REMOTE_ADDR"];
 		
-		self::recuperar_permisos_bd(self::$login);
+		self::recuperar_permisos(self::$login);
 		self::sesion_control_tiempos();
 		
 		if (self::$depuracion) {
@@ -87,8 +89,56 @@ class Usuario extends \core\Clase_Base {
 		\core\SESSION::destruir();
 		self::nuevo('anonimo');
 		self::sesion_control_tiempos();
+		if (self::$depuracion) {
+			echo(__METHOD__); echo "</br>";
+		}
+	}
+	
+	
+	private static function recuperar_permisos($login) {
+		
+		$metodo = "recuperar_permisos_".\core\Configuracion::$usuarios_origen;
+		self::$metodo($login);
+		if (self::$depuracion) {
+			echo(__METHOD__); echo "</br>";
+		}
 		
 	}
+	
+	
+	private static function recuperar_permisos_ACL($login) {
+		
+		foreach (\core\Configuracion::$access_control_list as $controlador => $metodos) {
+			
+			foreach ($metodos as $metodo => $lista_usuarios) {
+				$usuarios = explode(",", trim($lista_usuarios));
+				
+				if (($login == "anonimo" 
+						and (array_search("todos", $usuarios) !== false
+								or array_search($login, $usuarios) !== false))
+					or
+					($login != "anonimo" 
+						and (array_search("todos", $usuarios) !== false
+								or array_search("logueados", $usuarios) !== false
+								or array_search($login, $usuarios) !== false))) {
+					self::$permisos[$controlador][$metodo] = true;
+					if ($metodo = "*")
+						break;
+				}
+				if (isset(self::$permisos["*"]["*"]))
+					break;
+			}
+			if (self::$depuracion) {
+				echo(__METHOD__); echo "</br>";
+				var_dump(self::$permisos);
+			}
+			
+		}
+		
+		$_SESSION['usuario']['permisos'] = self::$permisos;
+		
+	}
+	
 	
 	
 	
@@ -96,7 +146,10 @@ class Usuario extends \core\Clase_Base {
 		
 		self::$permisos = \modelos\usuarios::permisos_usuario($login);
 		$_SESSION['usuario']['permisos'] = self::$permisos;
-		
+		if (self::$depuracion) {
+			echo(__METHOD__); echo "</br>";
+			var_dump(self::$permisos);
+		}
 	}
 	
 	
@@ -121,6 +174,11 @@ class Usuario extends \core\Clase_Base {
 		// El usuario o todos los usuarios tienen acceso al controlador y método determinado
 		elseif (isset(self::$permisos[$controlador][$metodo]))
 			$autorizado = true;	
+		
+		if (self::$depuracion) {
+			echo(__METHOD__); echo "</br>";
+			var_dump($autorizado);
+		}
 		
 		return $autorizado;
 		
@@ -149,6 +207,16 @@ class Usuario extends \core\Clase_Base {
 		
 	}
 	
+	
+	public static function validar_en_ACL($login, $password) {
+		
+		if (self::$depuracion) {
+			echo(__METHOD__); echo "</br>";
+		}
+		
+		return((isset(\core\Configuracion::$usuarios_lista[$login]) and \core\Configuracion::$usuarios_lista[$login] == $password) ? "existe_autenticado_confirmado" : false);
+		
+	}
 	
 	
 } // Fin de la clase
