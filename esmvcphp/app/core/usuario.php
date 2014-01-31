@@ -15,7 +15,6 @@ class Usuario extends \core\Clase_Base {
 	 * Reconocer el usuario que ha iniciado la sesión de trabajo o que continúa dentro de una sesión de trabajo.
 	 */
 	public static function iniciar() {
-		
 		// Recuperamos datos desde $_SESSION a las propiedades de la clase
 		if (isset($_SESSION['usuario']['login'])) {
 			
@@ -25,6 +24,7 @@ class Usuario extends \core\Clase_Base {
 			
 		}
 		else {
+
 			self::nuevo('anonimo');
 		}
 		
@@ -35,7 +35,6 @@ class Usuario extends \core\Clase_Base {
 			self::recuperar_permisos(self::$login);
 		}
 		
-//		var_dump(self::$permisos);
 		
 		if (isset($_SESSION['usuario']['contador_paginas_visitadas']))
 			$_SESSION['usuario']['contador_paginas_visitadas']++;
@@ -60,6 +59,7 @@ class Usuario extends \core\Clase_Base {
 		self::$login = $login;
 		self::$id = $id;
 		if (\core\Configuracion::$regenerar_session_id) {
+			
 			\core\SESSION::regenerar_id(); // Seguridad
 		}
 		$_SESSION["usuario"]["contador_paginas_visitadas"] = 1;

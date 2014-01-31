@@ -15,14 +15,14 @@ class SESSION {
 	 * cambio de ip durante la sesión.
 	 */
 	public static function iniciar() {
-		
 		session_set_cookie_params ( 
-				\core\Configuracion::$session_lifetime,
-				\core\Configuracion::$session_cookie_path,
-				\core\Configuracion::$session_cookie_domain,
-				\core\Configuracion::$session_cookie_secure,
-				\core\Configuracion::$session_cookie_httponly
+				\core\Configuracion::$session_lifetime
+				,\core\Configuracion::$session_cookie_path
+				,\core\Configuracion::$session_cookie_domain
+				,\core\Configuracion::$session_cookie_secure
+				,\core\Configuracion::$session_cookie_httponly
 		);
+
 		if (isset($_GET["administrator"])) {
 			session_name("ADMINISTRATOR_PHPSESSID" );
 		}
@@ -30,7 +30,6 @@ class SESSION {
 			session_name("PHPSESSID" );
 		}
 		session_start(); // Se crea el arry $_SESSION o se recupera si fue creado en una ejecución anterior del script.
-		
 		if ( ! isset($_SESSION["REMOTE_ADDR"])) {
 			$_SESSION["REMOTE_ADDR"] = $_SERVER["REMOTE_ADDR"];
 		}

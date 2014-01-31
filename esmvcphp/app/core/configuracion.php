@@ -20,8 +20,8 @@ class Configuracion {
 	// Usar sesiones de trabajo (activar array $_SESSION)
 	public static $activar_session = true;
 	public static $session_lifetime = 0; // Segundos de duración de la cookie de sessionsession.cookie_lifetime
-	public static $session_cookie_path = "";
-	public static $session_cookie_domain = "/";
+	public static $session_cookie_path = "/";
+	public static $session_cookie_domain = "";
 	public static $session_cookie_secure = false;
 	public static $session_cookie_httponly = false;
 	
@@ -34,7 +34,7 @@ class Configuracion {
 	
 	// Gestión de usuarios si hay usuarios distintos
 	public static $usuarios = true;
-	public static $usuarios_origen = "ACL"; // Valores válidos "bd" o "ACL" que es interna La lista de usuarios se define al final de esta clase
+	public static $usuarios_origen = "bd"; // Valores válidos "bd" o "ACL" que es interna La lista de usuarios se define al final de esta clase
 	// Regeneración de id de cookie de session al cambiar de usuario
 	public static $regenerar_session_id = true;
 	// Control acceso a recursos

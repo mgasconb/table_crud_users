@@ -45,6 +45,8 @@ class usuarios extends \core\Controlador {
 	public function form_login_validar(array $datos = array()) {
 		
 		if (\core\Usuario::$login != "anonimo") {
+								exit(__METHOD__.__LINE__);
+
 			$datos["mensaje"] = "Ya te encuentras conectado. Utiliza el menú para navegar.";
 			\core\Distribuidor::cargar_controlador("mensajes", "mensaje", $datos);
 		}
@@ -54,7 +56,7 @@ class usuarios extends \core\Controlador {
 			\core\Distribuidor::cargar_controlador("errores", "mensaje", $datos);
 		}
 		else {
-			
+
 				// El formulario sí se ha enviado desde el servidor
 				$validaciones = array(
 					'login' => 'errores_requerido && errores_login',
