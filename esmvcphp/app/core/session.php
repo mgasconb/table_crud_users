@@ -1,8 +1,19 @@
 <?php
 namespace core;
 
+/**
+ * Contiene los métodos para iniciar el array $_SESSION, destruirlo,
+ * regenerar la id de sesión.
+ * Si se detecta un cambio de ip genera un error y destruye la sessión.
+ * 
+ * @author Jesús Mª de Quebedo Tomé <jequeto@gmail.com>
+ */
 class SESSION {
 	
+	/**
+	 * Inicia o recupera el array $_SESSION y controla que no se realize un
+	 * cambio de ip durante la sesión.
+	 */
 	public static function iniciar() {
 		if (isset($_GET["administrator"])) {
 			session_name("ADMINISTRATOR_PHPSESSID" );
@@ -12,13 +23,26 @@ class SESSION {
 		}
 		session_start(); // Se crea el arry $_SESSION o se recupera si fue creado en una ejecución anterior del script.
 		
+		if ( ! isset($_SESSION["REMOTE_ADDR"])) {
+			$_SESSION["REMOTE_ADDR"] = $_SERVER["REMOTE_ADDR"];
+		}
+		else {
+			if ($_SESSION["REMOTE_ADDR"] != $_SERVER["REMOTE_ADDR"]) {
+				$datos["mensaje"] = "Error fatal: La IP de sesión se ha cambiado dentro de la misma sesión de trabajo.";
+				self::destruir();
+				\core\Distribuidor::cargar_controlador("errores", "mensaje", $datos);
+				exit(0);
+			}
+		}
+		
 	}
 	
 	
-	
+	/**
+	 *  Borra la coolie de sesión y destruye la sesión.
+	 */
 	public static function destruir() {
 		
-		// Borramos el cookie de sesion.
 		if (ini_get("session.use_cookies")) {
 			$params = session_get_cookie_params();
 			\core\HTTP_Respuesta::setcookie(session_name(), '', time() - 42000,
@@ -32,7 +56,9 @@ class SESSION {
 	}
 	
 	
-	
+	/**
+	 * Regenera la id de la cookie de sesión.
+	 */
 	public static function regenerar_id() {
 		
 		session_regenerate_id(true);

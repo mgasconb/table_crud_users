@@ -37,11 +37,12 @@ class Aplicacion extends \core\Clase_Base {
 		if (\core\Configuracion::$use_db) \core\sgbd\bd::connect();
 		
 		// Activamos o recuperamos el array $_SESSION
-		if (\core\Configuracion::$activar_session
-				or \core\Configuracion::$usuarios
-				or \core\Configuracion::$url_registrar_anterior) {
-			\core\SESSION::iniciar();
-		}
+		// Debe estar siempre activo porque se usa para presentar mensajes al cliente
+		// cuando carga una página.
+		// También se usa para la gestión de usuarios (\core\Usuario) 
+		// y para memorizar URL/URI (\core\URL) 
+		\core\SESSION::iniciar();
+		
 		
 		if ( \core\Configuracion::$url_registrar_anterior) \core\URL::registrar();
 		

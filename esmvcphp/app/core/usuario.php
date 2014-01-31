@@ -18,13 +18,10 @@ class Usuario extends \core\Clase_Base {
 		
 		// Recuperamos datos desde $_SESSION a las propiedades de la clase
 		if (isset($_SESSION['usuario']['login'])) {
-			if ($_SESSION["usuario"]["REMOTE_ADDR"] != $_SERVER["REMOTE_ADDR"]) {
-				$datos["mensaje"] = "Error fatal: La IP de sesión se ha cambiado dentro de la misma sesión de trabajo.";
-				\core\Distribuidor::cargar_controlador("error", "mensaje", $datos);
-				exit(0);
-			}
+			
 			self::$login = $_SESSION['usuario']['login'];
 			self::$id = $_SESSION['usuario']['id'];
+			self::sesion_control_tiempos();
 			
 		}
 		else {
@@ -45,8 +42,6 @@ class Usuario extends \core\Clase_Base {
 		else 
 			$_SESSION['usuario']['contador_paginas_visitadas'] = 1;
 		
-		self::sesion_control_tiempos();
-
 		if (self::$depuracion) {
 			echo(__METHOD__." .self::\$permisos = ");
 			print_r(self::$permisos);
@@ -71,9 +66,13 @@ class Usuario extends \core\Clase_Base {
 		$_SESSION["usuario"]["login"] = $login;
 		$_SESSION["usuario"]["id"] = $id;
 		$_SESSION["usuario"]["sesion_inicio"] = $_SERVER["REQUEST_TIME"];
-		$_SESSION["usuario"]["REMOTE_ADDR"] = $_SERVER["REMOTE_ADDR"];
 		
+		// Borramos los permisos del usuario anterior y 
+		// recuperamos los permisos del nuevo usuario
+		unset($_SESSION["usuario"]["permisos"]);
+		self::$permisos = array();
 		self::recuperar_permisos(self::$login);
+		
 		self::sesion_control_tiempos();
 		
 		if (self::$depuracion) {
@@ -88,7 +87,7 @@ class Usuario extends \core\Clase_Base {
 		unset($_SESSION['usuario']);
 		\core\SESSION::destruir();
 		self::nuevo('anonimo');
-		self::sesion_control_tiempos();
+
 		if (self::$depuracion) {
 			echo(__METHOD__); echo "</br>";
 		}
@@ -111,27 +110,36 @@ class Usuario extends \core\Clase_Base {
 		foreach (\core\Configuracion::$access_control_list as $controlador => $metodos) {
 			
 			foreach ($metodos as $metodo => $lista_usuarios) {
+				//$usuarios = array();
 				$usuarios = explode(",", trim($lista_usuarios));
 				
-				if (($login == "anonimo" 
-						and (array_search("todos", $usuarios) !== false
-								or array_search($login, $usuarios) !== false))
-					or
-					($login != "anonimo" 
-						and (array_search("todos", $usuarios) !== false
-								or array_search("logueados", $usuarios) !== false
-								or array_search($login, $usuarios) !== false))) {
+				if (
+						($login == "anonimo" 
+							and (array_search("todos", $usuarios) !== false
+									or array_search($login, $usuarios) !== false
+								)
+						)
+						or
+						($login != "anonimo" 
+							and (array_search("todos", $usuarios) !== false
+									or array_search("logueados", $usuarios) !== false
+									or array_search($login, $usuarios) !== false
+								)
+						)
+					) {
 					self::$permisos[$controlador][$metodo] = true;
-					if ($metodo = "*")
-						break;
+					
 				}
-				if (isset(self::$permisos["*"]["*"]))
+				
+				
+			}
+			if (isset(self::$permisos["*"]["*"]))
 					break;
+			
 			}
 			if (self::$depuracion) {
 				echo(__METHOD__); echo "</br>";
 				var_dump(self::$permisos);
-			}
 			
 		}
 		
@@ -146,13 +154,26 @@ class Usuario extends \core\Clase_Base {
 		
 		self::$permisos = \modelos\usuarios::permisos_usuario($login);
 		$_SESSION['usuario']['permisos'] = self::$permisos;
+		
 		if (self::$depuracion) {
 			echo(__METHOD__); echo "</br>";
 			var_dump(self::$permisos);
 		}
+		
 	}
 	
 	
+	/**
+	 * Comprueba si un usuario tiene permisos para ejecutar un controlador::método.
+	 * Para el caso de metodos de acceso a formularios, como por ejemplo:
+	 * form_insertar, form_insertar_validar, validar_form_insertar, que un usuario 
+	 * tenga concediod el permiso de form_insertar, implica que tenga permiso 
+	 * también para los correspondientes métodos de validación del formulario.
+	 * 
+	 * @param string $controlador
+	 * @param string $metodo
+	 * @return boolean
+	 */
 	public static function tiene_permiso($controlador = "inicio", $metodo = 'index') {
 		
 		if ( ! \core\Configuracion::$control_acceso_recursos) {
@@ -161,8 +182,9 @@ class Usuario extends \core\Clase_Base {
 		
 		$autorizado = false;
 		
-		// La siguiente línea hace que el usuario que tenga asignado el método form_insertar
-		// también pueda acceder al método form_insertar_validar
+		// La siguiente línea hace que el usuario que tenga asignado el método
+		// form_insertar también pueda acceder al método form_insertar_validar
+		// o validar_form_insertar.
 		$metodo = preg_replace("/_validar|validar_/", "", $metodo);
 				
 		// El usuario tiene acceo a todos los recursos
@@ -187,7 +209,6 @@ class Usuario extends \core\Clase_Base {
 	
 	
 	
-	
 	private static function sesion_control_tiempos() {
 		
 		// Tiempo de inactividad
@@ -207,14 +228,21 @@ class Usuario extends \core\Clase_Base {
 		
 	}
 	
-	
-	public static function validar_en_ACL($login, $password) {
+	/**
+	 * Autentica un usario (login, password) contra la lista de usuarios definida
+	 * en \core\Configuracion::$usuarios_lista
+	 * 
+	 * @param string $login
+	 * @param string $password
+	 * @return boolean
+	 */
+	public static function autenticar_en_ACL($login, $password) {
 		
 		if (self::$depuracion) {
 			echo(__METHOD__); echo "</br>";
 		}
 		
-		return((isset(\core\Configuracion::$usuarios_lista[$login]) and \core\Configuracion::$usuarios_lista[$login] == $password) ? "existe_autenticado_confirmado" : false);
+		return((isset(\core\Configuracion::$usuarios_lista[$login]) and \core\Configuracion::$usuarios_lista[$login] == $password) ? "autenticado_en_ACL" : false);
 		
 	}
 	

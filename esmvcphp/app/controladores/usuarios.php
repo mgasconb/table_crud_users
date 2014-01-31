@@ -77,33 +77,43 @@ class usuarios extends \core\Controlador {
 					}
 
 				}
+				
 				if ($validacion) {
+					// En este punto el captcha se ha superado y validado las inputs
 					if (\core\Configuracion::$usuarios_origen == "bd") {
 					$respuesta =  \modelos\Modelo_SQL::tabla("usuarios")->validar_usuario($datos['values']['login'], $datos['values']['password']);
 					}
 					else {
-						$respuesta = \core\Usuario::validar_en_ACL($datos['values']['login'], $datos['values']['password']);
+						$respuesta = \core\Usuario::autenticar_en_ACL($datos['values']['login'], $datos['values']['password']);
 					}
 					
-
+					
 					if  ($respuesta == 'existe') {
-							$datos['errores']['validacion'] = 'Error en login o password';
-							\core\Distribuidor::cargar_controlador("usuarios", "form_login", $datos);
+						$datos['errores']['validacion'] = 'Error en login o password';
+						\core\Distribuidor::cargar_controlador("usuarios", "form_login", $datos);
 					}
 					elseif ($respuesta == 'existe_autenticado') {
-							$datos['mensaje'] = "Falta confimación del usuario {$datos['values']['login']}. Consulta tu correo electrónico" ;
-							$this->cargar_controlador('mensajes', 'mensaje', $datos);
+						$datos['mensaje'] = "Falta confimación del usuario {$datos['values']['login']}. Consulta tu correo electrónico" ;
+						$this->cargar_controlador('mensajes', 'mensaje', $datos);
 					}
 					elseif ($respuesta == 'existe_autenticado_confirmado') {
-							$datos['login'] = $datos['values']['login'];
+						$datos['login'] = $datos['values']['login'];
 
-							$clausulas['where'] = " login = '{$datos['values']['login']}' ";
-							$filas = \modelos\Modelo_SQL::table("usuarios")->select($clausulas);
+						$clausulas['where'] = " login = '{$datos['values']['login']}' ";
+						$filas = \modelos\Modelo_SQL::table("usuarios")->select($clausulas);
 
-							\core\Usuario::nuevo($datos['values']['login'], $filas[0]['id']);
-							$datos["mensaje"] = "Bienvenido la aplicación: <b>{$datos['values']['login']}</b>." ;
-							$this->cargar_controlador('mensajes', 'mensaje', $datos);
+						\core\Usuario::nuevo($datos['values']['login'], $filas[0]['id']);
+						$datos["mensaje"] = "Bienvenido la aplicación: <b>{$datos['values']['login']}</b>." ;
+						$this->cargar_controlador('mensajes', 'mensaje', $datos);
 							
+					}
+					elseif ($respuesta == 'autenticado_en_ACL') {
+						
+						$datos['login'] = $datos['values']['login'];
+						\core\Usuario::nuevo($datos['values']['login']);
+						$datos["mensaje"] = "Bienvenido la aplicación: <b>{$datos['values']['login']}</b>." ;
+						$this->cargar_controlador('mensajes', 'mensaje', $datos);
+						
 					}
 				}
 				else {
@@ -131,17 +141,16 @@ class usuarios extends \core\Controlador {
 			$datos['desconexion_razon'] = null;
 	
 		if ($datos['desconexion_razon'] === null) {
-			$datos['mensaje'] = 'Adios';
+			$datos['mensaje'] = 'Adiós';
 		}
 		elseif ($datos['desconexion_razon'] == 'inactividad') {
 			$datos['mensaje'] = 'Has superado el tiempo de inactividad que es de <b>'.\core\Configuracion::$sesion_minutos_inactividad.'</b> minutos.';
-			$datos['url_continuar'] = \core\URL::generar("inicio");
 		}
 		elseif ($datos['desconexion_razon'] == 'tiempo_sesion_agotado') {
-			$datos['mensaje'] = 'Has agotado el tiempo de tu sesión que es de <b>'.\core\Configuracion::$sesion_minutos_inactividad.'</b> minutos.<br />Vuelve a conectarte para seguir trabajando.';
-			 $datos['url_continuar'] = \core\URL::generar("inicio");
+			$datos['mensaje'] = 'Has agotado el tiempo de tu sesión que es de <b>'.\core\Configuracion::$sesion_minutos_inactividad.'</b> minutos.<br />Vuelve a conectarte para seguir trabajando.';	 
 		}
-				
+		
+		//$datos['url_continuar'] = \core\URL::generar("inicio");	
 		return $this->cargar_controlador("mensajes", "desconexion", $datos);
 		
 	}

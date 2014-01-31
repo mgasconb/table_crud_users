@@ -45,6 +45,7 @@ class Configuracion {
 	public static $idioma_sensibilidad = true;
 	public static $idioma_por_defecto = "es";
 	public static $idioma_seleccionado;
+	// Idiomas reconocidos en los que puede respondeer la aplicación
 	public static $idiomas_reconocidos = "es|en|fr";
 	
 	// Formularios de login
@@ -88,7 +89,7 @@ class Configuracion {
 		"admin" => "admin00",
 		"juan" => "juan00",
 		"anais" => "anais00",
-		"ana" => "ana00",
+		"anabel" => "anabel00",
 	);
 	/**
 	 * Define array llamado recursos_y_usuarios con la definición de todos los permisos de acceso a los recursos de la aplicación.
@@ -114,11 +115,14 @@ class Configuracion {
 							),
 		'usuarios' => array(
 							'*' => ' juan ',
-							'index' => ' anais, ana ',
+							'index' => ' anais, anabel ',
 							'desconectar' => ' logueados ',
 							'form_login_email' => ' anonimo ',
 							'form_login' => ' anonimo ',
-							)
+							),
+		'usuarios_permisos' => array(
+							"index" => "logueados",
+		),
 	
 	);
 } // Fin de la clase 

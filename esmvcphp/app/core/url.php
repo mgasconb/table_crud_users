@@ -62,11 +62,12 @@ class URL {
 	 * 
 	 * @param string|array $query_string "dato1/dato2[/...]" array("dato1", "dato2", ...)
 	 * @param boolean $withLang=true genera ulr con idioma <b>false</b> genera url sin idioma 
+	 * @param boolean $administrator Introduce la opción administrator para servir el módulo de administración
 	 * @return string URL amigable o con parámetros
 	 * 
 	 * @throws Exception Si el strin no cumple el formato
 	 */
-	static function generar($query_string = array(), $withLang = true) {
+	static function generar($query_string = array(), $withLang = true, $administrator = true) {
 			
 			if ( is_string($query_string)) { // Solo actua si hay datos para hacer la query string.
 //				// Patrón url amigable
@@ -82,7 +83,7 @@ class URL {
 			
 			}
 			
-			return URL_ROOT.((\core\Configuracion::$url_amigable) ? self::amigable($query_string, $withLang,$withLang) : self::query_string($query_string, $withLang, $withLang));
+			return URL_ROOT.((\core\Configuracion::$url_amigable) ? self::amigable($query_string, $withLang, $administrator) : self::query_string($query_string, $withLang, $administrator));
 
 	}
 		
@@ -174,9 +175,12 @@ class URL {
 			$url .= "administrator=";
 		}
 		
-		if ($withLang && \core\Configuracion::$idioma_seleccionado && \core\Configuracion::$idioma_seleccionado != \core\Configuracion::$idioma_por_defecto) {
+		if ($withLang === true && \core\Configuracion::$idioma_seleccionado && \core\Configuracion::$idioma_seleccionado != \core\Configuracion::$idioma_por_defecto) {
 			$url .= (strlen($url) == 1 ? "" : "&")."lang=".\core\Configuracion::$idioma_seleccionado;
 		}
+		elseif (is_string($withLang) && preg_match($patron, $withLang) &&  $withLang != \core\Configuracion::$idioma_por_defecto) {
+			$url .= (strlen($url) == 1 ? "" : "&")."lang=".$withLang;
+		} 
 		
 		foreach ($query_string as $key => $value) {
 			$url .= (strlen($url) == 1 ? "" : "&")."p".($key+1)."=$value";
@@ -193,21 +197,31 @@ class URL {
 	}
 
 
+	
 	/**
-	 * Genera URI amigable con formato de carpetas
+	 * Genera URI amigable con formato de carpetas. 
+	 * Incorpora el idioma con el que se esté sirviendo o seleccionado por el cliente
 	 * 
 	 * @param array $query_string array("dato1", "dato2",...)
+	 * @param boolean|string $withLang
+	 * @param boolea $administrator
 	 * @return string URI con formato /dato1/dato2/[.../]
 	 */
 	private static function amigable(array $query_string = array(), $withLang = true, $administrator = true) {
 
+		$patron = "/^(".\core\Configuracion::$idiomas_reconocidos.")$/";
 		$url = "";
+		
 		if ($administrator && isset($_GET["administrator"])) {
 			$url .= "administrator/";
 		}
-		if ($withLang && \core\Configuracion::$idioma_seleccionado && \core\Configuracion::$idioma_seleccionado != \core\Configuracion::$idioma_por_defecto) {
+		
+		if ($withLang === true && \core\Configuracion::$idioma_seleccionado && \core\Configuracion::$idioma_seleccionado != \core\Configuracion::$idioma_por_defecto) {
 			$url .= \core\Configuracion::$idioma_seleccionado."/";
 		}
+		elseif (is_string($withLang) && preg_match($patron, $withLang) &&  $withLang != \core\Configuracion::$idioma_por_defecto) {
+			$url .= $withLang."/";
+		} 
 		
 		foreach ($query_string as $key => $value) {
 			$url .= "$value/";
