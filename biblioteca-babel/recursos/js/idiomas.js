@@ -7,7 +7,7 @@
 function set_lang(lang, url) {
 	
 	// Creamos la cookie para el idioma, caduca en un año.
-	setCookie("lang", lang, 365, "/");
+	// setCookie("lang", lang, 365, "/");
 	window.location.assign(url);
 		
 }

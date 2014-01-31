@@ -15,6 +15,14 @@ class SESSION {
 	 * cambio de ip durante la sesión.
 	 */
 	public static function iniciar() {
+		
+		session_set_cookie_params ( 
+				\core\Configuracion::$session_lifetime,
+				\core\Configuracion::$session_cookie_path,
+				\core\Configuracion::$session_cookie_domain,
+				\core\Configuracion::$session_cookie_secure,
+				\core\Configuracion::$session_cookie_httponly
+		);
 		if (isset($_GET["administrator"])) {
 			session_name("ADMINISTRATOR_PHPSESSID" );
 		}
