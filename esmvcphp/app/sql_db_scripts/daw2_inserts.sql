@@ -44,18 +44,7 @@ insert into daw2_metodos
 , ('inicio'			,'*')
 , ('inicio'			,'index')
 , ('inicio'			,'internacional')
-, ('usuarios'		,'*')
-, ('usuarios'		,'index')
-, ('usuarios'		,'desconectar')
-, ('usuarios'		,'form_login')
-, ('usuarios'		,'form_login_validar')
-, ('usuarios'		,'form_login_email')
-, ('usuarios'		,'form_login_email_validar')
-, ('usuarios'		,'confirmar_alta')
-, ('usuarios'		,'form_insertar_interno')
-, ('usuarios'		,'form_insertar_externo')
-, ('usuarios'		,'form_modificar')
-, ('usuarios'		,'form_borrar')
+, ('mensajes'		, '*')
 , ('roles'		,'*')
 , ('roles'		,'index')
 , ('roles'		,'form_borrar')
@@ -64,6 +53,20 @@ insert into daw2_metodos
 , ('roles_permisos'		,'*')
 , ('roles_permisos'		,'index')
 , ('roles_permisos'		,'form_modificar')
+, ('usuarios'		,'*')
+, ('usuarios'		,'index')
+, ('usuarios'		,'desconectar')
+, ('usuarios'		,'form_login')
+, ('usuarios'		,'form_login_validar')
+, ('usuarios'		,'form_cambiar_password')
+, ('usuarios'		,'form_login_email')
+, ('usuarios'		,'form_login_email_validar')
+, ('usuarios'		,'confirmar_alta')
+, ('usuarios'		,'form_insertar_interno')
+, ('usuarios'		,'form_insertar_externo')
+, ('usuarios'		,'form_modificar')
+, ('usuarios'		,'form_borrar')
+
 , ('usuarios_permisos'		,'*')
 , ('usuarios_permisos'		,'index')
 , ('usuarios_permisos'		,'form_modificar')
@@ -77,7 +80,6 @@ insert into daw2_roles_permisos
 , ('usuarios'			,'mensajes'			,'*')
 , ('usuarios_logueados' ,'usuarios'			,'desconectar')
 , ('usuarios_logueados' ,'usuarios'			,'form_cambiar_password')
-, ('usuarios_logueados' ,'usuarios'			,'form_cambiar_password_validar')
 , ('usuarios_logueados' ,'categorias'		,'index')
 
 ;
@@ -98,27 +100,10 @@ insert into daw2_usuarios_permisos
   (login			,controlador			,metodo) values
   ('anonimo'		,'usuarios'				,'form_login')
 , ('anonimo'		,'usuarios'				,'form_login_email')
-, ('anonimo'		,'usuarios'				,'confirmar_alta')
 , ('anonimo'		,'usuarios'				,'form_insertar_externo')
+, ('anonimo'		,'usuarios'				,'confirmar_alta')
 ;
 
-
-insert into daw2_categorias
-  ( nombre, descripcion ) values
-  ('lacteos', null)
-, ('frutas', null)
-, ('legumbres', null)
-, ('refrescos', null)
-;
-
-
-insert into daw2_articulos
-  ( categoria_nombre, nombre,precio,unidades_stock ) values
-  ('lacteos','leche', 1,500)
-, ('lacteos','mantequilla', 0.5, 300)
-, ('legumbres', 'arroz', 0.90, 500)
-, ('refrescos', 'limonada', 1, 333)
-;
 
 
 truncate table daw2_menu;

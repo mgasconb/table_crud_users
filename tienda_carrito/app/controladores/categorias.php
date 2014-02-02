@@ -13,10 +13,10 @@ class categorias extends \core\Controlador {
 		
 		$clausulas['order_by'] = 'nombre';
 		//$datos["filas"] = \modelos\categorias::select($clausulas, "categorias"); // Recupera todas las filas ordenadas
-		$datos["filas"] = \modelos\Modelo_SQL::table("categorias")->select($clausulas); // Recupera todas las filas ordenadas
+		$datos["filas"] = \modelos\Modelo_SQL::tabla("categorias")->select($clausulas); // Recupera todas las filas ordenadas
 		
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 		\core\HTTP_Respuesta::enviar($http_body);
 		
 	}
@@ -26,27 +26,52 @@ class categorias extends \core\Controlador {
 		
 		$datos["form_name"] = __FUNCTION__;
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 		\core\HTTP_Respuesta::enviar($http_body);
 		
 	}
 
-	public function validar_form_insertar(array $datos=array()) {
+	public function form_insertar_validar(array $datos=array()) {
 		
-		
-		
-		$validaciones = array(
-			 "nombre" =>"errores_requerido && errores_texto && errores_unicidad_insertar:nombre/categorias/nombre"
-			, "descripcion" => "errores_texto"
-
-		);
-		if ( ! $validacion = ! \core\Validaciones::errores_validacion_request($validaciones, $datos))
-            $datos["errores"]["errores_validacion"]="Corrige los errores.";
+		if ( ! $validacion = ! \core\Validaciones::errores_validacion_request(\modelos\categorias::$validaciones_insert, $datos))
+            $datos["errores"]["errores_validacion"] = "Corrige los errores.";
 		else {
+			if ($_FILES["foto"]["size"]) {
+				if ($_FILES["foto"]["error"] > 0 ) {
+					$datos["errores"]["foto"] = $_FILES["foto"]["error"];
+				}
+				elseif ( ! preg_match("/image/", $_FILES["foto"]["type"])) {
+					$datos["errores"]["foto"] = "El fichero no es una imagen.";
+				}
+				elseif ($_FILES["foto"]["size"] > 1024*1024) {
+					$datos["errores"]["foto"] = "El tamaño de la foto debe ser menor que 1MB.";
+				}
+				if (isset($datos["errores"]["foto"])) {
+					$validacion = false;
+				}
+			}
 			
-			if ( ! $validacion = \modelos\Modelo_SQL::insert($datos["values"], 'categorias')) // Devuelve true o false
-				$datos["errores"]["errores_validacion"]="No se han podido grabar los datos en la bd.";
-		}
+			if ($validacion) {
+				\modelos\Modelo_SQL::tabla("categorias")->start_transaction();
+				if ( ! $validacion = \modelos\Modelo_SQL::tabla('categorias')->insert($datos["values"])) // Devuelve true o false
+					$datos["errores"]["errores_validacion"]="No se han podido grabar los datos en la bd.";
+				else {
+					// Se ha grabado la fila sin la foto
+					if ($_FILES["foto"]["size"]) {
+						$datos["values"]["id"] = $validacion;
+						if ($datos["values"]["foto"] = self::mover_foto($datos["values"]["id"])) {
+							$validacion = \modelos\Modelo_SQL::tabla('categorias')->update($datos["values"]);
+						}
+					}
+					
+				}
+				if ($validacion)
+					\modelos\Modelo_SQL::tabla("categorias")->commit_transaction();
+				else {
+					\modelos\Modelo_SQL::tabla("categorias")->rollback_transaction();
+				}
+			}
+		}	
 		if ( ! $validacion) //Devolvemos el formulario para que lo intente corregir de nuevo
 			\core\Distribuidor::cargar_controlador('categorias', 'form_insertar', $datos);
 		else
@@ -55,7 +80,7 @@ class categorias extends \core\Controlador {
 			//$datos = array("alerta" => "Se han grabado correctamente los detalles");
 			// Definir el controlador que responderá después de la inserción
 			//\core\Distribuidor::cargar_controlador('categorias', 'index', $datos);
-			$_SESSION["alerta"] = "Se han grabado correctamente los detalles";
+			$_SESSION["alerta"] = "Se han grabado correctamente los datos";
 			//header("Location: ".\core\URL::generar("categorias/index"));
 			\core\HTTP_Respuesta::set_header_line("location", \core\URL::generar("categorias/index"));
 			\core\HTTP_Respuesta::enviar();
@@ -79,7 +104,7 @@ class categorias extends \core\Controlador {
 			}
 			else {
 				$clausulas['where'] = " id = {$datos['values']['id']} ";
-				if ( ! $filas = \modelos\Datos_SQL::select( $clausulas, 'categorias')) {
+				if ( ! $filas = \modelos\Modelo_SQL::tabla('categorias')->select($clausulas)) {
 					$datos['mensaje'] = 'Error al recuperar la fila de la base de datos';
 					\core\Distribuidor::cargar_controlador('mensajes', 'mensaje', $datos);
 					return;
@@ -92,7 +117,7 @@ class categorias extends \core\Controlador {
 		}
 		
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 		\core\HTTP_Respuesta::enviar($http_body);
 	}
 
@@ -100,7 +125,7 @@ class categorias extends \core\Controlador {
 	
 	
 	
-	public function validar_form_modificar(array $datos=array()) {	
+	public function form_modificar_validar(array $datos=array()) {	
 		
 		$validaciones=array(
 			 "id" => "errores_requerido && errores_numero_entero_positivo && errores_referencia:id/categorias/id"
@@ -114,9 +139,21 @@ class categorias extends \core\Controlador {
 		}
 		else {
 			
-			if ( ! $validacion = \modelos\Datos_SQL::update($datos["values"], 'categorias')) // Devuelve true o false
+			if ( ! $validacion = \modelos\Modelo_SQL::tabla('categorias')->update($datos["values"])) // Devuelve true o false
 					
 				$datos["errores"]["errores_validacion"]="No se han podido grabar los datos en la bd.";
+			else {
+				// Se ha actualizado la fila sin la foto
+				if ($_FILES["foto"]["size"]) {
+					
+					if ($datos["values"]["foto"] = self::mover_foto($datos["values"]["id"])) {
+						$validacion = \modelos\Modelo_SQL::tabla('categorias')->update($datos["values"]);
+//						var_dump($_FILES); var_dump($datos); exit;
+
+					}
+				}
+
+			}
 				
 		}
 		if ( ! $validacion) //Devolvemos el formulario para que lo intente corregir de nuevo
@@ -145,7 +182,7 @@ class categorias extends \core\Controlador {
 		}
 		else {
 			$clausulas['where'] = " id = {$datos['values']['id']} ";
-			if ( ! $filas = \modelos\Datos_SQL::select( $clausulas, 'categorias')) {
+			if ( ! $filas = \modelos\Modelo_SQL::tabla('categorias')->select($clausulas)) {
 				$datos['mensaje'] = 'Error al recuperar la fila de la base de datos';
 				\core\Distribuidor::cargar_controlador('mensajes', 'mensaje', $datos);
 				return;
@@ -156,7 +193,7 @@ class categorias extends \core\Controlador {
 		}
 		
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 		\core\HTTP_Respuesta::enviar($http_body);
 	}
 
@@ -165,7 +202,7 @@ class categorias extends \core\Controlador {
 	
 	
 	
-	public function validar_form_borrar(array $datos=array()) {	
+	public function form_borrar_validar(array $datos=array()) {	
 		
 		$validaciones=array(
 			 "id" => "errores_requerido && errores_numero_entero_positivo && errores_referencia:id/categorias/id"
@@ -176,18 +213,24 @@ class categorias extends \core\Controlador {
 			\core\Distribuidor::cargar_controlador('mensajes', 'mensaje', $datos);
 			return;
 		}
-		else
-		{
-			if ( ! $validacion = \modelos\Datos_SQL::delete($datos["values"], 'categorias')) {// Devuelve true o false
+		else {
+			$clausulas = array (
+				"columnas" => "foto",
+				"where" => " id = {$datos["values"]["id"]}"
+			);
+			$filas = \modelos\Modelo_SQL::tabla("categorias")->select($clausulas);
+			if ( ! $validacion = \modelos\Modelo_SQL::tabla('categorias')->delete($datos["values"])) {// Devuelve true o false
 				$datos['mensaje'] = 'Error al borrar en la bd';
 				$datos['url_continuar'] = \core\URL::http('?menu=categorias');
 				\core\Distribuidor::cargar_controlador('mensajes', 'mensaje', $datos);
 				return;
 			}
-			else
-			{
-			$datos = array("alerta" => "Se borrado correctamente.");
-			\core\Distribuidor::cargar_controlador('categorias', 'index', $datos);		
+			else {
+				self::borrar_foto($filas[0]["foto"]);
+				$_SESSION["alerta"] = "Se han borradoo correctamente los datos";
+			
+				\core\HTTP_Respuesta::set_header_line("location", \core\URL::generar(\core\Distribuidor::get_controlador_instanciado()));
+				\core\HTTP_Respuesta::enviar();
 			}
 		}
 		
@@ -221,109 +264,46 @@ class categorias extends \core\Controlador {
 		$dompdf->stream("sample.pdf", array("Attachment" => 0));
 		
 		// \core\HTTP_Respuesta::set_mime_type('application/pdf');
-		// $http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
+		// $http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 		// \core\HTTP_Respuesta::enviar($datos, 'plantilla_pdf');
 		
 	}
 	
 
-	/**
-	 * Genera una respuesta json.
-	 * 
-	 * @param array $datos
-	 */
-	public function listado_js(array $datos=array()) {
+	private static function mover_foto($id) {
 		
-		$validaciones = array(
-			"nombre" => "errores_texto"
-		);
-		\core\Validaciones::errores_validacion_request($validaciones, $datos);
-		if (isset($datos['values']['nombre'])) 
-			$select['where'] = " nombre like '%{$datos['values']['nombre']}%'";
-		$select['order_by'] = 'nombre';
-		$datos['filas'] = \modelos\Datos_SQL::select($select, 'categorias');
-				
-		$datos['contenido_principal'] = \core\Vista::generar(__FUNCTION__, $datos);
-		
-		\core\HTTP_Respuesta::set_mime_type('text/json');
-		$http_body = \core\Vista_Plantilla::generar('plantilla_json', $datos);
-		\core\HTTP_Respuesta::enviar($http_body);
-		
-	}
-	
-	/**
-	 * Genera una respuesta json con un array que contiene objetos, siendo cada objeto una fila.
-	 * @param array $datos
-	 */
-	public function listado_js_array(array $datos=array()) {
-		
-		$validaciones = array(
-			"nombre" => "errores_texto"
-		);
-		\core\Validaciones::errores_validacion_request($validaciones, $datos);
-		if (isset($datos['values']['nombre'])) 
-			$select['where'] = " nombre like '%{$datos['values']['nombre']}%'";
-		$select['order_by'] = 'nombre';
-		$datos['filas'] = \modelos\Datos_SQL::select( $select, 'categorias');
-				
-		$datos['contenido_principal'] = \core\Vista::generar(__FUNCTION__, $datos);
-		
-		\core\HTTP_Respuesta::set_mime_type('text/json');
-		$http_body = \core\Vista_Plantilla::generar('plantilla_json', $datos);
-		\core\HTTP_Respuesta::enviar($http_body);
-		
+		// Ahora hay que añadir la foto
+		$extension = substr($_FILES["foto"]["type"], stripos($_FILES["foto"]["type"], "/")+1);
+		$nombre = (string)$id;
+		$nombre = "cat".str_repeat("0", 4 - strlen($nombre)).$nombre;
+		$foto_path = PATH_APPLICATION."recursos".DS."imagenes".DS."categorias".DS.$nombre.".".$extension;
+//					echo __METHOD__;echo $_FILES["foto"]["tmp_name"];  echo $foto_path; exit;
+		// Si existe el fichero lo borramos
+		if (is_file($foto_path)) {
+			unlink($foto_path);
+		}
+		$validacion = move_uploaded_file($_FILES["foto"]["tmp_name"],
+$foto_path);
+
+		return ($validacion ? $nombre.".".$extension : false);
+			
 	}
 	
 	
-	/**
-	 * Genera una respuesta xml.
-	 * 
-	 * @param array $datos
-	 */
-	public function listado_xml(array $datos=array()) {
+	private static function borrar_foto($foto) {
 		
-		$validaciones = array(
-			"nombre" => "errores_texto"
-		);
-		\core\Validaciones::errores_validacion_request($validaciones, $datos);
-		if (isset($_datos['values']['nombre'])) 
-			$select['where'] = " nombre like '%{$_datos['values']['nombre']}%'";
-		$select['order_by'] = 'nombre';
-		$datos['filas'] = \modelos\Datos_SQL::select( $select, 'categorias');
-				
-		$datos['contenido_principal'] = \core\Vista::generar(__FUNCTION__, $datos);
-		
-		\core\HTTP_Respuesta::set_mime_type('text/xml');
-		$http_body = \core\Vista_Plantilla::generar('plantilla_xml', $datos);
-		\core\HTTP_Respuesta::enviar($http_body);
-		
+		$foto_path = PATH_APPLICATION."recursos".DS."imagenes".DS."categorias".DS.$foto;
+//					echo __METHOD__;echo $_FILES["foto"]["tmp_name"];  echo $foto_path; exit;
+		// Si existe el fichero lo borramos
+		if (is_file($foto_path)) {
+			return unlink($foto_path);
+		}
+		else {
+			return null;
+		}
+			
 	}
 	
-	
-	
-	
-	/**
-	 * Genera una respuesta excel.
-	 * @param array $datos
-	 */
-	public function listado_xls(array $datos=array()) {
-		
-		$validaciones = array(
-			"nombre" => "errores_texto"
-		);
-		\core\Validaciones::errores_validacion_request($validaciones, $datos);
-		if (isset($_datos['values']['nombre'])) 
-			$select['where'] = " nombre like '%{$_datos['values']['nombre']}%'";
-		$select['order_by'] = 'nombre';
-		$datos['filas'] = \modelos\Datos_SQL::select( $select, 'categorias');
-				
-		$datos['contenido_principal'] = \core\Vista::generar(__FUNCTION__, $datos);
-		
-		\core\HTTP_Respuesta::set_mime_type('application/excel');
-		$http_body = \core\Vista_Plantilla::generar('plantilla_xls', $datos);
-		\core\HTTP_Respuesta::enviar($http_body);
-		
-	}
 	
 	
 } // Fin de la clase

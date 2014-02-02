@@ -13,6 +13,7 @@ class Vista extends \core\Clase_Base {
 	 * @throws \Exception
 	 */
 	public static function generar($nombre , array &$datos = array(), $buffer = true) {
+		
 		$patron = "/^(\w{1,}(\\\|\/)){1,}\w{1,}$/i"; // carpeta1/subcarpeta/../fichero
 		if (preg_match($patron, $nombre)) {
 			$fichero_vista = "vistas/".str_replace("\\", "/", $nombre).".php";

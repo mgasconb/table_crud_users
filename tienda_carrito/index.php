@@ -6,11 +6,25 @@
 // Definiciones constantes
 define("DS", DIRECTORY_SEPARATOR);
 
+/**
+ * @const strin Path donde están alojadas las aplicaciones
+ */
 define("PATH_ROOT", dirname(__DIR__).DS ); // Finaliza en DS
+/**
+ * @const string Path donde está alojada la aplicación que se ejecuta
+ */
+define("PATH_APPLICATION", __DIR__.DS);
 
+// Path de la carpeta app de la aplicación que se ejecuta
 define("PATH_APP", __DIR__.DS."app".DS ); // Finaliza en DS
+define("PATH_APPLICATION_APP", __DIR__.DS."app".DS ); // Finaliza en DS
 
+
+/**
+ * @const string Path donde está alojada al aplicación esmvcphp o framework
+ */
 define("PATH_ESMVCPHP", dirname(__DIR__).DS."esmvcphp".DS);
+
 
 /**
  * Carpeta que aloja la aplicación que se ejecuta

@@ -29,7 +29,7 @@ class mensajes extends \core\Controlador {
 		}
 		else {		
 			$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
-			$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
+			$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 			\core\HTTP_Respuesta::enviar($http_body);
 		}
 		
@@ -39,7 +39,7 @@ class mensajes extends \core\Controlador {
 	public function desconexion(array $datos = array()) {
 		
 		$datos['view_content'] = \core\Vista::generar("mensaje", $datos);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 		\core\HTTP_Respuesta::enviar($http_body);
 		
 	}

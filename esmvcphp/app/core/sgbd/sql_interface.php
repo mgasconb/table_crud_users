@@ -214,19 +214,19 @@ namespace core\sgbd;
 	 /**
 	  * Inicia una transacción
 	  */
-	 public static function start_transacction();
+	 public static function start_transaction();
 	 
 	 
 	 /**
 	  * Confirma una transacción
 	  */
-	 public static function commit_transacction();
+	 public static function commit_transaction();
 	 
 	 
 	 /**
 	  * Deshace una transacción
 	  */
-	 public static function rollback_transacction();
+	 public static function rollback_transaction();
 	 
 	
 	 

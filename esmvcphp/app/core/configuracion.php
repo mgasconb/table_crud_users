@@ -10,15 +10,16 @@ class Configuracion {
 	public static $controlador_por_defecto = 'inicio';
 	public static $metodo_por_defecto = 'index';
 	public static $plantilla_por_defecto = 'plantilla_principal';
+	public static $plantilla_administrator = 'plantilla_administrator';
 
 	// Respuesta HTTP
 	public static $tipo_mime_por_defecto = 'text/html';
-	public static $tipos_mime_reconocidos = array(
+	public static $tipos_mime_servidos = array(
 		'text/html', 'text/xml', 'text/json', 'application/excel', 
 	);
 	
 	// Usar sesiones de trabajo (activar array $_SESSION)
-	public static $activar_session = true;
+	public static $session_activate = true;
 	public static $session_lifetime = 0; // Segundos de duración de la cookie de sessionsession.cookie_lifetime
 	public static $session_cookie_path = "/";
 	public static $session_cookie_domain = "";

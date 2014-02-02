@@ -65,9 +65,7 @@ class mysqli implements \core\sgbd\SQL_interface {
 	 * @param string $table
 	 */
 	public function __construct() 	{
-		
-		self::connect();
-		
+				
 	}
 	
 
@@ -441,7 +439,7 @@ class mysqli implements \core\sgbd\SQL_interface {
 	
 	
 	
-	public static function start_transacction() {
+	public static function start_transaction() {
 		
 		$sql = "
 			start transaction;
@@ -453,7 +451,7 @@ class mysqli implements \core\sgbd\SQL_interface {
 	
 	
 	
-	public static function commit_transacction() {
+	public static function commit_transaction() {
 		
 		$sql = "
 			commit;
@@ -465,7 +463,7 @@ class mysqli implements \core\sgbd\SQL_interface {
 	
 	
 	
-	public static function rollback_transacction() {
+	public static function rollback_transaction() {
 		
 		$sql = "
 			rollback;

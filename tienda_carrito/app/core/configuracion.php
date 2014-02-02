@@ -10,15 +10,21 @@ class Configuracion {
 	public static $controlador_por_defecto = 'inicio';
 	public static $metodo_por_defecto = 'index';
 	public static $plantilla_por_defecto = 'plantilla_principal';
+	public static $plantilla_administrator = 'plantilla_administrator';
 
 	// Respuesta HTTP
 	public static $tipo_mime_por_defecto = 'text/html';
-	public static $tipos_mime_reconocidos = array(
+	public static $tipos_mime_servidos = array(
 		'text/html', 'text/xml', 'text/json', 'application/excel', 
 	);
 	
 	// Usar sesiones de trabajo (activar array $_SESSION)
-	public static $activar_session = true;
+	public static $session_activate = true;
+	public static $session_lifetime = 0; // Segundos de duración de la cookie de sessionsession.cookie_lifetime
+	public static $session_cookie_path = "/";
+	public static $session_cookie_domain = "";
+	public static $session_cookie_secure = false;
+	public static $session_cookie_httponly = false;
 	
 	// URL amigables
 	public static $url_amigable = true;
@@ -29,6 +35,9 @@ class Configuracion {
 	
 	// Gestión de usuarios si hay usuarios distintos
 	public static $usuarios = true;
+	public static $usuarios_origen = "bd"; // Valores válidos "bd" o "ACL" que es interna La lista de usuarios se define al final de esta clase
+	// Regeneración de id de cookie de session al cambiar de usuario
+	public static $regenerar_session_id = true;
 	// Control acceso a recursos
 	public static $control_acceso_recursos = true;
 	
@@ -36,14 +45,13 @@ class Configuracion {
 	public static $sesion_inactividad_controlada = false;
 	public static $sesion_minutos_inactividad = 20; // Minutos
 	public static $sesion_minutos_maxima_duracion = 120;
-	
-	
-	
+		
 	
 	// Gestión de idiomas
 	public static $idioma_sensibilidad = true;
 	public static $idioma_por_defecto = "es";
 	public static $idioma_seleccionado;
+	// Idiomas reconocidos en los que puede respondeer la aplicación
 	public static $idiomas_reconocidos = "es|en|fr";
 	
 	// Formularios de login
@@ -57,6 +65,7 @@ class Configuracion {
 	
 	
 	// Base de datos
+	// Debe estar activa si se utilizan usuarios y control de acceso a los recursos
 	public static $use_db = true;
 	// localhost
 	public static $db = array(
@@ -76,6 +85,18 @@ class Configuracion {
 //		'prefix_'  => 'daw2_'
 //	);
 	
+	
+	
+	// Acceso estático de usuarios
+	// Cuando el conjunto de usuarios previsto no vaya a cambiar durante la vida de la aplicación y sea reducido.
+	public static $usuarios_lista = array(
+		// "login" => "contraseña"
+		"anonimo" => "",
+		"admin" => "admin00",
+		"juan" => "juan00",
+		"anais" => "anais00",
+		"anabel" => "anabel00",
+	);
 	/**
 	 * Define array llamado recursos_y_usuarios con la definición de todos los permisos de acceso a los recursos de la aplicación.
 	 * 
@@ -83,28 +104,31 @@ class Configuracion {
 	 *  [*][*] define todos los recursos
 	 *  [controlador][*] define todos los métodos de un controlador
 	 * Usuarios:
-	 *  * define todos los usuarios (anonimo más logueados)
-	 *  ** define todos los usuarios logueados (anonimo no está incluido)
+	 *  "todos" define todos los usuarios (anonimo más logueados)
+	 *  "logueados" define todos los usuarios logueados (anonimo no está incluido)
 	 * 
 	 * @var array =('controlador' => array('metodo' => ' nombres usuarios rodeados por espacios
 	 */
 	public static $access_control_list = array(
 		'*' => array(	'*' => ' admin '),
 		'inicio' => array (
-						'*' => ' ** ',
-						'index' => ' * ',
+						'*' => ' logueados ',
+						'index' => ' todos ',
 					),
 	
 		'mensajes' => array(
-							'*' => ' * ',
+							'*' => ' todos ',
 							),
 		'usuarios' => array(
-							'*' => ' juan, pedro ',
-							'index' => ' anais, ana, olga ',
-							'desconectar' => ' ** ',
+							'*' => ' juan ',
+							'index' => ' anais, anabel ',
+							'desconectar' => ' logueados ',
 							'form_login_email' => ' anonimo ',
 							'form_login' => ' anonimo ',
-							)
+							),
+		'usuarios_permisos' => array(
+							"index" => "logueados",
+		),
 	
 	);
 } // Fin de la clase 

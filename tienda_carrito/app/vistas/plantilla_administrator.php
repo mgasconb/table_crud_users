@@ -32,7 +32,9 @@
 		
 		<script type="text/javascript" >
 			/* líneas del script */
-			
+			function saludo() {
+				alert("Bienvenido al primer ejercicio de Desarrollo Web en Entorno Servidor");
+			}
 		</script>
 		
 	</head>
@@ -44,7 +46,7 @@
 		<div id="encabezado">
 			<img src="<?php echo URL_ROOT; ?>recursos/imagenes/ipv_ies_palomeras.png" alt="logo" title="Logo" onclick="window.location.assign('http://www.iespalomeras.net/');"/>
 			<img src="<?php echo URL_ROOT; ?>recursos/imagenes/departamento_informatica.png" alt="logo" title="Logo departamento"  onclick="window.location.assign('http://www.iespalomeras.net/index.php?option=com_wrapper&view=wrapper&Itemid=86');" />
-			<h1 id="titulo">Tienda Carrito</h1>
+			<h1 id="titulo">Administrator: Tienda Carrito</h1>
 		</div>
 		
 		<div id="div_derecha_logo">
@@ -71,7 +73,11 @@
 		<div id="div_menu" >
 			<fieldset>
 				<legend>Menú - Índice - Barra de navegación:</legend>
-					<?php echo (new \controladores\menu())->index(); ?>
+					<ul id="menu" class="menu">
+						<?php echo \core\HTML_Tag::li_menu("item", array("inicio"), "Inicio"); ?>
+						<?php echo \core\HTML_Tag::li_menu("item", array("categorias"), "Categorias"); ?>
+						<?php echo \core\HTML_Tag::li_menu("item", array("articulos"), "Artículos"); ?>
+					</ul>
 			</fieldset>
 		</div>
 

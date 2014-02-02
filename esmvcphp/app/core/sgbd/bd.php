@@ -26,8 +26,8 @@ class bd extends \core\sgbd\mysqli {
 	 */
 	public static function table($table_name) {
 		
-		self::set_table_name($table_name);
-		return new \core\sgbd\bd();
+		parent::set_table_name($table_name);
+//		return new \core\sgbd\bd();
 		
 	}
 	

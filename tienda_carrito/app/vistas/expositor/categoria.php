@@ -24,18 +24,13 @@
 						<td>".\core\Conversiones::decimal_punto_a_coma_y_miles($fila['precio'])."</td>
 						<td>".\core\Conversiones::decimal_punto_a_coma_y_miles($fila['unidades_stock'])."</td>
 						<td>
-							<a class='boton' href='".\core\URL::generar("articulos/form_modificar/{$fila["id"]}")."' >modificar</a>
-							<a class='boton' href='".\core\URL::generar("articulos/form_borrar/{$fila["id"]}")."' >borrar</a>
+							<a class='boton' href='".\core\URL::generar("carrito/anexar/{$fila["id"]}")."' >compra</a>
+							
 						</td>
 					</tr>
 					";
 			}
-			echo "
-				<tr>
-					<td colspan='5'></td>
-					<td><a class='boton' href='".\core\URL::generar("articulos/form_insertar")."' >insertar</a></td>
-				</tr>
-			";
+			
 			?>
 		</tbody>
 	</table>

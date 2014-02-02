@@ -27,14 +27,15 @@ class Modelo_SQL extends \core\sgbd\bd {
 	 * 
 	 * @param string $table_name Ejemplo: "usuarios"    "articulos"
 	 * @return \core\sgbd\bd
+	 * @override
 	 */
 	public static function table($table_name) {
 				
-		$path = PATH_APP."modelos".DS.strtolower($table_name).".php";
+		$path_application = PATH_APPLICATION_APP."modelos".DS.strtolower($table_name).".php";
+		$path_framework = PATH_ESMVCPHP."app".DS."modelos".DS.strtolower($table_name).".php";
+		parent::set_table_name($table_name);
 		
-		self::set_table_name($table_name);
-		
-		if (is_file($path)) {
+		if (is_file($path_application) or is_file($path_framework)) {
 			$modelos_clase = "\\modelos\\".strtolower($table_name);
 			return new $modelos_clase();
 		}

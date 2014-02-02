@@ -18,7 +18,7 @@ class Autoloader {
 	 *
 	 * @var array Array con los nombres de las aplicaciones en las que se buscará 
 	 */
-	private static $apps = array ("esmvcphp" => true);
+	private static $applications = array ("esmvcphp" => true);
 	
 	
 	/**
@@ -26,18 +26,18 @@ class Autoloader {
 	 * en el array y además en la carpeta .../esmvcphp/ que es la carpeta común a
 	 * todas las aplicaciones y que contiene el core del framework
 	 * 
-	 * @param array $apps array("folder" => true, "folder2" => "true", ...);
+	 * @param array $applications array("folder" => true, "folder2" => "true", ...);
 	 */
-	function __construct(array $apps = array()) {
+	function __construct(array $applications = array()) {
 		
 		// Las nuevas aplicaciones deben ser las primeras en las que se busque
-		self::$apps = array_merge($apps, self::$apps);
+		self::$applications = array_merge($applications, self::$applications);
 	
 		if (self::$depuracion) {
 			echo "<hr />";
 			echo __METHOD__." -> Arrancando el autoloader<br />";
 			print("apps en las que se buscará");
-			print_r(self::$apps);
+			print_r(self::$applications);
 		}
 		
 		
@@ -66,16 +66,15 @@ class Autoloader {
 		$class_name = str_replace(array("\\", ), array(DS , ), $class_name);
 		
 		$carpetas = "";
-		foreach (self::$apps as $app => $valid) {
+		foreach (self::$applications as $application => $valid) {
 			
-			$carpetas .= $app."  "; 
+			$carpetas .= $application."  "; 
 			
-			if ( $fichero_encontrado = self::buscar($app, $class_name))
+			if ( $fichero_encontrado = self::buscar($application, $class_name))
 				break;
 		}
 		
 		if ( ! $fichero_encontrado) {
-			
 			
 			throw new \Exception(__METHOD__." -> No se ha encontrado la clase $class_name el la/s carpeta/s <b>$carpetas</b>");
 		}
@@ -84,9 +83,9 @@ class Autoloader {
 	}
 	
 	
-	private static function buscar($app, $class_name ) {
+	private static function buscar($application, $class_name ) {
 		
-		$path_busqueda = PATH_ROOT.$app.DS."app".DS; 
+		$path_busqueda = PATH_ROOT.$application.DS."app".DS; 
 		$fichero_clase = strtolower($path_busqueda.$class_name.".php");
 		
 		if ( ! file_exists($fichero_clase)) {

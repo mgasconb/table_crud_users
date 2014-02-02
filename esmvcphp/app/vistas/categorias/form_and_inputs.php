@@ -10,10 +10,10 @@
 	Descripcion:<br />
 	<textarea id='descripcion' name='descripcion' type='textarea' cols='100'  rows='10' ><?php echo \core\Array_Datos::values('descripcion', $datos); ?></textarea>
 	<?php echo \core\HTML_Tag::span_error('descripcion', $datos); ?>
-
 	<br />
-	<?php echo \core\HTML_Tag::span_error('errores_validacion', $datos); ?>
 	
+	<?php echo \core\HTML_Tag::span_error('errores_validacion', $datos); ?>
+	<br />
 	<input type='submit' value='Enviar'>
 	<input type='reset' value='Limpiar'>
 	<button type='button' onclick='location.assign("?menu=<?php echo $datos['controlador_clase']; ?>&submenu=index");'>Cancelar</button>

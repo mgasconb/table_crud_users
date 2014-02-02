@@ -12,17 +12,20 @@
 		<thead>
 			<tr>
 				<th>nombre</th>
+				<th>foto</th>
 				<th>descripcion</th>
 				<th>acciones</th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php
-			foreach ($datos['filas'] as $fila)
-			{
+			foreach ($datos['filas'] as $fila) {
+				$img = ($fila["foto"]) ? "<img src='".URL_ROOT."recursos/imagenes/categorias/".$fila["foto"]."' width='200px' />" :"";
+				
 				echo "
 					<tr>
 						<td>{$fila['nombre']}</td>
+						<td>$img</td>
 						<td>{$fila['descripcion']}</td>
 						<td>
 					".\core\HTML_Tag::a_boton("boton", array("categorias", "form_modificar", $fila['id']), "modificar")
@@ -35,7 +38,7 @@
 			}
 			echo "
 				<tr>
-					<td colspan='2'></td>
+					<td colspan='3'></td>
 						<td>"
 			.\core\HTML_Tag::a_boton("boton", array("categorias", "form_insertar"), "insertar").
 					"</td>
@@ -44,4 +47,5 @@
 			?>
 		</tbody>
 	</table>
+	<a class='boton' href='<?=$datos["url_volver"]?>' >Volver</a>
 </div>

@@ -13,7 +13,7 @@ class usuarios extends \core\Controlador {
 		$datos['filas'] = \modelos\Modelo_SQL::table("usuarios")->select($clausulas);
 		
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 		\core\HTTP_Respuesta::enviar($http_body);
 		
 	}
@@ -30,7 +30,7 @@ class usuarios extends \core\Controlador {
 		}
 		elseif (\core\Usuario::$login == "anonimo") {
 			$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos, true);
-			$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos, true);
+			$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos, true);
 			\core\HTTP_Respuesta::enviar($http_body);
 		}
 		else {
@@ -83,7 +83,7 @@ class usuarios extends \core\Controlador {
 				if ($validacion) {
 					// En este punto el captcha se ha superado y validado las inputs
 					if (\core\Configuracion::$usuarios_origen == "bd") {
-					$respuesta =  \modelos\Modelo_SQL::tabla("usuarios")->validar_usuario($datos['values']['login'], $datos['values']['password']);
+					$respuesta =  \modelos\Modelo_SQL::table("usuarios")->validar_usuario($datos['values']['login'], $datos['values']['password']);
 					}
 					else {
 						$respuesta = \core\Usuario::autenticar_en_ACL($datos['values']['login'], $datos['values']['password']);
@@ -247,7 +247,7 @@ class usuarios extends \core\Controlador {
 		
 		// Enviar formulario		
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos, true);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos, true);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos, true);
 		\core\HTTP_Respuesta::enviar($http_body);
 		
 	}
@@ -303,7 +303,7 @@ class usuarios extends \core\Controlador {
 		
 		// Enviar formulario		
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos, true);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos, true);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos, true);
 		\core\HTTP_Respuesta::enviar($http_body);
 		
 	}
@@ -338,7 +338,7 @@ class usuarios extends \core\Controlador {
 	public function form_insertar_interno(array $datos = array()) {
 		
 		$datos['view_content'] = \core\Vista::generar("form_insertar", $datos, true);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos, true);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos, true);
 		\core\HTTP_Respuesta::enviar($http_body);
 		
 	}
@@ -393,7 +393,7 @@ class usuarios extends \core\Controlador {
 		// Enviar formulario	
 		
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos, true);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos, true);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos, true);
 		\core\HTTP_Respuesta::enviar($http_body);
 		
 	}
@@ -430,7 +430,7 @@ class usuarios extends \core\Controlador {
 		
 		
 		$datos['view_content'] = \core\Vista::generar("form_insertar", $datos, true);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos, true);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos, true);
 		\core\HTTP_Respuesta::enviar($http_body);
 		
 	}

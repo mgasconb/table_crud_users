@@ -17,36 +17,10 @@ set names utf8;
 
 set sql_mode = 'traditional';
 
-drop table if exists daw2_categorias;
-create table if not exists daw2_categorias
-( id integer auto_increment
-, nombre varchar(100) not null
-, descripcion varchar(1000) null
-, primary key (id)
-, unique (nombre)
-)
-engine = myisam default charset=utf8
-;
-
-
-drop table if exists daw2_articulos;
-create table if not exists daw2_articulos
-( id integer auto_increment
-, categoria_nombre varchar(100) not null
-, nombre varchar(100) not null
-, precio decimal(12,2) null default null
-, unidades_stock decimal(12,2) null default null
-, primary key (id)
-, unique (nombre)
-, foreign key (categoria_nombre) references catgegorias(nombre)
-)
-engine = myisam default charset=utf8
-;
-
 
 drop table if exists daw2_usuarios;
 CREATE TABLE daw2_usuarios (
-id int(11) NOT NULL AUTO_INCREMENT,
+id integer unsigned NOT NULL AUTO_INCREMENT,
 login varchar(30) NOT NULL,
 email varchar(100) NOT NULL,
 password char(32) NOT NULL,
@@ -57,7 +31,8 @@ PRIMARY KEY (id),
 UNIQUE KEY login (login),
 UNIQUE KEY email (email)
 )
-ENGINE=myisam DEFAULT CHARSET=utf8
+engine=innodb
+character set utf8 collate utf8_general_ci
 ;
 
 
@@ -72,8 +47,9 @@ create table daw2_metodos
 , unique (controlador, metodo)
 
 )
-CHARACTER SET utf8 COLLATE utf8_general_ci
-engine=myisam;
+engine=innodb
+character set utf8 collate utf8_general_ci
+;
 
 /*
  * Un rol es igual que un grupo de trabajo o grupo de usuarios.
@@ -89,8 +65,9 @@ create table daw2_roles
 , primary key (id)
 , unique (rol)
 )
-CHARACTER SET utf8 COLLATE utf8_general_ci
-engine=myisam;
+engine=innodb
+character set utf8 collate utf8_general_ci
+;
 
 
 /* seccion y subseccion se validarán en v_negocios_permisos */
@@ -105,9 +82,9 @@ create table daw2_roles_permisos
 , foreign key (rol) references daw2_roles(rol) on delete cascade on update cascade
 , foreign key (controlador, metodo) references daw2_metodos(controlador, metodo) on delete cascade on update cascade
 )
-CHARACTER SET utf8 COLLATE utf8_general_ci
-engine=myisam;
-
+engine=innodb
+character set utf8 collate utf8_general_ci
+;
 
 drop table if exists daw2_usuarios_roles;
 create table daw2_usuarios_roles
@@ -120,9 +97,9 @@ create table daw2_usuarios_roles
 , foreign key ( login) references daw2_usuarios(login) on delete cascade on update cascade
 , foreign key ( rol) references daw2_roles(rol) on delete cascade on update cascade
 )
-CHARACTER SET utf8 COLLATE utf8_general_ci
-engine=myisam;
-
+engine=innodb
+character set utf8 collate utf8_general_ci
+;
 
 
 -- Algunos hosting no dan el permiso de trigger por lo que habrá que implementarlo en programación php.
@@ -155,8 +132,9 @@ create table daw2_usuarios_permisos
 , foreign key (controlador, metodo) references daw2_metodos(controlador, metodo) on delete cascade on update cascade
 
 )
-CHARACTER SET utf8 COLLATE utf8_general_ci
-engine=myisam;
+engine=innodb
+character set utf8 collate utf8_general_ci
+;
 
 
 drop table if exists daw2_menu;
@@ -174,47 +152,61 @@ create table daw2_menu
 , unique (es_submenu_de_id, texto) -- Para evitar repeticiones de texto
 , unique (accion_controlador, accion_metodo) -- Si una acción/funcionalidad solo debe aparecer una vez en el menú
 )
-CHARACTER SET utf8 COLLATE utf8_general_ci
-engine=myisam;
+engine=innodb
+character set utf8 collate utf8_general_ci
+;
 
 
 
 drop table if exists daw2_foros;
 create table daw2_foros
-( id integer unsigned auto_increment not null primary key 
+( id integer unsigned auto_increment not null 
 , nombre varchar(100) not null unique
 , fecha_alta timestamp not null default current_timestamp()
-, creador_usuario_id integer unsigned not null references foros_usuarios(id)
+, creador_usuario_id integer unsigned not null 
+, primary key (id)
+, foreign key (creador_usuario_id) references daw2_usuarios(id)
 )
-engine = myisam;
+engine=innodb
+character set utf8 collate utf8_general_ci
+;
+
 
 /*
 El tema de un foro es equivalente a una pregunta.
 */
-drop table if exists daw2_foros_temas;
-create table daw2_foros_temas
-( id integer unsigned auto_increment not null primary key
-, titulo varchar(100) not null references foros_foros(id) on delete cascade
+drop table if exists daw2_temas;
+create table daw2_temas
+( id integer unsigned auto_increment not null
+, foro_id integer unsigned not null
+, titulo varchar(100) not null
+, creador_usuario_id integer unsigned not null 
 , fecha_alta timestamp not null default current_timestamp()
-, daw2_id integer unsigned not null
-, creador_usuario_id integer unsigned not null references foros_usuarios(id)
-
-, unique(daw2_id, titulo)
+, primary key (id)
+, foreign key (creador_usuario_id) references daw2_usuarios(id)
+, foreign key (foro_id) references daw2_foros(id)
+, unique(foro_id, titulo)
 )
-engine = myisam;
+engine=innodb
+character set utf8 collate utf8_general_ci
+;
 
 
 /*
 El mensaje dentro de un tema es equivalente a una respuesta a la pregunta (tema) dentro de un foro.
 */
-drop table if exists daw2_foros_temas_mensajes;
-create table daw2_foros_temas_mensajes
-( id integer unsigned auto_increment not null primary key
+drop table if exists daw2_temas_mensajes;
+create table daw2_temas_mensajes
+( id integer unsigned auto_increment not null
 , titulo varchar(255) not null
 , texto varchar(1000) not null
 , fecha_alta timestamp not null default current_timestamp()
-, tema_id integer unsigned not null references foros_foros_temas(id) on delete cascade
-, creador_usuario_id integer unsigned not null references foros_usuarios(id)
-
+, tema_id integer unsigned not null 
+, creador_usuario_id integer unsigned not null 
+, primary key (id)
+-- , foreign key (tema_id) references daw2_temas(id) on delete cascade
+-- , foreign key (creador_usuario_id) references daw2_usuarios(id)
 )
-engine = myisam;
+engine=innodb
+character set utf8 collate utf8_general_ci
+;

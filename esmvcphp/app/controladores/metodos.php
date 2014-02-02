@@ -16,7 +16,7 @@ class metodos extends \core\Controlador {
 		$datos["filas"] = \modelos\Modelo_SQL::table("metodos")->select($clausulas); 
 		
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 		\core\HTTP_Respuesta::enviar($http_body);
 		
 	}
@@ -25,7 +25,7 @@ class metodos extends \core\Controlador {
 	public function form_insertar(array $datos=array()) {
 		
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 		\core\HTTP_Respuesta::enviar($http_body);
 		
 	}
@@ -86,7 +86,7 @@ class metodos extends \core\Controlador {
 		}
 		
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 		\core\HTTP_Respuesta::enviar($http_body);
 	}
 
@@ -144,7 +144,7 @@ class metodos extends \core\Controlador {
 		}
 		
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 		\core\HTTP_Respuesta::enviar($http_body);
 	}
 

@@ -13,9 +13,15 @@ class Vista_Plantilla extends \core\Clase_Base {
 	 */
 	public static function generar($nombre , array $datos = array(), $buffer = true) {
 		
-		if ($nombre == "DEFAULT")
-			$nombre = \core\Configuracion::$plantilla_por_defecto;
-		
+		if (strtoupper($nombre) == "DEFAULT") {
+			if ( isset($_GET["administrator"]) or isset($_GET["ADMINISTRATOR"])) {
+				$nombre = \core\Configuracion::$plantilla_administrator;
+			}
+			else {
+				$nombre = \core\Configuracion::$plantilla_por_defecto;
+			}
+		}
+
 		$fichero_vista = strtolower(PATH_APP."vistas/$nombre.php");
 
 		if ( ! file_exists($fichero_vista)) {

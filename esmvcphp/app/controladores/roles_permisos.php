@@ -35,7 +35,7 @@ class roles_permisos extends \core\Controlador {
 		}
 		
 		$datos['view_content'] = \core\Vista::generar("index", $datos);
-		$http_body = \core\Vista_Plantilla::generar('plantilla_principal', $datos);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 		\core\HTTP_Respuesta::enviar($http_body);
 		
 	}
@@ -60,7 +60,7 @@ class roles_permisos extends \core\Controlador {
 			
 		}
 		else {
-			\modelos\Modelo_SQL::start_transacction();
+			\modelos\Modelo_SQL::start_transaction();
 			$clausulas["where"] = " rol = '{$datos["values"]["rol"]}' ";
 			if ( ! $validacion = \modelos\Modelo_SQL::table("roles_permisos")->delete($clausulas)) {
 					
@@ -74,10 +74,10 @@ class roles_permisos extends \core\Controlador {
 				}
 			}
 			if ($validacion) {
-				\modelos\Modelo_SQL::commit_transacction();
+				\modelos\Modelo_SQL::commit_transaction();
 			}
 			else {
-				\modelos\Modelo_SQL::rollback_transacction();
+				\modelos\Modelo_SQL::rollback_transaction();
 			}
 		}
 		if ( ! $validacion) //Devolvemos el formulario para que lo intente corregir de nuevo
