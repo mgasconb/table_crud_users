@@ -49,11 +49,25 @@ default charset = utf8
 ;
 
 
+-- Carritos: se usará para guardar objetos serializados de la clase ClaseCarrito
+drop table if exists daw2_carritos;
+create table if not exists daw2_carritos
+( id varchar(100) not null comment "Será el id del usuario o el valor de PHPSESID"
+, fechaHoraInicio timestamp not null default current_timestamp comment "Fecha de apertura del pediddo"
+, texto varchar(1000) not null
+, primary key (id)
+)
+engine = innodb
+default charset=utf8
+;
+
+
+
 drop table if exists daw2_pedidos;
 create table if not exists daw2_pedidos
 ( id integer unsigned auto_increment
-, fecha_inicio timestamp not null default current_timestamp comment "Fecha de apertura del pediddo"
-, fecha_compra datetime null 
+, fecha_hora_inicio timestamp not null default current_timestamp comment "Fecha de apertura del pediddo"
+, fecha_hora_compra datetime null 
 , usuario_id integer unsigned not null
 , primary key (id)
 , foreign key (usuario_id) references daw2_usuarios(id)

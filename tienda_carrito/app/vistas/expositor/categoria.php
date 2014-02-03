@@ -27,7 +27,7 @@
 						<td>".\core\Conversiones::decimal_punto_a_coma_y_miles($fila['precio'])."</td>
 						<td>".\core\Conversiones::decimal_punto_a_coma_y_miles($fila['unidades_stock'])."</td>
 						<td>
-							<a class='boton' href='".\core\URL::generar("carrito/form_anexar_articulo/{$fila["id"]}")."' >compra</a>
+							<a class='boton' href='".\core\URL::generar("carrito/form_anexar_articulo/{$fila["id"]}")."' >comprar</a>
 							
 						</td>
 					</tr>

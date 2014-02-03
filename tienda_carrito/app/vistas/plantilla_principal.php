@@ -19,12 +19,12 @@
 		<link href="favicon.ico" rel="icon" type="image/x-icon" /> 
 		
 		<link rel="stylesheet" type="text/css" href="<?php echo URL_ROOT; ?>recursos/css/principal.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo URL_ROOT; ?>recursos/css/carrito.css" />
 		<style type="text/css" >
 			/* Definiciones hoja de estilos interna */
+			
 		</style>
-		<?php if (isset($_GET["administrator"])): ?>
-		<link rel="stylesheet" type="text/css" href="<?php echo URL_ROOT; ?>recursos/css/administrator.css" />
-		<?php endif; ?>
+		
 		
 		<script type='text/javascript' src="<?php echo URL_ROOT."recursos".DS."js".DS."jquery".DS."jquery-1.10.2.min.js"; ?>" ></script>
 		<script type='text/javascript' src="<?php echo URL_ROOT."recursos".DS."js".DS."general.js"; ?>" ></script>
@@ -72,6 +72,13 @@
 			<fieldset>
 				<legend>Menú - Índice - Barra de navegación:</legend>
 					<?php echo (new \controladores\menu())->index(); ?>
+				<div id='carrito'>
+					<button id='btn_carrito' >Carrito</button>
+					<span id='carrito_importe'>55,43</span>
+					<div id='carrito_detalles'>
+						Detalles del carrito
+					</div>
+				</div>
 			</fieldset>
 		</div>
 

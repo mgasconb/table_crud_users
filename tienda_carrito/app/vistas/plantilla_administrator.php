@@ -21,6 +21,9 @@
 		<link rel="stylesheet" type="text/css" href="<?php echo URL_ROOT; ?>recursos/css/principal.css" />
 		<style type="text/css" >
 			/* Definiciones hoja de estilos interna */
+			html {
+				background-color: lightcyan;
+			}
 		</style>
 		<?php if (isset($_GET["administrator"])): ?>
 		<link rel="stylesheet" type="text/css" href="<?php echo URL_ROOT; ?>recursos/css/administrator.css" />

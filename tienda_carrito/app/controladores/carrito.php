@@ -6,21 +6,11 @@ class carrito extends \core\Controlador {
 	
 	
 	
-	public function form_anexar_articulo_validar(array $datos=array()) {
+	public function anexar_articulo(array $datos=array()) {
 		
-		$validaciones = array(
-			"articulo_id" => "errores_requerido && errores_numero_entero_positivo && errores_referencia:articulo_id/articulos/id",
-			"unidades" => "errores_requerido && errores_numero_entero_positivo",
-			"precio" => "errores_requerido && errores_numero_decimal_positivo"
-		);
-		if ( $validacion = !\core\Validaciones::errores_validacion_request($validaciones, $datos)) {
-			
-			if (\core\Usuario::$login == "anonimo") {
-				$this->anexar_a_session($datos);
-			}
-			else {
-				$this->anexar_a_bd($datos);
-			}
+		
+		if ( $validacion = !\core\Validaciones::errores_validacion_request(\modelos\carrito::$validaciones_insert, $datos)) {
+			\modelos\carrito::anexar_articulo($datos, \core\Usuario::$id);
 		}	
 			
 		
@@ -28,21 +18,23 @@ class carrito extends \core\Controlador {
 	
 	
 	
-	private function anexar_a_session($datos) {
+	
+	
+	public function modificar_articulo(array $datos = array()) {
 		
-		if ( ! isset($_SESSION["carrito"])) {
-			$_SESSION["carrito"]["fechaHoraInicio"] = date("Y-m-d H:i:s");
-		}
-		if ( ! isset($_SESSION["carrito"]["articulos"][$datos["values"]["articulo_id"]])) {
-			$_SESSION["carrito"]["articulos"][$datos["values"]["articulo_id"]] = array("unidades" => $datos["values"]["unidades"], "precio" => $datos["values"]["precio"]);
-		}
-		else {
-			$_SESSION["carrito"]["articulos"][$datos["values"]["articulo_id"]]["unidades"] += $datos["values"]["unidades"];
-		}		
+	}
+	
+	public function borrar_articulo(array $datos = array()) {
 		
 	}
 	
 	
+	public function contenido(array $datos = array()) {
+		
+	}
 	
+	public function borrar(array $datos = array()) {
+		
+	}
 	
 } // Fin de la clase
