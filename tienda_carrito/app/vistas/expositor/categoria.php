@@ -1,6 +1,9 @@
-<div>
-	<h1>Listado de articulos</h1>
-	
+<script type='text/javascript'>
+	$("<?php echo "#item{$datos["categoria_id"]}"; ?>").addClass("selected");
+</script>
+
+<div>	
+<?php if (count($datos['filas'])) :?>
 	<table border='1'>
 		<thead>
 			<tr>
@@ -24,7 +27,7 @@
 						<td>".\core\Conversiones::decimal_punto_a_coma_y_miles($fila['precio'])."</td>
 						<td>".\core\Conversiones::decimal_punto_a_coma_y_miles($fila['unidades_stock'])."</td>
 						<td>
-							<a class='boton' href='".\core\URL::generar("carrito/anexar/{$fila["id"]}")."' >compra</a>
+							<a class='boton' href='".\core\URL::generar("carrito/form_anexar_articulo/{$fila["id"]}")."' >compra</a>
 							
 						</td>
 					</tr>
@@ -34,5 +37,8 @@
 			?>
 		</tbody>
 	</table>
+<?php else :  ?>
+	<h2>Lo sentimos, no hay artículos disponibles en esta categoría.</h2>
+<?php endif; ?>
 	<a class='boton' href='<?=$datos["url_volver"]?>' >Volver</a>
 </div>
