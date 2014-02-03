@@ -22,6 +22,19 @@ class categorias extends \core\Controlador {
 	}
 	
 	
+	
+	public function recuento_articulos(array $datos=array()) {
+
+		//$datos["filas"] = \modelos\categorias::select($clausulas, "categorias"); // Recupera todas las filas ordenadas
+		$datos["filas"] = \modelos\Modelo_SQL::tabla("categorias")->recuento_articulos(); // Recupera todas las filas ordenadas
+		
+		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
+		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
+		\core\HTTP_Respuesta::enviar($http_body);
+		
+	}
+	
+	
 	public function form_insertar(array $datos=array()) {
 		
 		$datos["form_name"] = __FUNCTION__;

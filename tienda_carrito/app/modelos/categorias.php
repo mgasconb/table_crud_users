@@ -24,4 +24,16 @@ class categorias extends \core\sgbd\bd {
 	);
 
 	
+	
+	public static function recuento_articulos() {
+		
+		$sql = "select c.*, vcar.cuenta_articulos"
+				. " from daw2_categorias c left join daw2_v_categorias_articulos_recuento vcar on c.id = vcar.categoria_id"
+				. " order by c.nombre"
+				. ";";
+		return(self::execute($sql));
+		
+	}
+	
+	
 }

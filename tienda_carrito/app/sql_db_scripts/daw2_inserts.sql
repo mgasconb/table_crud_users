@@ -39,10 +39,10 @@ insert into daw2_categorias
 
 
 insert into daw2_articulos
-  ( categoria_nombre, nombre,precio,unidades_stock ) values
-  ('lacteos','leche', 1,500)
-, ('lacteos','mantequilla', 0.5, 300)
-, ('legumbres', 'arroz', 0.90, 500)
-, ('refrescos', 'limonada', 1, 333)
+  ( categoria_id, nombre,precio,unidades_stock ) values
+  (1,'leche', 1,500)
+, (1,'mantequilla', 0.5, 300)
+, (3, 'garbanzos', 0.90, 500)
+, (4, 'limonada', 1, 333)
 ;
 

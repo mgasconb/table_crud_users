@@ -44,6 +44,8 @@ class carrito extends \core\sgbd\bd {
 	
 	public static function recuperar($login_id) {
 		
+		
+		
 	}
 	
 	

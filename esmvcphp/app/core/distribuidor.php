@@ -52,7 +52,7 @@ class Distribuidor {
 	public static function cargar_controlador($controlador, $metodo="index", array $datos = array()) {
 		
 		$metodo = ($metodo ? $metodo : "index"); // Asignamos el método por defecto
-		
+
 		// Comprobamos que el usuario tiene permisos. Si no los tiene se redirige hacia otro controlador.
 		if (\core\Configuracion::$usuarios
 				and \core\Configuracion::$control_acceso_recursos
@@ -68,24 +68,39 @@ class Distribuidor {
 			}
 		}
 		
+		return self::cargar_controlador_sin_chequear($controlador, $metodo, $datos);
+		
+	}
+	
+	
+	
+	public static function cargar_controlador_sin_chequear($controlador, $metodo="index", array $datos = array()) {
+		echo("$controlador,$metodo ");echo(self::$controlador_instanciado); echo(self::$metodo_invocado);	echo(__METHOD__.__LINE__."<br />");
+		
+		$metodo = ($metodo ? $metodo : "index"); // Asignamos el método por defecto
+		
 		$fichero_controlador = strtolower(PATH_APP."controladores".DS."$controlador.php");
 		$controlador_clase = strtolower("\\controladores\\$controlador");
-		
+
 		// Buscamos que el controlador exista en la aplicación o en el framework esmvcphp
 		if ( ! $existe_fichero = file_exists(strtolower(PATH_APP."controladores".DS."$controlador.php"))) {
 			$existe_fichero = file_exists(strtolower(PATH_ESMVCPHP."app".DS."controladores".DS."$controlador.php"));
 		}
+
+		
 		
 		if ($existe_fichero) {
+					
 			\core\Aplicacion::$controlador = new $controlador_clase();
 			// Memorizamos el nombre del controlador para reutilizarlo en formularios
 			\core\Aplicacion::$controlador->datos['controlador_clase'] = strtolower($controlador);
 			self::$controlador_instanciado = strtolower($controlador);
-			
+		
 			if (method_exists(\core\Aplicacion::$controlador, $metodo)) {
 				// Memorizamos el nombre del método para reutilizarlo en formularios
 				\core\Aplicacion::$controlador->datos['controlador_metodo'] = strtolower($metodo);
 				self::$metodo_invocado = strtolower($metodo);
+
 				return \core\Aplicacion::$controlador->$metodo($datos);
 				
 			}
@@ -95,10 +110,13 @@ class Distribuidor {
 			}
 		}
 		else {
+			
+			
 			$datos['mensaje'] = "La clase <b>$controlador_clase</b> no existe.";
 			return self::cargar_controlador("errores", "error_404", $datos);
 		}
 	}
+	
 	
 	
 	
