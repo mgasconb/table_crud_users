@@ -2,131 +2,138 @@
 
 namespace modelos;
 
-class carrito extends \core\sgbd\bd {
-
-	private static $id = null;
+/**
+ * Implementa el carrito a partir de las tablas pedidos y pedidos_detalles
+ * 
+ * Los carritos se guardan en la bd y se borrarán si tienen más de 15 días.
+ *
+ * @author Jesús María de Quevedo Tomé
+ */
+class carrito_pedido extends \modelos\Modelo_SQL implements \modelos\carrito_interface {
 	
-	/* Rescritura de propiedades de validación */
-	public static $validaciones_insert = array(
-		"articulo_id" => "errores_requerido && errores_numero_entero_positivo && errores_referencia:articulo_id/articulos/id",
-		"unidades" => "errores_requerido && errores_numero_entero_positivo",
-		"precio" => "errores_requerido && errores_numero_decimal_positivo",
-		"nombre" => "errores_requerido && errores_texto"
-	);
+	private $id = null;
+	private $fechaHoraInicio = null;
+	private $articulos = array();
 	
 	
-	public static $validaciones_update = array(
-		"articulo_id" => "errores_requerido && errores_numero_entero_positivo && errores_referencia:articulo_id/articulos/id",		
-		"unidades" => "errores_requerido && errores_numero_entero_positivo",
-		"precio" => "errores_requerido && errores_numero_decimal_positivo",
-		"nombre" => "errores_requerido && errores_texto"
-	);
+	public function __construct($id) {
+		
+		$this->id = $id;
+		$this->fechaHoraInicio = date("Y-m-d H:i:s");
+		$this->persistir();
+	}
 	
-
-	public static $validaciones_delete = array(
-		"articulo_id" => "errores_requerido && errores_numero_entero_positivo && errores_referencia:articulo_id/articulos/id",
-	);
-
 	
-	/**
-	 * Anexa o modifica un artículo existente en el carrito.
-	 * 
-	 * @param type $datos
-	 * @param type $login_id
-	 */
-	public static function anexar_articulo($datos, $login_id) {
+	public static function recuperar($id) {
+		
+		if ($id) {
+			$clausulas["where"] = " id = '$id' ";
+			$filas = \modelos\Modelo_SQL::table("carritos")->select($clausulas);
+			if (isset($filas[0])) {
+				return(unserialize($filas[0]["texto"]));
+			}
+		}
+		
+	}
 	
-		if (\core\Usuario::$id) {
-			$this->anexar_articulo_a_bd($datos, $login_id);
+	
+	
+	
+	public function persistir() {
+		
+		
+		
+		$clausulas["where"] = "id = '{$this->id}' ";
+		$filas = self::table("carritos")->select($clausulas);
+		if (count($filas)) {
+			$this->tabla("carritos")->update(array("id" => $this->id, "fechaHoraInicio" => $this->fechaHoraInicio, "texto" => $texto));
 		}
 		else {
-			$this->anexar_de_session($datos, $login_id);
+			$this->tabla("carritos")->insert(array("id" => $this->id, "fechaHoraInicio" => $this->fechaHoraInicio, "texto" => $texto));
 		}
 		
 	}
 	
-	
-	
-	private function anexar_articulo_a_session($datos) {
+	public function cambiar_id($id) {
 		
-		if ( ! isset($_SESSION["carrito"])) {
-			$_SESSION["carrito"]["fechaHoraInicio"] = date("Y-m-d H:i:s");
-		}
-		if ( ! isset($_SESSION["carrito"]["articulos"][$datos["values"]["articulo_id"]])) {
-			$_SESSION["carrito"]["articulos"][$datos["values"]["articulo_id"]] = array("unidades" => $datos["values"]["unidades"], "precio" => $datos["values"]["precio"]);
-		}
-		else {
-			$_SESSION["carrito"]["articulos"][$datos["values"]["articulo_id"]]["unidades"] += $datos["values"]["unidades"];
-		}		
-		
-	}
-	
-	
-	private function borrar_articulo_de_session($datos) {
-		
-		unset($_SESSION["carrito"]["articulos"][$datos["values"]["articulo_id"]]);
-		
-	}
-	
-	
-	
-	private function modificar_articulo_de_session($datos) {
-		
-		if ( ! isset($_SESSION["carrito"]["articulos"][$datos["values"]["articulo_id"]])) {
-			$_SESSION["carrito"]["articulos"][$datos["values"]["articulo_id"]]["unidades"] -= $datos["values"]["unidades"];
-			
-			if ($_SESSION["carrito"]["articulos"][$datos["values"]["articulo_id"]]["unidades"] == 0 ) {
-				unset($_SESSION["carrito"]["articulos"][$datos["values"]["articulo_id"]]);
-			} 
-			
-		}	
+		$where = "  id = '{$this->id}' ";
+		$this->update(array("id" => $this->id), "carritos", $where);
+		$this->id = $id;
 		
 	}
 	
 	
 	
 	
-	public static function borrar_articulo($datos, $login_id) {
-		if (\core\Usuario::$id) {
-			self::borrar_en_bd($datos, $login_id);
+	public function meter($articulo) {
+		
+		if (array_key_exists($articulo["articulo_id"], $this->articulos)) {
+			$this->articulos[$articulo["articulo_id"]]["unidades"] += $articulo["unidades"];
 		}
 		else {
-			self::borrar_en_session($datos, $login_id);
+			$this->articulos[$articulo["articulo_id"]]["nombre"] = $articulo["nombre"];
+			$this->articulos[$articulo["articulo_id"]]["unidades"] = $articulo["unidades"];
+			$this->articulos[$articulo["articulo_id"]]["precio"] = $articulo["precio"];
 		}
-	}
-	
-	
-	
-	public static function borrar($login_id) {
+		if ($this->articulos[$articulo["articulo_id"]]["unidades"] == 0) {
+			unset($this->articulos[$articulo["articulo_id"]]);
+		}
+		$this->persistir();
 		
 	}
 	
-	public static function recuperar($login_id) {
-		
-		
-		
-	}
 	
-
 	
-	private function anexar_articulo_a_bd($datos, $login_id) {
+	
+	public function corregir($articulo) {
 		
-		$clausulas["where"] = " usuario_id = '$login_id' and fecha_hora_compra is null ";
-		if ( !\modelos\Modelo_SQL::table("pedidos")->select($clausulas)) {
-			$pedido_id = \modelos\Modelo_SQL::table("pedidos")->insert(array("usuario_id" => $login_id));
+		if (array_key_exists($articulo["articulo_id"], $this->articulos)) {
+			$this->articulos[$articulo["articulo_id"]]["unidades"] = $articulo["unidades"];
+			if ($this->articulos[$articulo["articulo_id"]]["unidades"] <= 0) {
+				unset($this->articulos[$articulo["articulo_id"]]);
+			}
+			$this->persistir();
+		}
 			
-			
-		} 
+	}
+	
+	
+	
+	public function quitar($articulo) {
+		
+		unset($this->articulos[$articulo["articulo_id"]]);
+		$this->persistir();
 		
 	}
 	
 	
-	private function borrar_articulo_de_bd($datos) {
+	public function vaciar() {
+		
+		$this->articulos = array();
+		$this->persistir();
 		
 	}
 	
 	
-	private function modificar_articulo_en_bd($datos) {
+	
+	public function contador_articulos() {
+		
+		return count($this->articulos);
+		
+	}
+	
+	
+	
+	public function get_articulos() {
+		
+		return $this->articulos;
+		
+	}
+	
+	
+	public function get_fechaHoraInicio() {
+		
+		return $this->fechaHoraInicio;
 		
 	}
 	

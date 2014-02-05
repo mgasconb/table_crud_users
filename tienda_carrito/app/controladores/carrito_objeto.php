@@ -1,7 +1,9 @@
 <?php
 namespace controladores;
 
-class carrito_objeto extends \core\Controlador {
+class carrito_objeto 
+	extends \core\Controlador
+		implements \controladores\carrito_interface {
 
 	
 	
@@ -59,12 +61,12 @@ class carrito_objeto extends \core\Controlador {
 	 */
 	public function recuperar() {
 		
-		$carrito_anonimo = \modelos\ClaseCarrito::recuperar(session_id());
-		$carrito_usuario = \modelos\ClaseCarrito::recuperar((string)\core\Usuario::$id);
+		$carrito_anonimo = \modelos\carrito::recuperar(session_id());
+		$carrito_usuario = \modelos\carrito::recuperar((string)\core\Usuario::$id);
 		$id = (\core\Usuario::$id ? (string)\core\Usuario::$id : session_id());
 		
 		if ( ! $carrito_anonimo and ! $carrito_usuario ) {
-			$carrito = new \modelos\ClaseCarrito($id);
+			$carrito = new \modelos\carrito($id);
 		}
 		elseif ( $carrito_anonimo and ! $carrito_usuario) {
 			$carrito = $carrito_anonimo;
