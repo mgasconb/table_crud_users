@@ -3,7 +3,9 @@
 namespace modelos;
 
 /**
- * Description of clasecarrito
+ * Description of ClaseCarrito
+ * 
+ * Los carritos se guardan en la bd y se borrarán si tienen más de 15 días.
  *
  * @author jesus
  */
@@ -14,23 +16,32 @@ class ClaseCarrito extends \modelos\Modelo_SQL {
 	private $articulos = array();
 	
 	
-	
-	public function recuperar($id) {
+	public function __construct($id) {
 		
-		$clausulas["where"] = "id = '$id' ";
-		$filas = self::table("carritos")->select($clausulas);
-		if (count($filas)) {
-			$this = userialize($filas[0]["texto"]);
-		}
-		else {
-			$this->id = $id;
-			$this->fechaHoraInicio = date("Y-m-d H:i:s");
-		}
+		$this->id = $id;
+		$this->fechaHoraInicio = date("Y-m-d H:i:s");
+		$this->persistir();
 	}
 	
 	
+	public static function recuperar($id) {
+		
+		if ($id) {
+			$clausulas["where"] = " id = '$id' ";
+			$filas = \modelos\Modelo_SQL::table("carritos")->select($clausulas);
+			if (isset($filas[0])) {
+				return(unserialize($filas[0]["texto"]));
+			}
+		}
+		
+	}
+	
+	
+	
+	
 	public function persistir() {
-		$texto = serialize($this);
+		
+		$texto = $this->escape_string((serialize($this)));
 		
 		$clausulas["where"] = "id = '{$this->id}' ";
 		$filas = self::table("carritos")->select($clausulas);
@@ -40,48 +51,90 @@ class ClaseCarrito extends \modelos\Modelo_SQL {
 		else {
 			$this->tabla("carritos")->insert(array("id" => $this->id, "fechaHoraInicio" => $this->fechaHoraInicio, "texto" => $texto));
 		}
-	}
-	
-	public function cambiar($id) {
-		
-		if ( ! $this->id ) {
-			$this->recuperar($id);
-			$this->persistir();
-		}
-		else {
-			$where = "  id = '{$this->id}' ";
-			$this->update(array("id" => $this->id), "carritos", $where);
-			$this->id = $id;
-		}
 		
 	}
 	
-	public function anexar_articulo($articulo) {
+	public function cambiar_id($id) {
 		
-		if ( ! $this->id ) {
-			$this->recuperar();
-		}
-		if (array_key_exists($articulo["id"], $this->articulos)) {
-			$this->articulos[$id]["unidades"] += $articulo["unidades"];
+		$where = "  id = '{$this->id}' ";
+		$this->update(array("id" => $this->id), "carritos", $where);
+		$this->id = $id;
+		
+	}
+	
+	
+	
+	
+	public function meter($articulo) {
+		
+		if (array_key_exists($articulo["articulo_id"], $this->articulos)) {
+			$this->articulos[$articulo["articulo_id"]]["unidades"] += $articulo["unidades"];
 		}
 		else {
-			$this->articulos[$id]["nombre"] = $articulo["nombre"];
-			$this->articulos[$id]["unidades"] = $articulo["unidades"];
-			$this->articulos[$id]["precio"] = $articulo["precio"];
+			$this->articulos[$articulo["articulo_id"]]["nombre"] = $articulo["nombre"];
+			$this->articulos[$articulo["articulo_id"]]["unidades"] = $articulo["unidades"];
+			$this->articulos[$articulo["articulo_id"]]["precio"] = $articulo["precio"];
 		}
-		if ($this->articulos[$id]["unidades"] == 0) {
-			unset($this->articulos[$id]);
+		if ($this->articulos[$articulo["articulo_id"]]["unidades"] == 0) {
+			unset($this->articulos[$articulo["articulo_id"]]);
 		}
 		$this->persistir();
 		
 	}
 	
 	
-	public function borrar_articulo($articulo) {
+	
+	
+	public function corregir($articulo) {
 		
-		if (array_key_exists($articulo["id"], $this->articulos)) {
-			unset($this->articulos[$id]);
+		if (array_key_exists($articulo["articulo_id"], $this->articulos)) {
+			$this->articulos[$articulo["articulo_id"]]["unidades"] = $articulo["unidades"];
+			if ($this->articulos[$articulo["articulo_id"]]["unidades"] <= 0) {
+				unset($this->articulos[$articulo["articulo_id"]]);
+			}
 			$this->persistir();
 		}
+			
 	}
+	
+	
+	
+	public function quitar($articulo) {
+		
+		unset($this->articulos[$articulo["articulo_id"]]);
+		$this->persistir();
+		
+	}
+	
+	
+	public function vaciar() {
+		
+		$this->articulos = array();
+		$this->persistir();
+		
+	}
+	
+	
+	
+	public function contador_articulos() {
+		
+		return count($this->articulos);
+		
+	}
+	
+	
+	
+	public function get_articulos() {
+		
+		return $this->articulos;
+		
+	}
+	
+	
+	public function get_fechaHoraInicio() {
+		
+		return $this->fechaHoraInicio;
+		
+	}
+	
 }

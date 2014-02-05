@@ -297,6 +297,27 @@ class Validaciones  {
 		
 		return $mensaje;
 	}
+	
+	
+	
+	public static function errores_numero_decimal_positivo($cadena=null) {
+		$mensaje="";
+		if ($cadena!=null) {
+			$patron="/^\d{1,}((,|.){1}\d{1,}){0,1}$/";
+			$encuentros=array();
+			if(preg_match($patron, $cadena, $encuentros)) {
+				// print_r($encuentros);
+				$cadena=str_replace(array(','), '.', $cadena);
+			}
+			else
+				$mensaje.="Solo se admiten números decimales positivos sin signo. Ejemplo: 6  25,45  1000000,00";
+		}
+
+		if($mensaje=="") $mensaje=false;
+		return $mensaje;
+	}
+
+
 
 	
 	

@@ -37,10 +37,10 @@ class carrito extends \core\sgbd\bd {
 	public static function anexar_articulo($datos, $login_id) {
 	
 		if (\core\Usuario::$id) {
-			self::anexar_articulo_a_bd($datos, $login_id);
+			$this->anexar_articulo_a_bd($datos, $login_id);
 		}
 		else {
-			self::anexar_de_session($datos, $login_id);
+			$this->anexar_de_session($datos, $login_id);
 		}
 		
 	}
@@ -64,7 +64,7 @@ class carrito extends \core\sgbd\bd {
 	
 	private function borrar_articulo_de_session($datos) {
 		
-		unset($_SESSION["carrito"]["articulos"][$datos["values"]["articulo_id"]]));
+		unset($_SESSION["carrito"]["articulos"][$datos["values"]["articulo_id"]]);
 		
 	}
 	
@@ -113,7 +113,7 @@ class carrito extends \core\sgbd\bd {
 		
 		$clausulas["where"] = " usuario_id = '$login_id' and fecha_hora_compra is null ";
 		if ( !\modelos\Modelo_SQL::table("pedidos")->select($clausulas)) {
-			$pedido_id = \modelos\Modelo_SQL::table("pedidos")->insert("usuario_id" => $login_id);
+			$pedido_id = \modelos\Modelo_SQL::table("pedidos")->insert(array("usuario_id" => $login_id));
 			
 			
 		} 

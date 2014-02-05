@@ -270,6 +270,23 @@ class URL {
 		
 	}
 	
+	
+	
+	public static function actual() {
+		
+		return $_SESSION["url"]["actual"];
+		
+	}
+
+	
+	public static function anterior() {
+		
+		return self::btn_volver();
+		
+	}
+
+
+	
 	/**
 	 * Devuelve una URL que sea recargable, es decir, que no sea formulario ni validación de formularo
 	 * 

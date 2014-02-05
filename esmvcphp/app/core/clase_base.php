@@ -21,7 +21,7 @@ class Clase_Base extends \core\Distribuidor {
 	 * @param array $array
 	 * @return mixed
 	 */
-	public function contenido($indice, array $array) {
+	public static function contenido($indice, array $array) {
 		
 		if ( ! is_string($indice) && ! is_integer($indice))
 			throw new \Exception(__METHOD__." Error: parámetro \$indice=$indice debe ser entero o string");
@@ -29,6 +29,17 @@ class Clase_Base extends \core\Distribuidor {
 		return (array_key_exists($indice, $array) ? $array[$indice] : null);
 		
 	}
+	
+	
+	
+	public static function ejecutar($controlador, $metodo = "index", array $datos = array()) {
+		
+		$clase_controlador = "\\controladores\\$controlador";
+		$objeto = new $clase_controlador();
+		return $objeto->$metodo($datos);
+		
+	}
+	
 	
 } // Fin de la clase
 

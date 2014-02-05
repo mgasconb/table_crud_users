@@ -238,8 +238,8 @@ class mysqli implements \core\sgbd\SQL_interface {
 	
 	public static function insert_row( array $fila , $table=null) {
 		
-		if (isset($fila['id']))
-			throw new \Exception(__METHOD__." Error: no pude insertarse la columna id.");
+//		if (isset($fila['id']))
+//			throw new \Exception(__METHOD__." Error: no pude insertarse la columna id.");
 		
 		$columnas_set = self::columnas_set($fila);
 		

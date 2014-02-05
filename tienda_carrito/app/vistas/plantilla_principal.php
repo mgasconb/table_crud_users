@@ -71,12 +71,12 @@
 		<div id="div_menu" >
 			<fieldset>
 				<legend>Menú - Índice - Barra de navegación:</legend>
-					<?php echo (new \controladores\menu())->index(); ?>
+					<?php echo self::ejecutar("menu", "index"); ?>
 				<div id='carrito'>
-					<button id='btn_carrito' >Carrito</button>
+					<button id='btn_carrito' onclick='$("#carrito_detalles").css("display","block");' >Carrito</button>
 					<span id='carrito_importe'>55,43</span>
 					<div id='carrito_detalles'>
-						Detalles del carrito
+						<?php echo self::ejecutar("carrito_objeto", "ver"); ?>
 					</div>
 				</div>
 			</fieldset>
