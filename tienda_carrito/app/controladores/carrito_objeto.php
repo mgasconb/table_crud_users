@@ -70,7 +70,6 @@ class carrito_objeto
 		}
 		elseif ( $carrito_anonimo and ! $carrito_usuario) {
 			$carrito = $carrito_anonimo;
-			$carrito->cambiar_id($id);
 		}
 		elseif ( ! $carrito_anonimo and $carrito_usuario) {
 			$carrito = $carrito_usuario;

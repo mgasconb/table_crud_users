@@ -278,8 +278,11 @@ class mysqli implements \core\sgbd\SQL_interface {
 		
 		if (isset($where) && strlen($where))
 			$where = " where $where";
-		elseif (isset($fila['id']))
+		elseif (isset($fila['id'])) {
+			if (!is_numeric($fila['id']))
+				$fila['id'] = "'{$fila['id']}'";
 			$where = " where id = {$fila['id']}";
+		}
 		else {
 			throw new \Exception(__METHOD__." Error: debe aportarse la id or \$where.");
 		}
@@ -313,6 +316,9 @@ class mysqli implements \core\sgbd\SQL_interface {
 		
 		if ( ! isset($fila['id']))
 			throw new \Exception(__METHOD__." Error: debe aportarse la id.");
+		
+		if (!is_numeric($fila['id']))
+				$fila['id'] = "'{$fila['id']}'";
 		
 		$sql = "
 			delete

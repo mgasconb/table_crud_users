@@ -36,17 +36,17 @@ class carrito_objeto extends \modelos\Modelo_SQL implements \modelos\carrito_int
 		
 	}
 	
-	
+	 
 	
 	
 	public function persistir() {
 		
 		$texto = $this->escape_string((serialize($this)));
 		
-		$clausulas["where"] = "id = '{$this->id}' ";
+		$clausulas["where"] = " id = '{$this->id}' ";
 		$filas = self::table("carritos")->select($clausulas);
 		if (count($filas)) {
-			$this->tabla("carritos")->update(array("id" => $this->id, "fechaHoraInicio" => $this->fechaHoraInicio, "texto" => $texto));
+			$this->tabla("carritos")->update(array("id" => (string)$this->id, "fechaHoraInicio" => $this->fechaHoraInicio, "texto" => $texto));
 		}
 		else {
 			$this->tabla("carritos")->insert(array("id" => $this->id, "fechaHoraInicio" => $this->fechaHoraInicio, "texto" => $texto));
@@ -57,7 +57,9 @@ class carrito_objeto extends \modelos\Modelo_SQL implements \modelos\carrito_int
 	public function cambiar_id($id) {
 		
 		$where = "  id = '{$this->id}' ";
-		$this->update(array("id" => $this->id), "carritos", $where);
+		$this->update(array("id" => $id), "carritos", $where);
+//		$this->table("carritos")->update(array("id" => $id), null, $where);
+		
 		$this->id = $id;
 		
 	}

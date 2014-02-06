@@ -280,7 +280,10 @@ create table if not exists daw2_pedidos_detalles
 ( id integer unsigned auto_increment
 , pedido_id integer unsigned not null
 , articulo_id integer unsigned not null
+, nombre varchar(100) not null
 , unidades integer unsigned not null default 1
+, precio decimal(12,2) not null
+, foto varchar(50) null
 , primary key (id)
 , foreign key (pedido_id) references daw2_pedidos(id) on delete cascade
 , foreign key (articulo_id) references daw2_articulos(id)
