@@ -17,12 +17,27 @@ class carrito_objeto
 			
 		}	
 		
-		header("Location: ".\core\URL::anterior());
+		header("Location: {$_SESSION["expositor_actual"]}");
 		
 	}
 	
 	
+	public function modificar(array $datos = array()) {
 	
+		if ( $validacion = !\core\Validaciones::errores_validacion_request(\modelos\carrito::$validaciones_update, $datos)) {
+			
+			$carrito = $this->recuperar();
+			if ($_POST["accion"] == "corregir")
+				$carrito->corregir($datos["values"]);
+			elseif ($_POST["accion"] == "quitar") {
+				$carrito->quitar($datos["values"]);
+			}
+			
+		}	
+		
+		header("Location: {$_SESSION["expositor_actual"]}");
+		
+	}
 	
 	
 	public function modificar_articulo(array $datos = array()) {
@@ -49,8 +64,11 @@ class carrito_objeto
 	
 	
 	
-	public function borrar(array $datos = array()) {
+	public function vaciar(array $datos = array()) {
 		
+		$carrito = $this->recuperar();
+		$carrito->vaciar();
+		header("Location: {$_SESSION["expositor_actual"]}");
 	}
 	
 	

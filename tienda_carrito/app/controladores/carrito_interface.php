@@ -20,7 +20,7 @@ interface carrito_interface {
 	
 	
 	
-	public function borrar(array $datos = array()) ;
+	public function vaciar(array $datos = array()) ;
 	
 	
 	/**
@@ -30,5 +30,15 @@ interface carrito_interface {
 	 */
 	public function recuperar() ;
 	
+	
+	/**
+	 * Ofrece al usuario el formulario para pagar.
+	 * Si el usuario es anónimo debe loguearse primero.
+	 * Si el usuario no está dado de alta en la aplicación, debe registrase, y confirmar el alta.
+	 * 
+	 */
+	public function comprar() ;
+
+
 	
 } // Fin de la clase

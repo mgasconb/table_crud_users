@@ -19,6 +19,8 @@ class expositor extends \core\Controlador {
 			$clausulas['where'] = "categoria_id = {$datos["values"]["p4"]}";
 			$clausulas['order_by'] = $datos["values"]["p5"] ? "{$datos["values"]["p5"]}" : "";
 			$datos["filas"] = \modelos\Datos_SQL::table("v_articulos")->select( $clausulas ); // Recupera todas las filas ordenadas
+			
+			$_SESSION["expositor_actual"] = \core\URL::actual();
 			$datos["categoria_id"] = $datos["values"]["p4"];
 			$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
 			$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);

@@ -10,7 +10,7 @@ class inicio extends \core\Controlador {
 			return $this->cargar_controlador("usuarios", "form_login");
 		} 
 		else {
-			return $this->cargar_controlador_sin_chequear("categorias", "recuento_articulos");
+			return $this->cargar_controlador("categorias", "recuento_articulos");
 		}
 
 	}

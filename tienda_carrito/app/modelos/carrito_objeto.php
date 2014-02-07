@@ -70,12 +70,12 @@ class carrito_objeto extends \modelos\Modelo_SQL implements \modelos\carrito_int
 	public function meter($articulo) {
 		
 		if (array_key_exists($articulo["articulo_id"], $this->articulos)) {
-			$this->articulos[$articulo["articulo_id"]]["unidades"] += $articulo["unidades"];
+			$this->articulos[$articulo["articulo_id"]]["unidades"] += (integer)$articulo["unidades"];
 		}
 		else {
 			$this->articulos[$articulo["articulo_id"]]["nombre"] = $articulo["nombre"];
-			$this->articulos[$articulo["articulo_id"]]["unidades"] = $articulo["unidades"];
-			$this->articulos[$articulo["articulo_id"]]["precio"] = $articulo["precio"];
+			$this->articulos[$articulo["articulo_id"]]["unidades"] = (integer)$articulo["unidades"];
+			$this->articulos[$articulo["articulo_id"]]["precio"] = (float)\core\Conversiones::decimal_coma_a_punto($articulo["precio"]);
 		}
 		if ($this->articulos[$articulo["articulo_id"]]["unidades"] == 0) {
 			unset($this->articulos[$articulo["articulo_id"]]);
@@ -90,7 +90,7 @@ class carrito_objeto extends \modelos\Modelo_SQL implements \modelos\carrito_int
 	public function corregir($articulo) {
 		
 		if (array_key_exists($articulo["articulo_id"], $this->articulos)) {
-			$this->articulos[$articulo["articulo_id"]]["unidades"] = $articulo["unidades"];
+			$this->articulos[$articulo["articulo_id"]]["unidades"] = (integer)$articulo["unidades"];
 			if ($this->articulos[$articulo["articulo_id"]]["unidades"] <= 0) {
 				unset($this->articulos[$articulo["articulo_id"]]);
 			}

@@ -26,6 +26,7 @@ class categorias extends \core\Controlador {
 	public function recuento_articulos(array $datos=array()) {
 
 		//$datos["filas"] = \modelos\categorias::select($clausulas, "categorias"); // Recupera todas las filas ordenadas
+		$_SESSION["expositor_actual"] = \core\URL::actual();
 		$datos["filas"] = \modelos\Modelo_SQL::tabla("categorias")->recuento_articulos(); // Recupera todas las filas ordenadas
 		
 		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
