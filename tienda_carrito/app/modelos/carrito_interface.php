@@ -51,6 +51,7 @@ interface carrito_interface {
 	public function contador_articulos() ;
 	
 	
+	public function get_valor();
 	
 	public function get_articulos() ;
 	

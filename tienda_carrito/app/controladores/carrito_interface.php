@@ -9,8 +9,6 @@ interface carrito_interface {
 	public function meter(array $datos=array()) ;
 	
 	
-	
-	
 	public function modificar_articulo(array $datos = array()) ;
 	
 	public function borrar_articulo(array $datos = array()) ;

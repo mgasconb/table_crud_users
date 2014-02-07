@@ -73,11 +73,7 @@
 				<legend>Menú - Índice - Barra de navegación:</legend>
 					<?php echo self::ejecutar("menu", "index"); ?>
 				<div id='carrito'>
-					<button id='btn_carrito' onclick='$("#carrito_detalles").css("display","block");' >Carrito</button>
-					<span id='carrito_importe'>55,43</span>
-					<div id='carrito_detalles'>
-						<?php echo self::ejecutar("carrito_objeto", "ver"); ?>
-					</div>
+						<?php echo self::ejecutar("carrito", "ver"); ?>
 				</div>
 			</fieldset>
 		</div>

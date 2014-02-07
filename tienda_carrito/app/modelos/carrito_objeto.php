@@ -103,8 +103,10 @@ class carrito_objeto extends \modelos\Modelo_SQL implements \modelos\carrito_int
 	
 	public function quitar($articulo) {
 		
-		unset($this->articulos[$articulo["articulo_id"]]);
-		$this->persistir();
+		if (array_key_exists($articulo["articulo_id"], $this->articulos)) {
+			unset($this->articulos[$articulo["articulo_id"]]);
+			$this->persistir();
+		}
 		
 	}
 	
@@ -118,6 +120,18 @@ class carrito_objeto extends \modelos\Modelo_SQL implements \modelos\carrito_int
 	
 	
 	
+	public function get_valor() {
+		
+		$total_acumulado = 0;
+		foreach ($this->articulos as $articulo_id => $articulo) {
+			$total_acumulado += round($articulo["unidades"] * $articulo["precio"], 2);
+		}
+		
+		return(round($total_acumulado,2));
+		
+	}
+
+
 	public function contador_articulos() {
 		
 		return count($this->articulos);

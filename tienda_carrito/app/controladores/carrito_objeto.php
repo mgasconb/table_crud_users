@@ -106,4 +106,18 @@ class carrito_objeto
 	}
 	
 	
+	
+	public function comprar(array $datos = array()) {
+		
+	}
+	
+	
+	public function valor(array $datos = array()) {
+		
+		$carrito = $this->recuperar();
+		return $carrito->get_valor();
+		
+	}
+	
+	
 } // Fin de la clase

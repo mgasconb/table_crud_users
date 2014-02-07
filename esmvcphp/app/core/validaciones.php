@@ -621,5 +621,39 @@ class Validaciones  {
 
 	} // Fin método
 
+	
+	
+	/**
+	 * Chequea contra una lista de opciones
+	 * @param string $cadena
+	 * @param array $opciones=array("opcion1"; "opcion2"; ...)
+	 */
+	public static function errores_selector($cadena, array $opciones) {
+		
+		$msj_error = null;
+		if ($cadena != null) {
+			foreach ($opciones as $opcion) {
+				if ($cadena == $opcion) $msj_error = "encontrado";
+			}
+			if ($msj_error != "encontrado")
+				$msj_error = "Debes elegir una opción de la lista deplegable o de la siguiente lista: (".  implode("; ", $opciones).")";
+			else
+				$msj_error = null;
+	    }
+		
+		return $msj_error;
+	}
+
+	/**
+	 * Igual que errores_selector
+	 * @param string $cadena
+	 * @param array $opciones = array("opcion1";"opcion2"; ...)
+	 * @return false|string
+	 */
+	public static function errores_lista_valores($cadena, array $opciones) {
+		return self::errores_selector($cadena, $opciones);
+	}
+
+	
 
 } // Fin de la clase

@@ -1,14 +1,19 @@
 <div>	
+	<button id='btn_carrito' onclick='$("#carrito_detalles").css("display","block");' >Carrito</button>
+	<span id='carrito_importe'><?php echo number_format(self::ejecutar("carrito","valor"),2,",","."); ?> €</span>
+
 <?php
 
 $articulos = $datos["carrito"]->get_articulos();
-//var_dump($articulos); exit(__FILE__);
-var_export($articulos);
+//var_dump($articulos);
+//var_export($articulos);
 ?>
+	<div id='carrito_detalles' >
 <?php if ($articulos) :?>
-	<form action='<?php echo \core\URL::generar("carrito/vaciar"); ?>'>
+	<form method='post' action='<?php echo \core\URL::generar("carrito/vaciar"); ?>'>
 		<button type='submit'>Vaciar Carrito</button>
 	</form>
+		<button onclick='$("#carrito_detalles").css("display","none");'>Ocultar</button>
 	<table border='1'>
 		<thead>
 			<tr>
@@ -40,7 +45,7 @@ var_export($articulos);
 								"</td>
 						
 						<td>"
-						.  number_format($total,2,",",".") .
+						. number_format($total,2,",",".") .
 						"</td>
 						<td>								
 						<input name='accion' type='submit' value='corregir' />
@@ -58,5 +63,6 @@ var_export($articulos);
 <?php else :  ?>
 	<h2>Carrito vacío.</h2>
 <?php endif; ?>
+</div>
 	
 </div>

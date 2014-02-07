@@ -241,6 +241,7 @@ class URL {
 	public static function registrar() {
 		
 		$_SESSION["url"]["actual"] =  (isset($_SERVER['REQUEST_SCHEME']) ? $_SERVER['REQUEST_SCHEME']:($_SERVER['SERVER_PORT'] == 80 ? "http" : "https")) . "://" . $_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+		
 		$_SESSION["url"]["anterior"] =  (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : URL_ROOT);
 		
 		if ( ! isset($_SESSION["url"]["btn_volver"])) {
