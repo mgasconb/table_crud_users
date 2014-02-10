@@ -50,24 +50,10 @@ class categorias extends \core\Controlador {
 		if ( ! $validacion = ! \core\Validaciones::errores_validacion_request(\modelos\categorias::$validaciones_insert, $datos))
             $datos["errores"]["errores_validacion"] = "Corrige los errores.";
 		else {
-			if ($_FILES["foto"]["size"]) {
-				if ($_FILES["foto"]["error"] > 0 ) {
-					$datos["errores"]["foto"] = $_FILES["foto"]["error"];
-				}
-				elseif ( ! preg_match("/image/", $_FILES["foto"]["type"])) {
-					$datos["errores"]["foto"] = "El fichero no es una imagen.";
-				}
-				elseif ($_FILES["foto"]["size"] > 1024*1024) {
-					$datos["errores"]["foto"] = "El tamaño de la foto debe ser menor que 1MB.";
-				}
-				if (isset($datos["errores"]["foto"])) {
-					$validacion = false;
-				}
-			}
-			
+			$validacion = self::is_image_valid($datos);			
 			if ($validacion) {
 				\modelos\Modelo_SQL::tabla("categorias")->start_transaction();
-				if ( ! $validacion = \modelos\Modelo_SQL::tabla('categorias')->insert($datos["values"])) // Devuelve true o false
+				if ( ! $validacion = \modelos\Modelo_SQL::tabla('categorias')->insert($datos["values"])) // Devuelve el id de la fila o false
 					$datos["errores"]["errores_validacion"]="No se han podido grabar los datos en la bd.";
 				else {
 					// Se ha grabado la fila sin la foto
@@ -158,17 +144,16 @@ class categorias extends \core\Controlador {
 				$datos["errores"]["errores_validacion"]="No se han podido grabar los datos en la bd.";
 			else {
 				// Se ha actualizado la fila sin la foto
-				if ($_FILES["foto"]["size"]) {
+				$validacion = self::is_image_valid($datos);
 					
+				if ($validacion) {
 					if ($datos["values"]["foto"] = self::mover_foto($datos["values"]["id"])) {
 						$validacion = \modelos\Modelo_SQL::tabla('categorias')->update($datos["values"]);
 //						var_dump($_FILES); var_dump($datos); exit;
 
 					}
 				}
-
-			}
-				
+			}				
 		}
 		if ( ! $validacion) //Devolvemos el formulario para que lo intente corregir de nuevo
 			\core\Distribuidor::cargar_controlador('categorias', 'form_modificar', $datos);
@@ -284,6 +269,41 @@ class categorias extends \core\Controlador {
 	}
 	
 
+	private static function is_image_valid(array &$datos) {
+		
+		$validacion = true;
+		
+		if ($_FILES["foto"]["size"]) {
+				if ($_FILES["foto"]["error"] > 0 ) {
+					$datos["errores"]["foto"] = $_FILES["foto"]["error"];
+				}
+				elseif ( ! preg_match("/image/", $_FILES["foto"]["type"])) {
+					$datos["errores"]["foto"] = "El fichero {$_FILES["foto"]["name"]} no es una imagen.";
+				}
+				elseif ($_FILES["foto"]["size"] > 1024*1024) {
+					$datos["errores"]["foto"] = "El tamaño de la foto debe ser menor que 1MB.";
+				}
+				if (isset($datos["errores"]["foto"])) {
+					$datos["values"]["foto"] = $_FILES["foto"]["name"];
+					$validacion = false;
+				}
+		}
+		
+		return $validacion;
+		
+	}
+
+
+	
+	
+	/**
+	 * Mueve la foto desde la carpeta temporal hasta la carpeta destino.
+	 * Crea un nombre nuevo para la foto del tipo cat9999.ext
+	 * Si existe en la carpeta destino un fichero con igual nombre lo borra.
+	 * 
+	 * @param integer $id Es el id de la fila de categorías asociada a la foto.
+	 * @return false|string False si fallo o "nombre.ext" del fichero destino.
+	 */
 	private static function mover_foto($id) {
 		
 		// Ahora hay que añadir la foto
@@ -291,7 +311,7 @@ class categorias extends \core\Controlador {
 		$nombre = (string)$id;
 		$nombre = "cat".str_repeat("0", 4 - strlen($nombre)).$nombre;
 		$foto_path = PATH_APPLICATION."recursos".DS."imagenes".DS."categorias".DS.$nombre.".".$extension;
-//					echo __METHOD__;echo $_FILES["foto"]["tmp_name"];  echo $foto_path; exit;
+//		echo __METHOD__;echo $_FILES["foto"]["tmp_name"];  echo $foto_path; exit;
 		// Si existe el fichero lo borramos
 		if (is_file($foto_path)) {
 			unlink($foto_path);
@@ -304,6 +324,11 @@ $foto_path);
 	}
 	
 	
+	/**
+	 * 
+	 * @param type $foto
+	 * @return null
+	 */
 	private static function borrar_foto($foto) {
 		
 		$foto_path = PATH_APPLICATION."recursos".DS."imagenes".DS."categorias".DS.$foto;

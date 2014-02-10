@@ -22,15 +22,20 @@ class Vista_Plantilla extends \core\Clase_Base {
 			}
 		}
 
-		$fichero_vista = strtolower(PATH_APP."vistas/$nombre.php");
-
-		if ( ! file_exists($fichero_vista)) {
-			$fichero_vista1 = $fichero_vista;
-			$fichero_vista = strtolower(PATH_ESMVCPHP."app".DS."vistas/$nombre.php");
-			if ( ! file_exists($fichero_vista)) {
-				throw new \Exception(__METHOD__." Error: no existe la plantilla $nombre ni en $fichero_vista1 ni en $fichero_vista .");
+		$fichero_vista = strtolower("vistas".DS."$nombre.php");
+		
+		$path_buscados = "";
+		foreach (\core\Autoloader::get_applications() as $application => $state) {
+			$path_file = PATH_ROOT.$application.DS."app".DS.$fichero_vista;
+			$path_buscados .= $path_file." \n";
+			if ( $encontrado = file_exists($path_file)) {
+				break;
 			}
 		}
+		if ( ! $encontrado) {
+					throw new \Exception(__METHOD__." Error: no existe la plantilla $nombre. Buscada en $path_buscados .");
+		}
+		
 		
 		$datos["controlador_clase"] = \core\Distribuidor::get_controlador_instanciado();
 		$datos["controlador_metodo"] = \core\Distribuidor::get_metodo_invocado();
@@ -43,7 +48,7 @@ class Vista_Plantilla extends \core\Clase_Base {
 			ob_start ();
 		}
 		
-		include $fichero_vista; // Script cuya salida se va a bufferear
+		include $path_file; // Script cuya salida se va a bufferear
 		
 		if ($buffer) {
 			return(ob_get_clean());

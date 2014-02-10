@@ -118,4 +118,12 @@ class Autoloader {
 		
 	}
 	
+	
+	
+	public static function get_applications() {
+//		var_dump(self::$applications);
+		return self::$applications;
+		
+	}
+	
 } // Fin de la clase

@@ -16,21 +16,24 @@ class Vista extends \core\Clase_Base {
 		
 		$patron = "/^(\w{1,}(\\\|\/)){1,}\w{1,}$/i"; // carpeta1/subcarpeta/../fichero
 		if (preg_match($patron, $nombre)) {
-			$fichero_vista = "vistas/".str_replace("\\", "/", $nombre).".php";
+			$fichero_vista = "vistas".DS.str_replace("\\", DS, $nombre).".php";
 		}
 		else {
-			$fichero_vista = "vistas/".\core\Aplicacion::$controlador->datos['controlador_clase']."/$nombre.php";
+			$fichero_vista = "vistas".DS.\core\Aplicacion::$controlador->datos['controlador_clase'].DS."$nombre.php";
 		}
 		
-		$path_file = PATH_APP.$fichero_vista;
-		if ( ! file_exists($path_file)) {
-			$path_file1 = $path_file;
-			$path_file = PATH_ESMVCPHP."app".DS.$fichero_vista;
-			if ( ! file_exists($path_file)) {
-				throw new \Exception(__METHOD__." Error: no existe la vista $nombre ni $path_file1 ni en $path_file .");
+		$path_buscados = "";
+		foreach (\core\Autoloader::get_applications() as $application => $state) {
+			$path_file = PATH_ROOT.$application.DS."app".DS.$fichero_vista;
+			$path_buscados .= $path_file." \n";
+			if ( $encontrado = file_exists($path_file)) {
+				break;
 			}
 		}
-		
+		if ( ! $encontrado) {
+					throw new \Exception(__METHOD__." Error: no existe la vista $nombre. Buscada en $path_buscados .");
+		}
+				
 		$datos["controlador_clase"] = \core\Distribuidor::get_controlador_instanciado();
 		$datos["controlador_metodo"] = \core\Distribuidor::get_metodo_invocado();
 		if ( ! isset($datos["form_name"]))

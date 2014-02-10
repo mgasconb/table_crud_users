@@ -75,7 +75,7 @@ class carrito_objeto extends \modelos\Modelo_SQL implements \modelos\carrito_int
 		else {
 			$this->articulos[$articulo["articulo_id"]]["nombre"] = $articulo["nombre"];
 			$this->articulos[$articulo["articulo_id"]]["unidades"] = (integer)$articulo["unidades"];
-			$this->articulos[$articulo["articulo_id"]]["precio"] = (float)\core\Conversiones::decimal_coma_a_punto($articulo["precio"]);
+			$this->articulos[$articulo["articulo_id"]]["precio"] = round((float)\core\Conversiones::decimal_coma_a_punto($articulo["precio"]),2);
 		}
 		if ($this->articulos[$articulo["articulo_id"]]["unidades"] == 0) {
 			unset($this->articulos[$articulo["articulo_id"]]);

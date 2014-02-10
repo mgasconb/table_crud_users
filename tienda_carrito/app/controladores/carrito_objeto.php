@@ -55,7 +55,7 @@ class carrito_objeto
 		
 		$datos["carrito"] = $carrito;
 		
-		return \core\Vista::generar("carrito_objeto/".__FUNCTION__, $datos);
+		return \core\Vista::generar("carrito/".__FUNCTION__, $datos);
 //		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 //		\core\HTTP_Respuesta::enviar($http_body);
 //		

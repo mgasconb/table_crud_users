@@ -24,10 +24,11 @@ class SESSION {
 		);
 
 		if (isset($_GET["administrator"])) {
-			session_name("ADMINISTRATOR_PHPSESSID" );
+			session_name(\core\Configuracion::$session_name."_ADMINISTRATOR" );
+			\core\Configuracion::$session_lifetime = 0; // Cookiee de session
 		}
 		else {
-			session_name("PHPSESSID" );
+			session_name(\core\Configuracion::$session_name );
 		}
 		session_start(); // Se crea el arry $_SESSION o se recupera si fue creado en una ejecución anterior del script.
 		if ( ! isset($_SESSION["REMOTE_ADDR"])) {

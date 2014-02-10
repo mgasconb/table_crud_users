@@ -32,13 +32,6 @@ class Clase_Base extends \core\Distribuidor {
 	
 	
 	
-	public static function ejecutar($controlador, $metodo = "index", array $datos = array()) {
-		
-		$clase_controlador = "\\controladores\\$controlador";
-		$objeto = new $clase_controlador();
-		return $objeto->$metodo($datos);
-		
-	}
 	
 	
 } // Fin de la clase

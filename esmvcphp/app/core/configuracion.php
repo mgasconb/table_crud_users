@@ -19,6 +19,7 @@ class Configuracion {
 	);
 	
 	// Usar sesiones de trabajo (activar array $_SESSION)
+	public static $session_name = "PHPSESSID";
 	public static $session_activate = true;
 	public static $session_lifetime = 0; // Segundos de duración de la cookie de sessionsession.cookie_lifetime
 	public static $session_cookie_path = "/";

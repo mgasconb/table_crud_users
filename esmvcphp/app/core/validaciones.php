@@ -624,21 +624,20 @@ class Validaciones  {
 	
 	
 	/**
-	 * Chequea contra una lista de opciones
-	 * @param string $cadena
-	 * @param array $opciones=array("opcion1"; "opcion2"; ...)
+	 * Chequea $cadena contra una lista de opciones contenida en $opciones.
+	 * Devuelve false si la encuentra y si no la encuentra devuelve el mensaje "Debes elegir una opción entre: opcion1, opcion2, ...,opcionN" (donde opcionN representa cada una de las entradas del array $opciones).
+	 * 
+	 * @param string $cadena Cadena a buscar en $opciones
+	 * @param array $opciones Opciones válidas = array("opcion1", "opcion2", ...)
+	 * @return false|string False si se hay coincidencia y string con mensaje de error si fallo.
 	 */
 	public static function errores_selector($cadena, array $opciones) {
 		
 		$msj_error = null;
-		if ($cadena != null) {
-			foreach ($opciones as $opcion) {
-				if ($cadena == $opcion) $msj_error = "encontrado";
-			}
-			if ($msj_error != "encontrado")
+		if ($cadena != null ) {
+			if ( ! array_search($cadena, $opciones)) {
 				$msj_error = "Debes elegir una opción de la lista deplegable o de la siguiente lista: (".  implode("; ", $opciones).")";
-			else
-				$msj_error = null;
+			}
 	    }
 		
 		return $msj_error;

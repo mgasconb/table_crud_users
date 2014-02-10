@@ -75,7 +75,7 @@ class Distribuidor {
 	
 	
 	public static function cargar_controlador_sin_chequear($controlador, $metodo="index", array $datos = array()) {
-		echo("$controlador,$metodo ");echo(self::$controlador_instanciado); echo(self::$metodo_invocado);	echo(__METHOD__.__LINE__."<br />");
+//		echo("$controlador,$metodo ");echo(self::$controlador_instanciado); echo(self::$metodo_invocado);	echo(__METHOD__.__LINE__."<br />");
 		
 		$metodo = ($metodo ? $metodo : "index"); // Asignamos el método por defecto
 		
@@ -119,6 +119,14 @@ class Distribuidor {
 	
 	
 	
+	
+	public static function ejecutar($controlador, $metodo = "index", array $datos = array()) {
+		
+		$clase_controlador = "\\controladores\\$controlador";
+		$objeto = new $clase_controlador();
+		return $objeto->$metodo($datos);
+		
+	}
 	
 	public static function get_controlador_instanciado() {
 		
