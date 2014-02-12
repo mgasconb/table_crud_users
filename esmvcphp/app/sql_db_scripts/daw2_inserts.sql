@@ -31,16 +31,6 @@ insert into daw2_usuarios
 insert into daw2_metodos
   (controlador,		metodo) values
   ('*'				,'*')
-, ('categorias'		,'*')
-, ('categorias'		,'index')
-, ('categorias'		,'form_borrar')
-, ('categorias'		,'form_insertar')
-, ('categorias'		,'form_modificar')
-, ('articulos'		,'*')
-, ('articulos'		,'index')
-, ('articulos'		,'form_borrar')
-, ('articulos'		,'form_insertar')
-, ('articulos'		,'form_modificar')
 , ('inicio'			,'*')
 , ('inicio'			,'index')
 , ('inicio'			,'internacional')
@@ -80,7 +70,6 @@ insert into daw2_roles_permisos
 , ('usuarios'			,'mensajes'			,'*')
 , ('usuarios_logueados' ,'usuarios'			,'desconectar')
 , ('usuarios_logueados' ,'usuarios'			,'form_cambiar_password')
-, ('usuarios_logueados' ,'categorias'		,'index')
 
 ;
 
@@ -130,18 +119,34 @@ insert into daw2_metodos
   ('expositor'		,'*')
 , ('expositor'		,'categoria')
 , ('carrito'		,'*')
-, ('carrito'		,'index')
-, ('carrito'		,'form_borrar_articulo')
-, ('carrito'		,'form_anexar_articulo')
-, ('carrito'		,'form_borrar_carrito')
-, ('carrito'		,'form_comprar_carrito')
+, ('carrito'		,'comprar')
+, ('carrito'		,'meter')
+, ('carrito'		,'modificar')
+, ('carrito'		,'pagar')
+, ('carrito'		,'vaciar')
+, ('carrito'		,'ver')
+, ('categorias'		,'*')
+, ('categorias'		,'index')
+, ('categorias'		,'form_borrar')
+, ('categorias'		,'form_insertar')
+, ('categorias'		,'form_modificar')
+, ('categorias'		,'recuento_articulos')
+, ('articulos'		,'*')
+, ('articulos'		,'index')
+, ('articulos'		,'form_borrar')
+, ('articulos'		,'form_insertar')
+, ('articulos'		,'form_modificar')
+, ('pedidos'		,'mostrar')
 ;
 
 
 insert into daw2_roles_permisos
   (rol					,controlador		,metodo) values
-  ('usuarios'			,'expositor'		,'*')
+  ('usuarios'			,'expositor'		,'categoria')
 , ('usuarios'			,'carrito'			,'*')
+, ('usuarios'			,'categorias'		,'recuento_articulos')
+, ('usuarios_logueados'	,'pedidos'			,'mostrar')
+, ('usuarios_logueados'	,'categorias'		,'index')
 ;
 
 insert into daw2_categorias

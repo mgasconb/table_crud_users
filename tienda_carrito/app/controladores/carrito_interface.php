@@ -8,11 +8,7 @@ interface carrito_interface {
 	
 	public function meter(array $datos=array()) ;
 	
-	
-	public function modificar_articulo(array $datos = array()) ;
-	
-	public function borrar_articulo(array $datos = array()) ;
-	
+
 	
 	public function ver(array $datos = array()) ;
 	
@@ -38,5 +34,8 @@ interface carrito_interface {
 	public function comprar() ;
 
 
+	
+	
+	
 	
 } // Fin de la clase

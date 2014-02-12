@@ -40,7 +40,7 @@ class Configuracion {
 	// Regeneración de id de cookie de session al cambiar de usuario
 	public static $regenerar_session_id = false;
 	// Control acceso a recursos
-	public static $control_acceso_recursos = false;
+	public static $control_acceso_recursos = true;
 	
 	// Gestión de inactividad
 	public static $sesion_inactividad_controlada = false;

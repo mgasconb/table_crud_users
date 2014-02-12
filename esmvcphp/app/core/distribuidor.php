@@ -119,11 +119,20 @@ class Distribuidor {
 	
 	
 	
-	
-	public static function ejecutar($controlador, $metodo = "index", array $datos = array()) {
-		
-		$clase_controlador = "\\controladores\\$controlador";
-		$objeto = new $clase_controlador();
+	/**
+	 * Ejecuta una clase y un método de la clase.
+	 * Si en $ clase no se aporta namespace, se ejecutará un controlador, es decir,
+	 * una clase de la carpeta controladores.
+	 * @param type $clase
+	 * @param type $metodo
+	 * @param array $datos
+	 * @return type
+	 */
+	public static function ejecutar($clase, $metodo = "index", array $datos = array()) {
+		if ( ! preg_match("/\w+\/\w+/i", $clase)) {
+			$clase = "\\controladores\\$clase";
+		}
+		$objeto = new $clase();
 		return $objeto->$metodo($datos);
 		
 	}

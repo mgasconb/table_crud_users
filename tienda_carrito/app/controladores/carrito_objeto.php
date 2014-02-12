@@ -40,13 +40,7 @@ class carrito_objeto
 	}
 	
 	
-	public function modificar_articulo(array $datos = array()) {
-		
-	}
-	
-	public function borrar_articulo(array $datos = array()) {
-		
-	}
+
 	
 	
 	public function ver(array $datos = array()) {
