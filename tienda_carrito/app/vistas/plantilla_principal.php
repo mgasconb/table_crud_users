@@ -15,8 +15,8 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf8" /> 
 		<meta http-equiv="Content-Language" content="<?php echo \core\Idioma::get(); ?>"/>
 	
-		<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
-		<link href="favicon.ico" rel="icon" type="image/x-icon" /> 
+<!--		<link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+		<link href="favicon.ico" rel="icon" type="image/x-icon" /> -->
 		
 		<link rel="stylesheet" type="text/css" href="<?php echo URL_ROOT; ?>recursos/css/principal.css" />
 		<link rel="stylesheet" type="text/css" href="<?php echo URL_ROOT; ?>recursos/css/carrito.css" />

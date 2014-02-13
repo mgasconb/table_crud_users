@@ -5,7 +5,7 @@ namespace core\sgbd;
 /**
  * Clase para conectar y operar con Mysql
  */
-class mysqli implements \core\sgbd\SQL_interface {
+abstract class mysqli implements \core\sgbd\SQL_interface {
 	
 	/**
 	 * Variable usada para facilitar la ocultación del resultado de setencias de depuración.

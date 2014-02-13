@@ -19,7 +19,7 @@
 			foreach ($datos['filas'] as $fila) {
 				$img = ($fila["foto"]) ? "<img src='".URL_ROOT."recursos/imagenes/articulos/".$fila["foto"]."' width='200px' />" :"";
 				echo "
-					<form method='post' action='".\core\URL::generar("carrito/meter")."' >
+					<form method='post' action='".\core\URL::generar("carrito/meter")."' onsubmit='carrito_meter(this);'>
 						<input type='hidden' name='articulo_id' value='{$fila["id"]}' />
 					<tr>
 						<td><input type='text' readonly='readonly' name='nombre' value='{$fila["nombre"]}' /></td>

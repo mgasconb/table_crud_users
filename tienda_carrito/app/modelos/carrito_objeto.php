@@ -9,7 +9,7 @@ namespace modelos;
  *
  * @author jesus
  */
-class carrito_objeto extends \modelos\Modelo_SQL implements \modelos\carrito_interface {
+abstract class carrito_objeto extends \modelos\Modelo_SQL implements \modelos\carrito_interface {
 	
 	private $id = null;
 	private $fechaHoraInicio = null;

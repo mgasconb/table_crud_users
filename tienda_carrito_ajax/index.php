@@ -46,7 +46,7 @@ define('TITULO', 'Tienda con Carrito');
 // Este y el contenido en \core\Autoloader() serán los únicos require/include de toda la aplicación
 
 require PATH_ESMVCPHP.'app/core/autoloader.php'; 
-$autoloader = new \core\Autoloader(array(APPLICATION_FOLDER => true));
+$autoloader = new \core\Autoloader(array(APPLICATION_FOLDER => true, "tienda_carrito" => true));
 //spl_autoload_register(array('\core\Autoloader', 'autoload'));
 
 //require_once PATH_APP."core/aplicacion.php";

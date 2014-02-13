@@ -10,7 +10,7 @@ $articulos = $datos["carrito"]->get_articulos();
 ?>
 	<div id='carrito_detalles' >
 <?php if ($articulos) :?>
-	<form method='post' action='<?php echo \core\URL::generar("carrito/vaciar"); ?>'>
+	<form method='post' action='<?php echo \core\URL::generar("carrito/vaciar"); ?>'  onsubmit='carrito_vaciar();'>
 		<button type='submit'>Vaciar Carrito</button>
 	</form>
 		<button onclick='$("#carrito_detalles").css("display","none");'>Ocultar</button>
@@ -33,7 +33,7 @@ $articulos = $datos["carrito"]->get_articulos();
 				$total = $articulo['unidades'] * $articulo['precio'];
 				$total_acumulado += $total;
 				echo "
-					<form method='post' action='".\core\URL::generar("carrito/modificar")."'>
+					<form method='post' action='".\core\URL::generar("carrito/modificar")."' onsubmit='carrito_modificar();'>
 						<input type='hidden' name='articulo_id' value='$articulo_id' />
 					<tr>
 						<td>{$articulo['nombre']}</td>

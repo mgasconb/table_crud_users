@@ -10,6 +10,8 @@ namespace core;
  */
 class Distribuidor {
 
+	private static $depuracion = true;
+
 	private static $controlador_instanciado = null;
 	private static $metodo_invocado = null;
 	
@@ -58,6 +60,9 @@ class Distribuidor {
 				and \core\Configuracion::$control_acceso_recursos
 				and \core\Usuario::tiene_permiso($controlador, $metodo) === false ) {
 			if (\core\Usuario::$login == 'anonimo') {
+				if (self::$depuracion) {
+					echo "usuario anónimo sin permisos para ($controlador, $metodo)";
+				}
 				$controlador = 'usuarios';
 				$metodo = 'form_login';
 			}

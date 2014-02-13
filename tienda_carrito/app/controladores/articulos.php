@@ -244,7 +244,7 @@ class articulos extends \core\Controlador {
 		
 		$datos['html_para_pdf'] = \core\Vista::generar(__FUNCTION__, $datos);
 		
-		require_once(PATH_ESMVCPHP."lib/php/dompdf/dompdf_config.inc.php");
+		require_once(PATH_ESMVCPHP."app".DS."lib".DS."php".DS."dompdf".DS."dompdf_config.inc.php");
 
 		$html =
 		  '<html><body>'.

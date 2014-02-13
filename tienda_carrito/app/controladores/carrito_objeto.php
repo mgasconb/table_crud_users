@@ -1,7 +1,7 @@
 <?php
 namespace controladores;
 
-class carrito_objeto 
+abstract class carrito_objeto 
 	extends \core\Controlador
 		implements \controladores\carrito_interface {
 
@@ -16,7 +16,6 @@ class carrito_objeto
 			$carrito->meter($datos["values"]);
 			
 		}	
-		
 		header("Location: {$_SESSION["expositor_actual"]}");
 		
 	}
@@ -55,6 +54,16 @@ class carrito_objeto
 //		
 		
 	}
+	
+	
+	
+	public function ver_ajax(array $datos = array()) {
+		
+		echo $this->ver($datos);
+//		
+		
+	}
+	
 	
 	
 	
