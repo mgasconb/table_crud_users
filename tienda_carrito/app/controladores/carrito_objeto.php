@@ -59,8 +59,7 @@ abstract class carrito_objeto
 	
 	public function ver_ajax(array $datos = array()) {
 		
-		echo $this->ver($datos);
-//		
+		echo $this->ver($datos);		
 		
 	}
 	
