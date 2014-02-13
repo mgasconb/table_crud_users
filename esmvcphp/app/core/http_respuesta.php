@@ -77,10 +77,10 @@ class HTTP_Respuesta extends \core\Clase_Base {
 		}
 		
 		// Enviar HEADER
-//		self::send_header();
+		self::send_header();
 		
 		// Enviar COOKIES
-//		self::cookies_send();
+		self::cookies_send();
 		
 		// Enviar BODY
 		self::send_body();

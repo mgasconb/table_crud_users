@@ -64,12 +64,12 @@ class Autoloader {
 		}
 		// Sustituir las \ que separan el namespaces del nombre de la clase por DS que separa carpetas
 		$class_name = str_replace(array("\\", ), array(DS , ), $class_name);
+		if (isset($_SESSION["clases_cargadas"]) && isset($_SESSION["clases_cargadas"][$class_name]))
+			return (require_once($_SESSION["clases_cargadas"][$class_name]));
 		
 		$carpetas = "";
 		foreach (self::$applications as $application => $valid) {
-			
 			$carpetas .= $application."  "; 
-			
 			if ( $fichero_encontrado = self::buscar($application, $class_name))
 				break;
 		}
@@ -108,6 +108,9 @@ class Autoloader {
 		if ( file_exists($fichero_clase) ) {
 			
 			if (self::$depuracion) {echo __METHOD__.": EXISTE y CARGANDO ... \$fichero_clase= $fichero_clase"."<br />";}
+			if (isset($_SESSION)) {
+				$_SESSION["clases_cargadas"][$class_name] = $fichero_clase;
+			}
 			return (require_once($fichero_clase));
 		}
 		else {

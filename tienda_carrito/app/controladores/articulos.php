@@ -244,7 +244,7 @@ class articulos extends \core\Controlador {
 		
 		$datos['html_para_pdf'] = \core\Vista::generar(__FUNCTION__, $datos);
 		
-		require_once(PATH_APP."lib/php/dompdf/dompdf_config.inc.php");
+		require_once(PATH_ESMVCPHP."lib/php/dompdf/dompdf_config.inc.php");
 
 		$html =
 		  '<html><body>'.
@@ -331,8 +331,8 @@ class articulos extends \core\Controlador {
 		
 		\core\HTTP_Respuesta::set_mime_type('text/xml');
 		$http_body = \core\Vista_Plantilla::generar('plantilla_xml', $datos);
-//		\core\HTTP_Respuesta::enviar($http_body);
-		\core\HTTP_Respuesta::enviar("1");
+		\core\HTTP_Respuesta::enviar($http_body);
+		
 		
 	}
 	
