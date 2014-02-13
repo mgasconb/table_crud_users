@@ -10,7 +10,7 @@ namespace core;
  */
 class Distribuidor {
 
-	private static $depuracion = true;
+	private static $depuracion = false;
 
 	private static $controlador_instanciado = null;
 	private static $metodo_invocado = null;
@@ -80,7 +80,9 @@ class Distribuidor {
 	
 	
 	public static function cargar_controlador_sin_chequear($controlador, $metodo="index", array $datos = array()) {
-//		echo("$controlador,$metodo ");echo(self::$controlador_instanciado); echo(self::$metodo_invocado);	echo(__METHOD__.__LINE__."<br />");
+		if (self::$depuracion) {
+			echo("($controlador,$metodo) "); echo(self::$controlador_instanciado); echo(self::$metodo_invocado);echo(__METHOD__.__LINE__."<br />");
+		}
 		
 		$metodo = ($metodo ? $metodo : "index"); // Asignamos el método por defecto
 		
@@ -88,24 +90,26 @@ class Distribuidor {
 		$controlador_clase = strtolower("\\controladores\\$controlador");
 
 		// Buscamos que el controlador exista en la aplicación o en el framework esmvcphp
-		if ( ! $existe_fichero = file_exists(strtolower(PATH_APP."controladores".DS."$controlador.php"))) {
-			$existe_fichero = file_exists(strtolower(PATH_ESMVCPHP."app".DS."controladores".DS."$controlador.php"));
+		$existe_fichero = false;
+		foreach (\core\Autoloader::get_applications() as $application => $activated) {
+			if ( $existe_fichero = file_exists(strtolower(PATH_ROOT.$application.DS."app".DS."controladores".DS."$controlador.php"))) {
+				break;
+			}
 		}
-
 		
 		
-		if ($existe_fichero) {
-					
+		if ($existe_fichero) {		
 			\core\Aplicacion::$controlador = new $controlador_clase();
 			// Memorizamos el nombre del controlador para reutilizarlo en formularios
-			\core\Aplicacion::$controlador->datos['controlador_clase'] = strtolower($controlador);
-			self::$controlador_instanciado = strtolower($controlador);
+			self::$controlador_instanciado = strtolower($controlador);		
+			\core\Aplicacion::$controlador->datos['controlador_clase'] = self::$controlador_instanciado;
 		
 			if (method_exists(\core\Aplicacion::$controlador, $metodo)) {
 				// Memorizamos el nombre del método para reutilizarlo en formularios
-				\core\Aplicacion::$controlador->datos['controlador_metodo'] = strtolower($metodo);
 				self::$metodo_invocado = strtolower($metodo);
+				\core\Aplicacion::$controlador->datos['controlador_metodo'] = self::$metodo_invocado;
 
+				// Ejecutamos el método y le pasamos los datos que vendrían de un forwarding
 				return \core\Aplicacion::$controlador->$metodo($datos);
 				
 			}
@@ -141,6 +145,8 @@ class Distribuidor {
 		return $objeto->$metodo($datos);
 		
 	}
+	
+	
 	
 	public static function get_controlador_instanciado() {
 		

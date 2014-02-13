@@ -10,7 +10,6 @@ class expositor extends \core\Controlador {
 	 * @param array $datos
 	 */
 	public function categoria(array $datos=array()) {
-		
 		$validaciones = array(
 			"p4" => "errores_requerido && errores_numero_entero_positivo && errores_referencia:p4/categorias/id",
 			"p5" => "errores_lista_valores:(nombre;precio)"

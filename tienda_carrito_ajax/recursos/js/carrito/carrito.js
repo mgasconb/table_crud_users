@@ -4,7 +4,7 @@
 function carrito_ver() {
 	
 	jQuery.post(
-		"/tienda_carrito/carrito/ver" 
+		"/tienda_carrito/carrito/ver_ajax" 
 		,""
 		,function(data, textStatus, jqXHR) {
 			$("#carrito").html(data);
