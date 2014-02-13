@@ -281,9 +281,10 @@ class articulos extends \core\Controlador {
 		$datos['contenido_principal'] = \core\Vista::generar(__FUNCTION__, $datos);
 		
 		\core\HTTP_Respuesta::set_mime_type('text/json');
-		$http_body = \core\Vista_Plantilla::generar('plantilla_json', $datos);
-		\core\HTTP_Respuesta::enviar($http_body);
-		
+//		$http_body = \core\Vista_Plantilla::generar('plantilla_json', $datos);
+//		\core\HTTP_Respuesta::enviar($http_body);
+		\core\HTTP_Respuesta::enviar($datos['contenido_principal']);
+
 	}
 	
 	/**
@@ -329,7 +330,9 @@ class articulos extends \core\Controlador {
 		$datos['contenido_principal'] = \core\Vista::generar(__FUNCTION__, $datos);
 		
 		\core\HTTP_Respuesta::set_mime_type('text/xml');
-		\core\HTTP_Respuesta::enviar('plantilla_xml', $datos);
+		$http_body = \core\Vista_Plantilla::generar('plantilla_xml', $datos);
+//		\core\HTTP_Respuesta::enviar($http_body);
+		\core\HTTP_Respuesta::enviar("1");
 		
 	}
 	

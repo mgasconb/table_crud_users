@@ -45,7 +45,7 @@ class HTTP_Respuesta extends \core\Clase_Base {
 	 */
 	public static function set_mime_type($tipo_mime) {
 		
-		if (\core\Array_Datos::contiene($tipo_mime, \core\Configuracion::$tipos_mime_reconocidos)) {
+		if (\core\Array_Datos::contiene($tipo_mime, \core\Configuracion::$tipos_mime_servidos)) {
 			self::set_header_line('Content-Type', $tipo_mime);
 			if ($tipo_mime == 'application/excel') {
 				self::set_header_line('Content-Disposition', "attachment;filename=libro.xls");
@@ -77,10 +77,10 @@ class HTTP_Respuesta extends \core\Clase_Base {
 		}
 		
 		// Enviar HEADER
-		self::send_header();
+//		self::send_header();
 		
 		// Enviar COOKIES
-		self::cookies_send();
+//		self::cookies_send();
 		
 		// Enviar BODY
 		self::send_body();
@@ -121,7 +121,7 @@ class HTTP_Respuesta extends \core\Clase_Base {
 	
 	private static function send_body() {
 		
-		echo self::$http_body_content;
+		print self::$http_body_content;
 		
 	}
 

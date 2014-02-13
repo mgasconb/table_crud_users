@@ -1,3 +1,7 @@
+<script type='text/javascript'>
+	$("#item").addClass("selected");
+</script>
+
 <div>
 	<h1>Listado de categorias</h1>
 	
