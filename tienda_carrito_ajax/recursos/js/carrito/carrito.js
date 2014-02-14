@@ -51,7 +51,7 @@ function carrito_modificar(form) {
 }
 
 function cargar_view_content(href) {
-	alert(href);
+//	alert(href);
 	jQuery.post(
 		href
 		,{is_ajax: "true"}

@@ -61,7 +61,7 @@ class expositor extends \core\Controlador {
 			
 			$datos["categoria_id"] = $datos["values"]["p4"];
 			
-			$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
+			$datos['view_content'] = \core\Vista::generar("categoria", $datos);
 			
 			if (isset($_POST["is_ajax"])) {
 				echo $datos["view_content"];
