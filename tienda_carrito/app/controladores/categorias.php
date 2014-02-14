@@ -36,6 +36,19 @@ class categorias extends \core\Controlador {
 	}
 	
 	
+	public function recuento_articulos_ajax(array $datos=array()) {
+
+		
+		$_SESSION["expositor_actual"] = \core\URL::actual();
+		$datos["filas"] = \modelos\Modelo_SQL::tabla("categorias")->recuento_articulos(); // Recupera todas las filas ordenadas
+		
+		echo(\core\Vista::generar(__FUNCTION__));
+		
+	}
+	
+	
+	
+	
 	public function form_insertar(array $datos=array()) {
 		
 		$datos["form_name"] = __FUNCTION__;

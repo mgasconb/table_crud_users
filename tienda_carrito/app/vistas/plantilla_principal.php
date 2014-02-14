@@ -73,7 +73,7 @@
 				<legend>Menú - Índice - Barra de navegación:</legend>
 					<?php echo self::ejecutar("menu", "index"); ?>
 				<div id='carrito'>
-
+					<?php echo self::ejecutar("carrito", "ver"); ?>
 				</div>
 			</fieldset>
 		</div>

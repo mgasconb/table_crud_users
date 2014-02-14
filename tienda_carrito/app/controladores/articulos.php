@@ -242,20 +242,21 @@ class articulos extends \core\Controlador {
 		$clausulas['order_by'] = 'nombre';
 		$datos['filas'] = \modelos\Datos_SQL::select( $clausulas , 'articulos');		
 		
-		$datos['html_para_pdf'] = \core\Vista::generar(__FUNCTION__, $datos);
-		
+		$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
+//		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
+		// Carga la librería de clases de un tercero (dompdf) para gernerar pdf
 		require_once(PATH_ESMVCPHP."app".DS."lib".DS."php".DS."dompdf".DS."dompdf_config.inc.php");
 
-		$html =
-		  '<html><body>'.
-		  '<p>Put your html here, or generate it with your favourite '.
-		  'templating system.</p>'.
-		  '</body></html>';
+//		$html =
+//		  '<html><body>'.
+//		  '<p>Put your html here, or generate it with your favourite '.
+//		  'templating system.</p>'.
+//		  '</body></html>';
 
 		$dompdf = new \DOMPDF();
-		$dompdf->load_html($datos['html_para_pdf']);
+		$dompdf->load_html($datos['view_content']);
 		$dompdf->render();
-		$dompdf->stream("sample.pdf", array("Attachment" => 0));
+		$dompdf->stream("articulos.pdf", array("Attachment" => 0));
 		
 		// \core\HTTP_Respuesta::set_mime_type('application/pdf');
 		// \core\HTTP_Respuesta::enviar($datos, 'plantilla_pdf');

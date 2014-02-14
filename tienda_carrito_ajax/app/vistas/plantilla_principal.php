@@ -82,9 +82,7 @@
 
 		<div id="view_content">
 			
-			<?php
-				echo $datos['view_content'];
-			?>
+			
 			
 		</div>
 
@@ -103,6 +101,7 @@
 			var alerta;
 			function onload() {
 				visualizar_alerta();
+				cargar_view_content("/tienda_carrito/categorias/recuento_articulos_ajax/");
 				carrito_ver();
 			}
 

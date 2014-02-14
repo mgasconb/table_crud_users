@@ -10,7 +10,7 @@ namespace core;
  */
 class Distribuidor {
 
-	private static $depuracion = false;
+	private static $depuracion = true;
 
 	private static $controlador_instanciado = null;
 	private static $metodo_invocado = null;

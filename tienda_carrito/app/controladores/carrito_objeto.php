@@ -21,6 +21,21 @@ abstract class carrito_objeto
 	}
 	
 	
+	public function meter_ajax(array $datos=array()) {
+		
+		if ( $validacion = !\core\Validaciones::errores_validacion_request(\modelos\carrito::$validaciones_insert, $datos)) {
+			
+			$carrito = $this->recuperar();
+			$carrito->meter($datos["values"]);
+			
+		}	
+		$this->ver_ajax();
+		
+	}
+	
+	
+	
+	
 	public function modificar(array $datos = array()) {
 	
 		if ( $validacion = !\core\Validaciones::errores_validacion_request(\modelos\carrito::$validaciones_update, $datos)) {
@@ -40,6 +55,23 @@ abstract class carrito_objeto
 	
 	
 
+	public function modificar_ajax(array $datos = array()) {
+	
+		if ( $validacion = !\core\Validaciones::errores_validacion_request(\modelos\carrito::$validaciones_update, $datos)) {
+			
+			$carrito = $this->recuperar();
+			if ($_POST["accion"] == "corregir")
+				$carrito->corregir($datos["values"]);
+			elseif ($_POST["accion"] == "quitar") {
+				$carrito->quitar($datos["values"]);
+			}
+			
+		}	
+		
+		$this->ver_ajax();
+		
+	}
+	
 	
 	
 	public function ver(array $datos = array()) {
@@ -72,6 +104,15 @@ abstract class carrito_objeto
 		$carrito->vaciar();
 		header("Location: {$_SESSION["expositor_actual"]}");
 	}
+	
+	
+	public function vaciar_ajax(array $datos = array()) {
+		
+		$carrito = $this->recuperar();
+		$carrito->vaciar();
+		$this->ver_ajax();
+	}
+	
 	
 	
 	/**

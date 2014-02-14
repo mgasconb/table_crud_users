@@ -20,8 +20,7 @@
 						<td>".\core\Conversiones::decimal_punto_a_coma_y_miles($fila['precio'])."</td>
 						<td>".\core\Conversiones::decimal_punto_a_coma_y_miles($fila['unidades_stock'])."</td>
 						<td>
-							<a class='boton' href='?menu=articulos&submenu=form_modificar&id={$fila['id']}' >modificar</a>
-							<a class='boton' href='?menu=articulos&submenu=form_borrar&id={$fila['id']}' >borrar</a>
+							
 						</td>
 					</tr>
 					";
@@ -29,7 +28,7 @@
 			echo "
 				<tr>
 					<td colspan='3'></td>
-						<td><a class='boton' href='?menu=articulos&submenu=form_insertar' >insertar</a></td>
+						<td></td>
 				</tr>
 			";
 			?>

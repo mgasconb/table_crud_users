@@ -118,6 +118,8 @@ insert into daw2_metodos
   (controlador,		metodo) values
   ('expositor'		,'*')
 , ('expositor'		,'categoria')
+, ('expositor'		,'categoria_ajax')
+
 , ('carrito'		,'*')
 , ('carrito'		,'comprar')
 , ('carrito'		,'meter')
@@ -131,6 +133,7 @@ insert into daw2_metodos
 , ('categorias'		,'form_insertar')
 , ('categorias'		,'form_modificar')
 , ('categorias'		,'recuento_articulos')
+, ('categorias'		,'recuento_articulos_ajax')
 , ('articulos'		,'*')
 , ('articulos'		,'index')
 , ('articulos'		,'form_borrar')
@@ -143,8 +146,10 @@ insert into daw2_metodos
 insert into daw2_roles_permisos
   (rol					,controlador		,metodo) values
   ('usuarios'			,'expositor'		,'categoria')
+,  ('usuarios'			,'expositor'		,'categoria_ajax')
 , ('usuarios'			,'carrito'			,'*')
 , ('usuarios'			,'categorias'		,'recuento_articulos')
+, ('usuarios'			,'categorias'		,'recuento_articulos_ajax')
 , ('usuarios_logueados'	,'pedidos'			,'mostrar')
 , ('usuarios_logueados'	,'categorias'		,'index')
 ;
