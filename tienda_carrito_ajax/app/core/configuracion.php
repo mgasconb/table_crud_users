@@ -19,9 +19,9 @@ class Configuracion {
 	);
 	
 	// Usar sesiones de trabajo (activar array $_SESSION)
-	public static $session_name = "TIENDACARRITO";
+	public static $session_name = "TIENDACARRITO_AJAX";
 	public static $session_activate = true;
-	public static $session_lifetime = 3600; // 60''*60'*1º Segundos de duración de la cookie de sessionsession.cookie_lifetime
+	public static $session_lifetime = 60; // Segundos de duración de la cookie de sessionsession.cookie_lifetime
 	public static $session_cookie_path = "/";
 	public static $session_cookie_domain = "";
 	public static $session_cookie_secure = false;
@@ -38,7 +38,7 @@ class Configuracion {
 	public static $usuarios = true;
 	public static $usuarios_origen = "bd"; // Valores válidos "bd" o "ACL" que es interna La lista de usuarios se define al final de esta clase
 	// Regeneración de id de cookie de session al cambiar de usuario
-	public static $regenerar_session_id = false;
+	public static $regenerar_session_id = true;
 	// Control acceso a recursos
 	public static $control_acceso_recursos = true;
 	

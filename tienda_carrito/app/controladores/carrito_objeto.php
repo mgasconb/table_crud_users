@@ -29,7 +29,7 @@ abstract class carrito_objeto
 			$carrito->meter($datos["values"]);
 			
 		}	
-		$this->ver_ajax();
+		return $this->ver_ajax();
 		
 	}
 	
@@ -56,19 +56,17 @@ abstract class carrito_objeto
 	
 
 	public function modificar_ajax(array $datos = array()) {
-	
+		
 		if ( $validacion = !\core\Validaciones::errores_validacion_request(\modelos\carrito::$validaciones_update, $datos)) {
-			
 			$carrito = $this->recuperar();
-			if ($_POST["accion"] == "corregir")
+			if ($_POST["accion"] == "modificar")
 				$carrito->corregir($datos["values"]);
 			elseif ($_POST["accion"] == "quitar") {
 				$carrito->quitar($datos["values"]);
 			}
-			
 		}	
 		
-		$this->ver_ajax();
+		return $this->ver_ajax();
 		
 	}
 	

@@ -38,7 +38,7 @@ define("URL_ROOT", (isset($_SERVER['REQUEST_SCHEME'])?$_SERVER['REQUEST_SCHEME']
 define("URL_APPLICATION_ROOT", URL_ROOT);
 define("URL_ESMVCPHP_ROOT", dirname(URL_ROOT)."/");
 
-define('TITULO', 'Tienda con Carrito');
+define('TITULO', 'Tienda con Carrito Ajax');
 
 
 // Preparar el autocargador de clases.

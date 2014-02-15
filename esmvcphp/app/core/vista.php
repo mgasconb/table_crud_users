@@ -16,18 +16,27 @@ class Vista extends \core\Clase_Base {
 		
 		$patron = "/^(\w{1,}(\\\|\/)){1,}\w{1,}$/i"; // carpeta1/subcarpeta/../fichero
 		if (preg_match($patron, $nombre)) {
-			$fichero_vista = "vistas".DS.str_replace("\\", DS, $nombre).".php";
+			$fichero_vista = "vistas".DS.str_replace(array("\\", "/"), DS, $nombre).".php";
 		}
 		else {
 			$fichero_vista = "vistas".DS.\core\Aplicacion::$controlador->datos['controlador_clase'].DS."$nombre.php";
 		}
 		
-		$path_buscados = "";
-		foreach (\core\Autoloader::get_applications() as $application => $state) {
-			$path_file = PATH_ROOT.$application.DS."app".DS.$fichero_vista;
-			$path_buscados .= $path_file." \n";
-			if ( $encontrado = file_exists($path_file)) {
-				break;
+		if (isset($_SESSION["vistas_cargadas"]) && isset($_SESSION["vistas_cargadas"][$fichero_vista])) {
+			$path_file = $_SESSION["vistas_cargadas"][$fichero_vista];
+			$encontrado = true;
+		}
+		else {
+			$path_buscados = "";
+			foreach (\core\Autoloader::get_applications() as $application => $state) {
+				$path_file = PATH_ROOT.$application.DS."app".DS.$fichero_vista;
+				$path_buscados .= $path_file." \n";
+				if ( $encontrado = file_exists($path_file)) {
+					if (isset($_SESSION)) {
+						$_SESSION["vistas_cargadas"][$fichero_vista] = $path_file;
+					}
+					break;
+				}
 			}
 		}
 		if ( ! $encontrado) {

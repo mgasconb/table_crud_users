@@ -62,10 +62,12 @@ class Autoloader {
 			if (self::$depuracion) { echo __METHOD__." -> EXISTE \$class_name= $class_name"."<br />";}
 			return;
 		}
-		// Sustituir las \ que separan el namespaces del nombre de la clase por DS que separa carpetas
-		$class_name = str_replace(array("\\", ), array(DS , ), $class_name);
+		
 		if (isset($_SESSION["clases_cargadas"]) && isset($_SESSION["clases_cargadas"][$class_name]))
 			return (require_once($_SESSION["clases_cargadas"][$class_name]));
+		
+		// Sustituir las \ que separan el namespaces del nombre de la clase por DS que separa carpetas
+		$class_name = str_replace(array("\\", ), array(DS , ), $class_name);
 		
 		$carpetas = "";
 		foreach (self::$applications as $application => $valid) {
@@ -109,7 +111,7 @@ class Autoloader {
 			
 			if (self::$depuracion) {echo __METHOD__.": EXISTE y CARGANDO ... \$fichero_clase= $fichero_clase"."<br />";}
 			if (isset($_SESSION)) {
-				$_SESSION["clases_cargadas"][$class_name] = $fichero_clase;
+				$_SESSION["clases_cargadas"][str_replace(DS, "\\",$class_name)] = $fichero_clase;
 			}
 			return (require_once($fichero_clase));
 		}

@@ -1,6 +1,8 @@
-<div>	
-	<button id='btn_carrito' onclick='$("#carrito_detalles").css("display","block");' >Carrito</button>
-	<span id='carrito_importe'><?php echo number_format(self::ejecutar("carrito","valor"),2,",","."); ?> €</span>
+<div>
+	<div id="carrito_botones">
+		<button id='btn_carrito' onclick='$("#carrito_detalles").css("display","block"); $("#carrito_botones").css("display","none");' >Carrito</button>
+		<span id='carrito_importe'><?php echo number_format(self::ejecutar("carrito","valor"),2,",","."); ?> €</span>
+	</div>
 
 <?php
 
@@ -9,11 +11,12 @@ $articulos = $datos["carrito"]->get_articulos();
 //var_export($articulos);
 ?>
 	<div id='carrito_detalles' >
+		<b>Carrito</b><button style='background-color: red; float: right;' onclick='$("#carrito_detalles").css("display","none");  $("#carrito_botones").css("display","block");'>X</button>
 <?php if ($articulos) :?>
-	<form method='post' action='<?php echo \core\URL::generar("carrito/vaciar"); ?>'  onsubmit='carrito_vaciar();'>
+	<form method='post' onsubmit='carrito_vaciar(); return(false);'>
 		<button type='submit'>Vaciar Carrito</button>
 	</form>
-		<button onclick='$("#carrito_detalles").css("display","none");'>Ocultar</button>
+		
 	<table border='1'>
 		<thead>
 			<tr>
@@ -26,6 +29,7 @@ $articulos = $datos["carrito"]->get_articulos();
 			</tr>
 		</thead>
 		<tbody>
+			<tr><td colspan='6'>
 			<?php
 			$total_acumulado = 0;
 			foreach ($articulos as $articulo_id => $articulo) {
@@ -33,12 +37,14 @@ $articulos = $datos["carrito"]->get_articulos();
 				$total = $articulo['unidades'] * $articulo['precio'];
 				$total_acumulado += $total;
 				echo "
-					<form method='post' action='".\core\URL::generar("carrito/modificar")."' onsubmit='carrito_modificar();'>
-						<input type='hidden' name='articulo_id' value='$articulo_id' />
+					<form id='fc$articulo_id' method='post' >
+						
+						<input type='hidden'  name='articulo_id' value='$articulo_id' />
+					<table>
 					<tr>
 						<td>{$articulo['nombre']}</td>
 						<td></td>
-						<td><input id='unidades' name='unidades' size='8' value='".number_format($articulo["unidades"], 0, ",", ".")."' /></td>
+						<td><input  name='unidades' size='8' value='".number_format($articulo["unidades"], 0, ",", ".")."' /></td>
 						<td>"
 								.number_format($articulo['precio'], 2, ",", ".").
 //								.$articulo["precio"].
@@ -48,15 +54,17 @@ $articulos = $datos["carrito"]->get_articulos();
 						. number_format($total,2,",",".") .
 						"</td>
 						<td>								
-						<input name='accion' type='submit' value='corregir' />
-						<input name='accion' type='submit' value='quitar' />
+						<input name='accion' type='button' value='corregir' onclick='carrito_modificar(\"fc$articulo_id\",\"modificar\");' />
+						<input name='accion' type='button' value='quitar' onclick='carrito_modificar(\"fc$articulo_id\",\"quitar\");' />
 						</td>
 					</tr>
+					</table>
 					</form>
 					";
 			}
 			echo "<tr><td colspan='4'></td><td><b>".number_format($total_acumulado,2,",",".") ."</b></td><td></td></tr>";
 			?>
+			</td></tr>
 		</tbody>
 	</table>
 	<button type='button' onclick='window.location.assign("<?php echo \core\URL::generar("carrito/comprar")?>");' >Comprar</button>

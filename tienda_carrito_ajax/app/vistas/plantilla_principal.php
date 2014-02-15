@@ -75,15 +75,14 @@
 				<legend>Menú - Índice - Barra de navegación:</legend>
 					<?php echo self::ejecutar("menu", "index"); ?>
 				<div id='carrito'>
-						
+					<!-- Contenido de carrito se completa con ajax -->
 				</div>
 			</fieldset>
 		</div>
 
+		
 		<div id="view_content">
-			
-			
-			
+			<!-- Contenido de view_content se completa con ajax -->
 		</div>
 
 	
@@ -101,7 +100,7 @@
 			var alerta;
 			function onload() {
 				visualizar_alerta();
-				cargar_view_content("/tienda_carrito/categorias/recuento_articulos_ajax/");
+				cargar_view_content("/tienda_carrito_ajax/categorias/recuento_articulos_ajax/");
 				carrito_ver();
 			}
 

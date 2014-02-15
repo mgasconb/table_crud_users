@@ -24,14 +24,25 @@ class Vista_Plantilla extends \core\Clase_Base {
 
 		$fichero_vista = strtolower("vistas".DS."$nombre.php");
 		
-		$path_buscados = "";
-		foreach (\core\Autoloader::get_applications() as $application => $state) {
-			$path_file = PATH_ROOT.$application.DS."app".DS.$fichero_vista;
-			$path_buscados .= $path_file." \n";
-			if ( $encontrado = file_exists($path_file)) {
-				break;
+		if (isset($_SESSION["plantillas_cargadas"]) && isset($_SESSION["plantillas_cargadas"][$fichero_vista])) {
+			$path_file = $_SESSION["plantillas_cargadas"][$fichero_vista];
+			$encontrado = true;
+		}
+		else {
+		
+			$path_buscados = "";
+			foreach (\core\Autoloader::get_applications() as $application => $state) {
+				$path_file = PATH_ROOT.$application.DS."app".DS.$fichero_vista;
+				$path_buscados .= $path_file." \n";
+				if ( $encontrado = file_exists($path_file)) {
+					if (isset($_SESSION)) {
+						$_SESSION["plantillas_cargadas"][$fichero_vista] = $path_file;
+					}
+					break;
+				}
 			}
 		}
+		
 		if ( ! $encontrado) {
 					throw new \Exception(__METHOD__." Error: no existe la plantilla $nombre. Buscada en $path_buscados .");
 		}
