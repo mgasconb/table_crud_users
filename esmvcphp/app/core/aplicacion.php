@@ -30,18 +30,20 @@ class Aplicacion extends \core\Clase_Base {
 		else
 			ini_set("display_errors", "off");
 		
-		// Interpretar url amigable, pasa parmametros /dato1/dato2/dato3/ 
-		// a parámetros $_GET[p1]=dato1 $_GET[p2]=dato2  $_GET[p3]=dato3 ....
-		if (\core\Configuracion::$url_amigable) \core\Rutas::interpretar_url_amigable();
-		
-		if (\core\Configuracion::$use_db) \core\sgbd\bd::connect();
-		
 		// Activamos o recuperamos el array $_SESSION
 		// Debe estar siempre activo porque se usa para presentar mensajes al cliente
 		// cuando carga una página.
 		// También se usa para la gestión de usuarios (\core\Usuario) 
 		// y para memorizar URL/URI (\core\URL) 
 		\core\SESSION::iniciar();
+		
+		// Interpretar url amigable, pasa parmametros /dato1/dato2/dato3/ 
+		// a parámetros $_GET[p1]=dato1 $_GET[p2]=dato2  $_GET[p3]=dato3 ....
+		if (\core\Configuracion::$url_amigable) \core\Rutas::interpretar_url_amigable();
+		
+		if (\core\Configuracion::$use_db) \core\sgbd\bd::connect();
+		
+		
 		
 		
 		if ( \core\Configuracion::$url_registrar_anterior) \core\URL::registrar();
