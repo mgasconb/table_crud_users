@@ -29,12 +29,17 @@
 		<script type='text/javascript' src="<?php echo URL_ROOT."recursos/js/jquery/jquery-1.10.2.min.js"; ?>" ></script>
 		<script type='text/javascript' src="<?php echo URL_APPLICATION_ROOT."recursos/js/carrito/carrito.js"; ?>" ></script>
 		<script type='text/javascript' src="<?php echo URL_ROOT."recursos/js/general.js"; ?>" ></script>
+		<script type='text/javascript' src="<?php echo URL_ESMVCPHP_ROOT; ?>recursos/js/sesion.js" ></script>
 		
 		<script type="text/javascript" src=""></script>
 		
 		<script type="text/javascript" >
 			/* líneas del script */
-			
+			<?php /* echo $datos["js_internal"]; */?>
+			/* Gestión de la sesión */
+
+			var sesion_ms_inactivo = 0;
+			var sesion_ms_desde_conexion = <?php  echo \core\Usuario::$sesion_segundos_duracion * 1000; ?> ;
 		</script>
 		
 	</head>
@@ -83,6 +88,11 @@
 		
 		<div id="view_content">
 			<!-- Contenido de view_content se completa con ajax -->
+			<?php 
+			if (\core\Distribuidor::get_controlador_instanciado() != "inicio") {
+				echo $datos["view_content"];
+			}
+			?>
 		</div>
 
 	
@@ -99,8 +109,13 @@
 		<script type="text/javascript" />
 			var alerta;
 			function onload() {
+				actualizar_tiempos();
+				var relojes_sesion = setInterval(function(){actualizar_tiempos()}, 1000);
 				visualizar_alerta();
-				cargar_view_content("/tienda_carrito_ajax/categorias/recuento_articulos_ajax/");
+				<?php if (\core\Distribuidor::get_controlador_instanciado() == "inicio") :?>
+					cargar_view_content("/tienda_carrito_ajax/categorias/recuento_articulos_ajax/");
+				<?php endif; ?>
+					
 				carrito_ver();
 			}
 

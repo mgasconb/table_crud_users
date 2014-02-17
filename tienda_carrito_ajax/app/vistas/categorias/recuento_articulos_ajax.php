@@ -19,7 +19,7 @@
 		<tbody>
 			<?php
 			foreach ($datos['filas'] as $fila) {
-				$img = ($fila["foto"]) ? "<img src='".URL_ROOT."recursos/imagenes/categorias/".$fila["foto"]."' width='200px' />" :"";
+				$img = ($fila["foto"]) ? "<img src='".dirname(URL_ROOT)."/tienda_carrito/"."recursos/imagenes/categorias/".$fila["foto"]."' width='200px' />" :"";
 				
 				echo "
 					<tr>
@@ -28,7 +28,8 @@
 						<td>{$fila['descripcion']}</td>
 						<td>{$fila['cuenta_articulos']}</td>
 						<td>
-					<a class='boton' onclick='cargar_view_content(\"".\core\URL::generar(array("expositor", "categoria_ajax", $fila['nombre'], $fila['id']))."\");' >Ver</a></td>
+					<a class='boton' onclick='cargar_view_content(\"".\core\URL::generar(array("expositor", "categoria_ajax", $fila['nombre'], $fila['id']))."\");' >Ver</a>
+						</td>
 					</tr>
 					";
 			}

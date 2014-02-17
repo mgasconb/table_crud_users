@@ -8,7 +8,18 @@ class Usuario extends \core\Clase_Base {
 	public static $id;
 	public static $login = 'anonimo';
 	private static $permisos = array();
+	
+	/**
+	 * lmacena la duración de la sesión en segundos desde el login del usuario.
+	 * @var integer 
+	 */
 	public static $sesion_segundos_duracion = 0;
+	
+	/**
+	 * Almacena el tiempo de inactividad desde la anterior petición al servidor.
+	 * 
+	 * @var integer 
+	 */
 	public static $sesion_segundos_inactividad = 0;
 	
 	/**
@@ -17,14 +28,11 @@ class Usuario extends \core\Clase_Base {
 	public static function iniciar() {
 		// Recuperamos datos desde $_SESSION a las propiedades de la clase
 		if (isset($_SESSION['usuario']['login'])) {
-			
 			self::$login = $_SESSION['usuario']['login'];
 			self::$id = $_SESSION['usuario']['id'];
-			self::sesion_control_tiempos();
-			
+			self::sesion_control_tiempos();	
 		}
 		else {
-
 			self::nuevo('anonimo');
 		}
 		
@@ -34,8 +42,7 @@ class Usuario extends \core\Clase_Base {
 		else {
 			self::recuperar_permisos(self::$login);
 		}
-		
-		
+			
 		if (isset($_SESSION['usuario']['contador_paginas_visitadas']))
 			$_SESSION['usuario']['contador_paginas_visitadas']++;
 		else 
@@ -59,13 +66,12 @@ class Usuario extends \core\Clase_Base {
 		self::$login = $login;
 		self::$id = $id;
 		if (\core\Configuracion::$regenerar_session_id) {
-			
 			\core\SESSION::regenerar_id(); // Seguridad
 		}
 		$_SESSION["usuario"]["contador_paginas_visitadas"] = 1;
 		$_SESSION["usuario"]["login"] = $login;
 		$_SESSION["usuario"]["id"] = $id;
-		$_SESSION["usuario"]["sesion_inicio"] = $_SERVER["REQUEST_TIME"];
+		$_SESSION["usuario"]["sesion_fh_inicio"] = $_SERVER["REQUEST_TIME"];
 		
 		// Borramos los permisos del usuario anterior y 
 		// recuperamos los permisos del nuevo usuario
@@ -218,8 +224,8 @@ class Usuario extends \core\Clase_Base {
 			self::$sesion_segundos_inactividad = 0;
 		
 		// Duración de la sesión
-		if (isset($_SESSION['usuario']['sesion_inicio']))
-			self::$sesion_segundos_duracion = $_SERVER['REQUEST_TIME'] - $_SESSION['usuario']['sesion_inicio'];
+		if (isset($_SESSION['usuario']['sesion_fh_inicio']))
+			self::$sesion_segundos_duracion = $_SERVER['REQUEST_TIME'] - $_SESSION['usuario']['sesion_fh_inicio'];
 		else
 			self::$sesion_segundos_duracion = 0;
 		

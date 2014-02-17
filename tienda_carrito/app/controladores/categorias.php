@@ -37,12 +37,11 @@ class categorias extends \core\Controlador {
 	
 	
 	public function recuento_articulos_ajax(array $datos=array()) {
-
 		
 		$_SESSION["expositor_actual"] = \core\URL::actual();
 		$datos["filas"] = \modelos\Modelo_SQL::tabla("categorias")->recuento_articulos(); // Recupera todas las filas ordenadas
 		
-		echo(\core\Vista::generar("recuento_articulos_ajax", $datos));
+		echo(\core\Vista::generar("categorias/recuento_articulos_ajax", $datos));
 		
 	}
 	

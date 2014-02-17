@@ -43,9 +43,8 @@ class Configuracion {
 	public static $control_acceso_recursos = true;
 	
 	// Gestión de inactividad
-	public static $sesion_inactividad_controlada = false;
-	public static $sesion_minutos_inactividad = 20; // Minutos
-	public static $sesion_minutos_maxima_duracion = 120;
+	public static $sesion_minutos_inactividad = 20; // num >= 0. 0 Implica sin control
+	public static $sesion_minutos_maxima_duracion = 120; // Duración máxima de una conexión. 0 Implica sin control.
 		
 	
 	// Gestión de idiomas

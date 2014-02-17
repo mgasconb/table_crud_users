@@ -146,7 +146,6 @@ class articulos extends \core\Controlador {
 					$datos["errores"]["errores_validacion"]="No se han podido grabar los datos en la bd.";
 				else {
 					if ($_FILES["foto"]["size"]) {
-						$datos["values"]["id"] = $validacion;
 						if ($datos["values"]["foto"] = self::mover_foto($datos["values"]["id"])) {
 							$validacion = \modelos\Modelo_SQL::tabla('articulos')->update($datos["values"]);
 						}

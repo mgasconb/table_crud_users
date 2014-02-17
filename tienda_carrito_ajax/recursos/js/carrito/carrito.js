@@ -32,7 +32,7 @@ function carrito_meter(form, event) {
 //	alert("carrito_meter()");
 	jQuery.post(
 		"/tienda_carrito_ajax/carrito/meter_ajax" 
-		,{articulo_id: form.elements.namedItem("articulo_id").value, nombre: form.elements.namedItem("nombre").value, precio: form.elements.namedItem("precio").value, unidades: form.elements.namedItem("unidades").value, is_ajax: "true" }
+		,{articulo_id: form.elements.namedItem("articulo_id").value, nombre: form.elements.namedItem("nombre").value, precio: form.elements.namedItem("precio").value, unidades: form.elements.namedItem("unidades").value, foto: form.elements.namedItem("foto").value,is_ajax: "true" }
 		,function(data, textStatus, jqXHR) {
 //			alert("cargar_meter: "+data);	
 			$("#carrito").html(data);

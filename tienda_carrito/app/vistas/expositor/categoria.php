@@ -23,7 +23,7 @@
 						<input type='hidden' name='articulo_id' value='{$fila["id"]}' />
 					<tr>
 						<td><input type='text' readonly='readonly' name='nombre' value='{$fila["nombre"]}' /></td>
-						<td>$img</td>
+						<td><input type='hidden' readonly='readonly' name='foto' value='{$fila["nombre"]}' />$img</td>
 						<td><input type='text' readonly='readonly' name='precio' value='".\core\Conversiones::decimal_punto_a_coma_y_miles($fila['precio'])."' /></td>
 						<td><input type='text'  name='unidades' value='1' /></td>
 						<td>

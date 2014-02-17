@@ -34,7 +34,7 @@
 			}
 			echo "
 				<tr>
-					<td colspan='3'></td>
+					<td colspan='4'></td>
 						<td>"
 			.\core\HTML_Tag::a_boton("boton", array("categorias", "form_insertar"), "insertar").
 					"</td>

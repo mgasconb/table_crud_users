@@ -25,21 +25,55 @@ class Distribuidor {
 	 * 
 	 * @author Jesús Mª de Quevedo
 	 */
-	public static function estudiar_query_string() {		
+	public static function estudiar_query_string() {
 		
-		$controlador = isset($_GET['menu']) ? \core\HTTP_Requerimiento::get('menu') : \core\HTTP_Requerimiento::get('p1');
-		$metodo = isset($_GET['submenu']) ? \core\HTTP_Requerimiento::get('submenu'): \core\HTTP_Requerimiento::get('p2');		
-		
-		if ( $controlador  == null || (boolean)\core\Validaciones::errores_identificador($controlador) )
-			$controlador = strtolower(\core\Configuracion::$controlador_por_defecto);
-		if ( ! $metodo || (boolean)\core\Validaciones::errores_identificador($metodo) )
-			$metodo = strtolower(\core\Configuracion::$metodo_por_defecto);
-		
-		self::cargar_controlador($controlador, $metodo);
+		if (self::control_tiempos_sesion()) {
+			$controlador = isset($_GET['menu']) ? \core\HTTP_Requerimiento::get('menu') : \core\HTTP_Requerimiento::get('p1');
+			$metodo = isset($_GET['submenu']) ? \core\HTTP_Requerimiento::get('submenu'): \core\HTTP_Requerimiento::get('p2');		
+
+			if ( $controlador  == null || (boolean)\core\Validaciones::errores_identificador($controlador) )
+				$controlador = strtolower(\core\Configuracion::$controlador_por_defecto);
+			if ( ! $metodo || (boolean)\core\Validaciones::errores_identificador($metodo) )
+				$metodo = strtolower(\core\Configuracion::$metodo_por_defecto);
+
+			self::cargar_controlador($controlador, $metodo);
+		}
 		
 	}
 	
 	
+	
+	
+	
+	/**
+	 * 
+	 * @return boolean True si el usuario está dentro de los límites de tiempos para la sesión definidos en la configuración.
+	 */
+	private static function control_tiempos_sesion() {
+		
+		if (\core\Usuario::$login != "anonimo" && \core\Configuracion::$sesion_minutos_inactividad) {
+			if (\core\Usuario::$sesion_segundos_inactividad > \core\Configuracion::$sesion_minutos_inactividad * 60) {
+				$datos["mensaje"] = "Has superado el tiempo de inactividad que es de <b>".\core\Configuracion::$sesion_minutos_inactividad."</b> minutos.<br/>"
+						. "Para continuar debes volver a loguearte.";
+				$datos["url_continuar"] = \core\URL::generar("usuarios/form_login");
+				\core\Usuario::nuevo("anonimo");
+				self::cargar_controlador("mensajes", "mensaje", $datos);
+				return false;
+			}
+		}
+		if (\core\Usuario::$login != "anonimo" && \core\Configuracion::$sesion_minutos_maxima_duracion) {
+			if (\core\Usuario::$sesion_segundos_duracion > \core\Configuracion::$sesion_minutos_maxima_duracion * 60) {
+				$datos["mensaje"] = "Has superado el tiempo máximo de duración de la sesión que es de <b>".\core\Configuracion::$sesion_minutos_maxima_duracion."</b> minutos.<br/>"
+						. "Para continuar debes volver a loguearte.";
+				$datos["url_continuar"] = \core\URL::generar("usuarios/form_login");
+				\core\Usuario::nuevo("anonimo");
+				self::cargar_controlador("mensajes", "mensaje", $datos);
+				return false;
+			}
+		}
+		return true;
+		
+	}
 
 	
 	

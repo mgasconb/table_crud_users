@@ -11,7 +11,8 @@ class carrito extends \modelos\carrito_objeto {
 		"articulo_id" => "errores_requerido && errores_numero_entero_positivo && errores_referencia:articulo_id/articulos/id",
 		"unidades" => "errores_requerido && errores_numero_entero_positivo",
 		"precio" => "errores_requerido && errores_numero_decimal_positivo",
-		"nombre" => "errores_requerido && errores_texto"
+		"nombre" => "errores_requerido && errores_texto",
+		"foto" => "errores_texto"
 	);
 	
 	

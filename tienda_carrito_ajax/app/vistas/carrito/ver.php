@@ -33,7 +33,7 @@ $articulos = $datos["carrito"]->get_articulos();
 			<?php
 			$total_acumulado = 0;
 			foreach ($articulos as $articulo_id => $articulo) {
-//				$img = ($articulo["foto"]) ? "<img src='".URL_ROOT."recursos/imagenes/articulos/".$articulo["foto"]."' width='100px' />" :"";
+				$img = ($articulo["foto"]) ? "<img src='".dirname(URL_ROOT)."/tienda_carrito/"."recursos/imagenes/articulos/".$articulo["foto"]."' width='50px' />" :"";
 				$total = $articulo['unidades'] * $articulo['precio'];
 				$total_acumulado += $total;
 				echo "
@@ -43,7 +43,7 @@ $articulos = $datos["carrito"]->get_articulos();
 					<table>
 					<tr>
 						<td>{$articulo['nombre']}</td>
-						<td></td>
+						<td>$img</td>
 						<td><input  name='unidades' size='8' value='".number_format($articulo["unidades"], 0, ",", ".")."' /></td>
 						<td>"
 								.number_format($articulo['precio'], 2, ",", ".").

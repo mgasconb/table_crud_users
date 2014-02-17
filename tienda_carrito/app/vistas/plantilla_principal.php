@@ -28,11 +28,16 @@
 		
 		<script type='text/javascript' src="<?php echo URL_ROOT."recursos/js/jquery/jquery-1.10.2.min.js"; ?>" ></script>
 		<script type='text/javascript' src="<?php echo URL_ROOT."recursos/js/general.js"; ?>" ></script>
+		<script type='text/javascript' src="<?php echo URL_ESMVCPHP_ROOT; ?>recursos/js/sesion.js" ></script>
 		<script type="text/javascript" src=""></script>
 		
 		<script type="text/javascript" >
 			/* líneas del script */
-			
+			<?php /* echo $datos["js_internal"]; */?>
+			/* Gestión de la sesión */
+
+			var sesion_ms_inactivo = 0;
+			var sesion_ms_desde_conexion = <?php  echo \core\Usuario::$sesion_segundos_duracion * 1000; ?> ;
 		</script>
 		
 	</head>
@@ -101,6 +106,8 @@
 			var alerta;
 			function onload() {
 				visualizar_alerta();
+				actualizar_tiempos();
+				var relojes_sesion = setInterval(function(){actualizar_tiempos()}, 1000);
 			}
 
 			function visualizar_alerta() {
