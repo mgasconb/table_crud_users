@@ -10,18 +10,20 @@ class Configuracion {
 	public static $controlador_por_defecto = 'inicio';
 	public static $metodo_por_defecto = 'index';
 	public static $plantilla_por_defecto = 'plantilla_principal';
+	public static $plantilla_administrator = 'plantilla_administrator';
 
 	// Respuesta HTTP
 	public static $tipo_mime_por_defecto = 'text/html';
-	public static $tipos_mime_reconocidos = array(
+	public static $tipos_mime_servidos = array(
 		'text/html', 'text/xml', 'text/json', 'application/excel', 
 	);
 	
 	// Usar sesiones de trabajo (activar array $_SESSION)
-	public static $activar_session = true;
+	public static $session_name = "BIBLIOTECA-BABEL";
+	public static $session_activate = true;
 	public static $session_lifetime = 0; // Segundos de duración de la cookie de sessionsession.cookie_lifetime
-	public static $session_cookie_path = "";
-	public static $session_cookie_domain = "/";
+	public static $session_cookie_path = "/";
+	public static $session_cookie_domain = "";
 	public static $session_cookie_secure = false;
 	public static $session_cookie_httponly = false;
 	
@@ -34,16 +36,15 @@ class Configuracion {
 	
 	// Gestión de usuarios si hay usuarios distintos
 	public static $usuarios = true;
-	public static $usuarios_origen = "ACL"; // Valores válidos "bd" o "ACL" que es interna La lista de usuarios se define al final de esta clase
+	public static $usuarios_origen = "bd"; // Valores válidos "bd" o "ACL" que es interna La lista de usuarios se define al final de esta clase
 	// Regeneración de id de cookie de session al cambiar de usuario
 	public static $regenerar_session_id = true;
 	// Control acceso a recursos
 	public static $control_acceso_recursos = true;
 	
 	// Gestión de inactividad
-	public static $sesion_inactividad_controlada = false;
-	public static $sesion_minutos_inactividad = 20; // Minutos
-	public static $sesion_minutos_maxima_duracion = 120;
+	public static $sesion_minutos_inactividad = 20; // num >= 0. 0 Implica sin control
+	public static $sesion_minutos_maxima_duracion = 120; // Duración máxima de una conexión. 0 Implica sin control.
 		
 	
 	// Gestión de idiomas

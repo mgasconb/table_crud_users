@@ -65,9 +65,11 @@ class Usuario extends \core\Clase_Base {
 		
 		self::$login = $login;
 		self::$id = $id;
+		
 		if (\core\Configuracion::$regenerar_session_id) {
 			\core\SESSION::regenerar_id(); // Seguridad
 		}
+		
 		$_SESSION["usuario"]["contador_paginas_visitadas"] = 1;
 		$_SESSION["usuario"]["login"] = $login;
 		$_SESSION["usuario"]["id"] = $id;

@@ -28,6 +28,7 @@ class Distribuidor {
 	public static function estudiar_query_string() {
 		
 		if (self::control_tiempos_sesion()) {
+			
 			$controlador = isset($_GET['menu']) ? \core\HTTP_Requerimiento::get('menu') : \core\HTTP_Requerimiento::get('p1');
 			$metodo = isset($_GET['submenu']) ? \core\HTTP_Requerimiento::get('submenu'): \core\HTTP_Requerimiento::get('p2');		
 
@@ -51,26 +52,32 @@ class Distribuidor {
 	 */
 	private static function control_tiempos_sesion() {
 		
+		// Comprobamos si está inactivo
 		if (\core\Usuario::$login != "anonimo" && \core\Configuracion::$sesion_minutos_inactividad) {
 			if (\core\Usuario::$sesion_segundos_inactividad > \core\Configuracion::$sesion_minutos_inactividad * 60) {
 				$datos["mensaje"] = "Has superado el tiempo de inactividad que es de <b>".\core\Configuracion::$sesion_minutos_inactividad."</b> minutos.<br/>"
 						. "Para continuar debes volver a loguearte.";
+				$_SESSION["alerta"] = $datos["mensaje"];
 				$datos["url_continuar"] = \core\URL::generar("usuarios/form_login");
 				\core\Usuario::nuevo("anonimo");
 				self::cargar_controlador("mensajes", "mensaje", $datos);
 				return false;
 			}
 		}
+		
+		// Comprobamos el tiempo de duración de la sesión
 		if (\core\Usuario::$login != "anonimo" && \core\Configuracion::$sesion_minutos_maxima_duracion) {
 			if (\core\Usuario::$sesion_segundos_duracion > \core\Configuracion::$sesion_minutos_maxima_duracion * 60) {
 				$datos["mensaje"] = "Has superado el tiempo máximo de duración de la sesión que es de <b>".\core\Configuracion::$sesion_minutos_maxima_duracion."</b> minutos.<br/>"
 						. "Para continuar debes volver a loguearte.";
+				$_SESSION["alerta"] = $datos["mensaje"];
 				$datos["url_continuar"] = \core\URL::generar("usuarios/form_login");
 				\core\Usuario::nuevo("anonimo");
 				self::cargar_controlador("mensajes", "mensaje", $datos);
 				return false;
 			}
 		}
+		
 		return true;
 		
 	}
@@ -172,11 +179,12 @@ class Distribuidor {
 	 * @return type
 	 */
 	public static function ejecutar($clase, $metodo = "index", array $datos = array()) {
-		if ( ! preg_match("/\w+\/\w+/i", $clase)) {
+		if ( ! preg_match("/((\\\)\w+)+/i", $clase)) {
 			$clase = "\\controladores\\$clase";
 		}
 		$objeto = new $clase();
 		return $objeto->$metodo($datos);
+//		return ((new $clase())->$metodo($datos)); // Equivale a las dos lineas anteriores.
 		
 	}
 	

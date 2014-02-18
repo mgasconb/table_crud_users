@@ -105,9 +105,12 @@
 		<script type="text/javascript" />
 			var alerta;
 			function onload() {
+				
+				actualizar_tiempos(); /* Se ejecuta en el segundo = */
+				var relojes_sesion = setInterval(function(){actualizar_tiempos()}, 1000); /* Se ejecuta en el segudo 1 y siguientes */
+				
 				visualizar_alerta();
-				actualizar_tiempos();
-				var relojes_sesion = setInterval(function(){actualizar_tiempos()}, 1000);
+				
 			}
 
 			function visualizar_alerta() {

@@ -47,7 +47,7 @@ class SESSION {
 	
 	
 	/**
-	 *  Borra la coolie de sesión y destruye la sesión.
+	 *  Borra la cookie de sesión y destruye la sesión.
 	 */
 	public static function destruir() {
 		
