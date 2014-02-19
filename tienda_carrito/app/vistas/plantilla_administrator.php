@@ -88,7 +88,7 @@
 		<div id="view_content">
 			
 			<?php
-				echo $datos['view_content'];
+				echo \core\Array_Datos::contenido("view_content", $datos);
 			?>
 			
 		</div>

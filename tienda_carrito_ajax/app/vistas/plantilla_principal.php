@@ -90,7 +90,7 @@
 			<!-- Contenido de view_content se completa con ajax -->
 			<?php 
 			if (\core\Distribuidor::get_controlador_instanciado() != "inicio") {
-				echo $datos["view_content"];
+				echo \core\Array_Datos::contenido("view_content", $datos);
 			}
 			?>
 		</div>
