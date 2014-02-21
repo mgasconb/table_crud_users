@@ -59,6 +59,11 @@
 					</ul>
 			</fieldset>
 		</div>
+		
+		<div id="sendero_migas_pan">
+			<?php echo \controladores\sendero::ver(); ?>
+		</div>
+
 
 		<div id="view_content">
 			<p><?php echo \core\Idioma::text("saludo2", "plantilla_internacional"); ?>

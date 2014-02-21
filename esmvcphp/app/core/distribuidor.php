@@ -119,7 +119,14 @@ class Distribuidor {
 	}
 	
 	
-	
+	/**
+	 * Carga un controlador sin chequear los permisos del usuario.
+	 * 
+	 * @param type $controlador
+	 * @param type $metodo
+	 * @param array $datos
+	 * @return type
+	 */
 	public static function cargar_controlador_sin_chequear($controlador, $metodo="index", array $datos = array()) {
 		if (self::$depuracion) {
 			echo("($controlador,$metodo) "); echo(self::$controlador_instanciado); echo(self::$metodo_invocado);echo(__METHOD__.__LINE__."<br />");
@@ -151,6 +158,7 @@ class Distribuidor {
 				\core\Aplicacion::$controlador->datos['controlador_metodo'] = self::$metodo_invocado;
 
 				// Ejecutamos el método y le pasamos los datos que vendrían de un forwarding
+				\controladores\sendero::insert($controlador, $metodo, \core\URL::actual());
 				return \core\Aplicacion::$controlador->$metodo($datos);
 				
 			}

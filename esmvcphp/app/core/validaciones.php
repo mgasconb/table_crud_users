@@ -124,6 +124,7 @@ class Validaciones  {
 						$opciones=explode(";",$validador_partes[1]);
 					else
 						$opciones=explode(",",$validador_partes[1]);
+					
 					$resultados_validacion["values"][$parametro] = self::request($parametro); // La función parametro($parametro) devuelve un valor o null
 					$resultado_validador=self::$validador($resultados_validacion["values"][$parametro], $opciones);
 				}
@@ -224,12 +225,12 @@ class Validaciones  {
 	{
 		$input = \core\sgbd\bd::escape_string($input);
 		// si $datos[$key]==false hay error en la aplicación de los caracteres de escape
-		preg_replace (
+		return preg_replace (
 			array('/insert/i' , '/select/i' ,'/update/i' ,'/delete/i' ,'/script/i' ,'/truncate/i','/union/i', '/\;/i'   )
-			,array('/insert_/i', '/select_/i','/update_/i','/delete_/i','/script_/i','/truncate_/i','/union_/i', '/\\;/i'  )
+			,array("insert_", "select_",'update_','delete_','script_','truncate_','union_', '\\;'  )
 			,$input
 		);
-		return $input;
+		
 	}
 
 	/**
@@ -255,11 +256,13 @@ class Validaciones  {
 	 * @autor jequeto
 	 */
 	public static function errores_texto($cadena=null) {
+		
 		$mensaje = null;
 		if ($cadena != null && ! strlen($cadena)) {
 				$mensaje = "-php- Debe ser una cadena con un carácter como mínimo.";
 		}
 		return $mensaje;
+		
 	}
 	
 	
