@@ -43,7 +43,7 @@ class Configuracion {
 	public static $control_acceso_recursos = true;
 	
 	// Gestión de inactividad para usuario logueados
-	public static $sesion_minutos_inactividad = 0.5; // num >= 0. 0 Implica sin control
+	public static $sesion_minutos_inactividad = 20; // num >= 0. 0 Implica sin control
 	public static $sesion_minutos_maxima_duracion = 120; // Duración máxima de una conexión. 0 Implica sin control.
 		
 	

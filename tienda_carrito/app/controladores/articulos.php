@@ -33,8 +33,9 @@ class articulos extends \core\Controlador {
 
 	public function form_insertar_validar(array $datos=array())	{	
 		
-		if ( ! $validacion = ! \core\Validaciones::errores_validacion_request(\modelos\articulos::$validaciones_insert, $datos))
+		if ( ! $validacion = ! \core\Validaciones::errores_validacion_request(\modelos\articulos::$validaciones_insert, $datos)) {
             $datos["errores"]["errores_validacion"]="Corrige los errores.";
+		}
 		else {
 			
 			if ($_FILES["foto"]["size"]) {
