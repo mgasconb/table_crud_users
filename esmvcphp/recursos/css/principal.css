@@ -128,3 +128,7 @@ table td, table th {
 .heredado {
 	background-color: lightgray;
 }
+
+.sendero_paso {
+	text-decoration: none;
+}

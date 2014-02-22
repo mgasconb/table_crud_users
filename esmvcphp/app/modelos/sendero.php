@@ -27,6 +27,13 @@ class sendero  {
 	}
 	
 	
+	public static function get_nivel($nivel) {
+		
+		return (isset($_SESSION["sendero"]) && array_key_exists($nivel, $_SESSION["sendero"])) ? $_SESSION["sendero"][$nivel] : null;
+		
+	}
+
+
 	
 	public static function recuperar() {
 		

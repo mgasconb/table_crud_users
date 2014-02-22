@@ -164,14 +164,14 @@ class Distribuidor {
 			}
 			else {
 				$datos['mensaje'] = "El método <b>$metodo</b> no está definido en la clase <b>$controlador_clase</b> (.php).";
-				return self::cargar_controlador("errores", "error_404", $datos);
+				return self::ejecutar("errores", "error_404", $datos);
 			}
 		}
 		else {
 			
 			
 			$datos['mensaje'] = "La clase <b>$controlador_clase</b> no existe.";
-			return self::cargar_controlador("errores", "error_404", $datos);
+			return self::ejecutar("errores", "error_404", $datos);
 		}
 	}
 	
@@ -179,23 +179,50 @@ class Distribuidor {
 	
 	/**
 	 * Ejecuta una clase y un método de la clase.
-	 * Si en $ clase no se aporta namespace, se ejecutará un controlador, es decir,
-	 * una clase de la carpeta controladores.
-	 * @param type $clase
-	 * @param type $metodo
+	 * Si en $clase no se aporta namespace, se entenderá que es un controlador,
+	 * es decir, una clase de la carpeta controladores.
+	 * 
+	 * El distribuidor no registra la ejecución de este controlador y método
+	 * 
+	 * @param string $clase
+	 * @param string $metodo
 	 * @param array $datos
-	 * @return type
+	 * @return mixed El retorno del método ejecutado
 	 */
 	public static function ejecutar($clase, $metodo = "index", array $datos = array()) {
 		if ( ! preg_match("/((\\\)\w+)+/i", $clase)) {
-			$clase = "\\controladores\\$clase";
+			$clase_instanciada = "\\controladores\\$clase";
 		}
-		$objeto = new $clase();
+		$objeto = new $clase_instanciada();
+		$objeto->datos["controlador_clase"] = $clase;
+		$objeto->datos["controlador_metodo"] =$metodo;
 		return $objeto->$metodo($datos);
 //		return ((new $clase())->$metodo($datos)); // Equivale a las dos lineas anteriores.
 		
 	}
 	
+	/**
+	 * Es equivalente al método ejecutar.
+	 * 
+	 * @help ejecutar
+	 */
+	public static function incluir($clase, $metodo = "index", array $datos = array()) {
+		
+		return self::ejecutar($clase, $metodo, $datos);
+		
+	}
+	
+	
+	/**
+	 * Es equivalente al método ejecutar.
+	 * 
+	 * @help ejecutar
+	 */
+	public static function fordward($clase, $metodo = "index", array $datos = array()) {
+		
+		return self::ejecutar($clase, $metodo, $datos);
+		
+	}
 	
 	
 	public static function get_controlador_instanciado() {

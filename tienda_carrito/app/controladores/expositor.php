@@ -4,6 +4,11 @@ namespace controladores;
 class expositor extends \core\Controlador {
 
 	
+	public function index(array $datos=array()) {
+		
+		$this->categoria($datos);
+		
+	}
 	
 	/**
 	 * Presenta una <table> con las filas de la tabla con igual nombre que la clase.

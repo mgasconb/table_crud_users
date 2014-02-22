@@ -24,16 +24,37 @@ class sendero extends \core\Controlador {
 			}
 			else {
 				// El método no es index
+				if ( ! \modelos\sendero::get_nivel(1)) {
+					\modelos\sendero::iniciar("Inicio", \core\URL::generar(""));
+				}
 				\modelos\sendero::set_nivel_2($metodo, $url);
 			}
 		}
 		else {
+			// El controlador no es inicio
 			if ($metodo == "index") {
+				if ( ! \modelos\sendero::get_nivel(1)) {
+					\modelos\sendero::iniciar("Inicio", \core\URL::generar(""));
+				}
 				\modelos\sendero::set_nivel_2($controlador, $url);
 			}
 			else {
 				// El método no es index
-				\modelos\sendero::set_nivel_3($metodo, $url);
+				if ( ! \modelos\sendero::get_nivel(1)) {
+					\modelos\sendero::iniciar("Inicio", \core\URL::generar(""));
+				}
+				$paso2 = \modelos\sendero::get_nivel(2);
+				if ( ! $paso2 ) {
+					\modelos\sendero::set_nivel_2($metodo, \core\URL::generar("$controlador/$metodo"));
+				}
+				elseif ( $paso2["etiqueta"] == $controlador ) {
+					\modelos\sendero::set_nivel_3($metodo, $url);
+				}
+				elseif ( $paso2["etiqueta"] != $controlador ) {
+					\modelos\sendero::set_nivel_2($controlador, \core\URL::generar($controlador));
+					\modelos\sendero::set_nivel_3($metodo, $url);
+				}
+				
 			}
 		}
 
