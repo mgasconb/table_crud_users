@@ -158,59 +158,6 @@ character set utf8 collate utf8_general_ci
 
 
 
-drop table if exists daw2_foros;
-create table daw2_foros
-( id integer unsigned auto_increment not null 
-, nombre varchar(100) not null unique
-, fecha_alta timestamp not null default current_timestamp()
-, creador_usuario_id integer unsigned not null 
-, primary key (id)
-, foreign key (creador_usuario_id) references daw2_usuarios(id)
-)
-engine=innodb
-character set utf8 collate utf8_general_ci
-;
-
-
-/*
-El tema de un foro es equivalente a una pregunta.
-*/
-drop table if exists daw2_temas;
-create table daw2_temas
-( id integer unsigned auto_increment not null
-, foro_id integer unsigned not null
-, titulo varchar(100) not null
-, creador_usuario_id integer unsigned not null 
-, fecha_alta timestamp not null default current_timestamp()
-, primary key (id)
-, foreign key (creador_usuario_id) references daw2_usuarios(id)
-, foreign key (foro_id) references daw2_foros(id)
-, unique(foro_id, titulo)
-)
-engine=innodb
-character set utf8 collate utf8_general_ci
-;
-
-
-/*
-El mensaje dentro de un tema es equivalente a una respuesta a la pregunta (tema) dentro de un foro.
-*/
-drop table if exists daw2_temas_mensajes;
-create table daw2_temas_mensajes
-( id integer unsigned auto_increment not null
-, titulo varchar(255) not null
-, texto varchar(1000) not null
-, fecha_alta timestamp not null default current_timestamp()
-, tema_id integer unsigned not null 
-, creador_usuario_id integer unsigned not null 
-, primary key (id)
--- , foreign key (tema_id) references daw2_temas(id) on delete cascade
--- , foreign key (creador_usuario_id) references daw2_usuarios(id)
-)
-engine=innodb
-character set utf8 collate utf8_general_ci
-;
-
 
 /* ******************************************* */
 /* Para la aplicación tienda_carrito           */

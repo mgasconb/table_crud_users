@@ -10,7 +10,9 @@ set names utf8;
 set sql_mode = 'traditional';
 
 
-
+/* ******************************************* */
+/* Para la aplicación esmvcphp (todos)         */
+/* ******************************************* */
 
 insert into daw2_roles
   (rol					, descripcion) values

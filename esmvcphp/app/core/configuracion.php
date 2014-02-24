@@ -35,7 +35,7 @@ namespace core {
 
 
 		// Gestión de usuarios si hay usuarios distintos
-		public static $usuarios = true;
+		public static $usuarios = true; // True => hay usuarios, false => no hay usuarios.
 		public static $usuarios_origen = "bd"; // Valores válidos "bd" o "ACL" que es interna La lista de usuarios se define al final de esta clase
 		// Regeneración de id de cookie de session al cambiar de usuario
 		public static $regenerar_session_id = true;
@@ -135,14 +135,4 @@ namespace core {
 	
 } // Fin namespace \core
 
-//namespace {
-//	// namespace \ raíz
-//	
-//	
-//	function iText($key, $section , $lang = null ) {
-//		
-//		return \modelos\Idiomas::get($key, $section, $lang);
-//		
-//	}
-//	
-//}
+

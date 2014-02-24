@@ -92,10 +92,10 @@
 <!--						<li class="item"><a href="<?php //echo \core\URL::generar("usuarios"); ?>" title="Usuarios">Usuarios</a></li>-->
 						<?php echo \core\HTML_Tag::li_menu("item", array("usuarios"), "Usuarios"); ?>
 <!--						<li class="item"><a href="<?php //echo \core\URL::generar("categorias"); ?>" title="Categorías">Categorías</a></li>-->
-						<?php echo \core\HTML_Tag::li_menu("item", array("categorias"), "Categorias"); ?>
+						
 						
 <!--						<li class="item"><a href="<?php //echo \core\URL::generar("articulos"); ?>" title="Artículos">Artículos</a></li>-->
-						<?php echo \core\HTML_Tag::li_menu("item", array("articulos"), "Artículos"); ?>
+						
 						<?php echo \core\HTML_Tag::li_menu("item", array("roles"), "Roles"); ?>
 					</ul>
 			</fieldset>

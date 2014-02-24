@@ -5,6 +5,9 @@
 */
 
 
+/* ******************************************* */
+/* Para la aplicación esmvcphp (todos)         */
+/* ******************************************* */
 
 /*
 Devuelve la relación de todos los métodos disponibles combinados con aquellas
