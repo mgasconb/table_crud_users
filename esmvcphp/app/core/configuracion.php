@@ -135,13 +135,14 @@ namespace core {
 	
 } // Fin namespace \core
 
-namespace {
-	// namespace \ raíz
-	
-	function iText($key, $section , $lang = null ) {
-		
-		return \modelos\Idiomas::get($key, $section, $lang);
-		
-	}
-	
-}
+//namespace {
+//	// namespace \ raíz
+//	
+//	
+//	function iText($key, $section , $lang = null ) {
+//		
+//		return \modelos\Idiomas::get($key, $section, $lang);
+//		
+//	}
+//	
+//}

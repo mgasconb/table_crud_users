@@ -80,6 +80,15 @@ namespace core {
 
 namespace {
 	// namespace \ raíz
+	
+	/**
+	 * Sinónimo de \core\Idiomas::text()
+	 * 
+	 * @param string $key
+	 * @param string $section
+	 * @param string $lang
+	 * @return string
+	 */
 	function iText($key, $section , $lang = null ) {
 		
 		return \modelos\Idiomas::get($key, $section, $lang);

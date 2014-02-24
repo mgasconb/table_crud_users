@@ -134,5 +134,3 @@ namespace core {
 	} // Fin de la clase 
 
 } // Fin namespace \core
-
-

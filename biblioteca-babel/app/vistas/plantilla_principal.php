@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang='<?php echo \core\Idioma::get(); ?>' >
 	<head>
-		<title><?php echo iText("title", "plantilla_internacional"); ?></title>
+		<!--<title><?php //echo iText("title", "plantilla_internacional"); ?></title>-->
+		<title><?=iText("title", "plantilla_internacional")?></title>
+		
 		<meta name="Description" content="Explicaci�n de la p�gina" /> 
 		<meta name="Keywords" content="palabras en castellano e ingles separadas por comas" /> 
 		<meta name="Generator" content="con qué se ha hecho" /> 
