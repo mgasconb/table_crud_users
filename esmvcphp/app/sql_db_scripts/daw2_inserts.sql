@@ -145,8 +145,7 @@ insert into daw2_metodos
 
 insert into daw2_roles_permisos
   (rol					,controlador		,metodo) values
-  ('usuarios'			,'expositor'		,'categoria')
-, ('usuarios'			,'expositor'		,'categoria_ajax')
+  ('usuarios'			,'expositor'		,'*')
 , ('usuarios'			,'carrito'			,'*')
 , ('usuarios'			,'categorias'		,'recuento_articulos')
 , ('usuarios'			,'categorias'		,'recuento_articulos_ajax')

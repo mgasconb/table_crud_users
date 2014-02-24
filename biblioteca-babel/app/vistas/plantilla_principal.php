@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang='<?php echo \core\Idioma::get(); ?>' >
 	<head>
-		<title><?php echo \core\Idioma::text("title", "plantilla_internacional"); ?></title>
+		<title><?php echo iText("title", "plantilla_internacional"); ?></title>
 		<meta name="Description" content="Explicaci�n de la p�gina" /> 
 		<meta name="Keywords" content="palabras en castellano e ingles separadas por comas" /> 
 		<meta name="Generator" content="con qué se ha hecho" /> 
@@ -29,7 +29,7 @@
 		<script type="text/javascript" >
 			
 			function saludo() {
-				alert('<?php echo \core\Idioma::text("saludo1", "plantilla_internacional"); ?>');
+				alert('<?php echo iText("saludo1", "plantilla_internacional"); ?>');
 			}
 		</script>
 		
@@ -42,19 +42,19 @@
 		<div id="encabezado">
 			<img src="<?php echo URL_ROOT; ?>recursos/imagenes/ipv_ies_palomeras.png" alt="logo" title="Logo" onclick="window.location.assign('http://www.iespalomeras.net/');"/>
 			<img src="<?php echo URL_ROOT; ?>recursos/imagenes/departamento_informatica.png" alt="logo" title="Logo departamento"  onclick="window.location.assign('http://www.iespalomeras.net/index.php?option=com_wrapper&view=wrapper&Itemid=86');" />
-			<h1 id="titulo"><?php echo \core\Idioma::text("h1#titulo", "plantilla_internacional"); ?></h1>
+			<h1 id="titulo"><?php echo iText("h1#titulo", "plantilla_internacional"); ?></h1>
 		</div>
 		<div id='idiomas' style='position: fixed; top: 10px; right: 10px; width: 200px;'>
-			<span  onclick='set_lang("es", "<?php echo \core\URL::generar(array(\core\Distribuidor::get_controlador_instanciado(), \core\Distribuidor::get_metodo_invocado()), "es"); ?>");' ><img src='<?php echo \core\URL::generar_sin_idioma(); ?>recursos/imagenes/generales/flag_es.png' height='25px' /><?php echo \core\Idioma::text("Español", "plantilla_internacional"); ?></span>
-			<a  onclick='set_lang("en", "<?php echo \core\URL::generar(array(\core\Distribuidor::get_controlador_instanciado(), \core\Distribuidor::get_metodo_invocado()), "en"); ?>");'><img src='<?php echo \core\URL::generar_sin_idioma(); ?>recursos/imagenes/generales/flag_gb.png' height='25px' /><?php echo \core\Idioma::text("Inglés", "plantilla_internacional"); ?></a>
+			<span  onclick='set_lang("es", "<?php echo \core\URL::generar(array(\core\Distribuidor::get_controlador_instanciado(), \core\Distribuidor::get_metodo_invocado()), "es"); ?>");' ><img src='<?php echo \core\URL::generar_sin_idioma(); ?>recursos/imagenes/generales/flag_es.png' height='25px' /><?php echo iText("Español", "plantilla_internacional"); ?></span>
+			<a  onclick='set_lang("en", "<?php echo \core\URL::generar(array(\core\Distribuidor::get_controlador_instanciado(), \core\Distribuidor::get_metodo_invocado()), "en"); ?>");'><img src='<?php echo \core\URL::generar_sin_idioma(); ?>recursos/imagenes/generales/flag_gb.png' height='25px' /><?php echo iText("Inglés", "plantilla_internacional"); ?></a>
 		</div>
 		
 		<div id="div_menu" >
 			<fieldset>
-				<legend><?php echo \core\Idioma::text("leyenda_menu", "plantilla_internacional"); ?>:</legend>
+				<legend><?php echo iText("leyenda_menu", "plantilla_internacional"); ?>:</legend>
 					<ul id="menu" class="menu">
-						<li class="item"><a href="<?php echo \core\URL::generar("inicio"); ?>" title="Inicio"><?php echo \core\Idioma::text("Inicio", "plantilla_internacional"); ?></a></li>
-						<li class="item"><a href="<?php echo \core\URL::generar("libros"); ?>" title="Libros leídos"><?php echo \core\Idioma::text("Libros", "plantilla_internacional"); ?></a></li>
+						<li class="item"><a href="<?php echo \core\URL::generar("inicio"); ?>" title="Inicio"><?php echo iText("Inicio", "plantilla_internacional"); ?></a></li>
+						<li class="item"><a href="<?php echo \core\URL::generar("libros"); ?>" title="Libros leídos"><?php echo iText("Libros", "plantilla_internacional"); ?></a></li>
 					</ul>
 			</fieldset>
 		</div>
@@ -70,8 +70,8 @@
 		<div id="pie">
 			<hr />
 		
-			<?php echo \core\Idioma::text("Autor", "plantilla_internacional"); ?>: Jesús María de Quevedo Tomé. <b><span title='jequeto@gmail.com'><?php echo \core\Idioma::text("Contactar", "plantilla_internacional"); ?>: <img src='<?php echo \core\URL::generar_sin_idioma(); ?>recursos/imagenes/generales/email.png' height='25px' /></span></b><br />
-			<?php echo \core\Idioma::text("Fecha última actualización", "plantilla_internacional"); ?>: 5/12/2013.
+			<?php echo iText("Autor", "plantilla_internacional"); ?>: Jesús María de Quevedo Tomé. <b><span title='jequeto@gmail.com'><?php echo iText("Contactar", "plantilla_internacional"); ?>: <img src='<?php echo \core\URL::generar_sin_idioma(); ?>recursos/imagenes/generales/email.png' height='25px' /></span></b><br />
+			<?php echo iText("Fecha última actualización", "plantilla_internacional"); ?>: 5/12/2013.
 		</div>
 		
 		<div id='globals'>
