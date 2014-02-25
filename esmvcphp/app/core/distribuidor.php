@@ -190,6 +190,7 @@ class Distribuidor {
 	 * @return mixed El retorno del método ejecutado
 	 */
 	public static function ejecutar($clase, $metodo = "index", array $datos = array()) {
+		$clase_instanciada = $clase;
 		if ( ! preg_match("/((\\\)\w+)+/i", $clase)) {
 			$clase_instanciada = "\\controladores\\$clase";
 		}
@@ -218,7 +219,7 @@ class Distribuidor {
 	 * 
 	 * @help ejecutar
 	 */
-	public static function fordward($clase, $metodo = "index", array $datos = array()) {
+	public static function forward($clase, $metodo = "index", array $datos = array()) {
 		
 		return self::ejecutar($clase, $metodo, $datos);
 		

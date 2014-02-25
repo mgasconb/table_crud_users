@@ -76,9 +76,20 @@
 		<div id="div_menu" >
 			<fieldset>
 				<legend>Menú - Índice - Barra de navegación:</legend>
-					<?php echo self::ejecutar("menu", "index"); ?>
+					<?php 
+						echo self::incluir("menu", "index");
+//						 echo $datos["carrito"];
+					?>
+				
+					<form method='post' action='<?php echo \core\URL::generar("articulos/form_buscar_validar"); ?>' style='float: left; width: 250px; border: 1px solid blue; margin-left: 5px;' onsubmit='return(document.getElementById("buscar_nombre").value.length>0);'>
+						<input type="text" id='buscar_nombre' name='nombre' />
+						<input type='submit' value='Buscar' />
+					</form>
+			
 				<div id='carrito'>
-					<?php echo self::ejecutar("carrito", "ver"); ?>
+					<?php echo self::incluir("carrito", "ver");
+						 // echo $datos["carrito"];
+					?>
 				</div>
 			</fieldset>
 		</div>

@@ -400,4 +400,33 @@ $foto_path);
 	}
 	
 	
+	
+	public function form_buscar_validar(array $datos=array())	{	
+		
+		$validaciones = array(
+			"nombre" => "errores_texto"
+		);
+		if ( ! $validacion = ! \core\Validaciones::errores_validacion_request($validaciones, $datos)) {
+            $datos["errores"]["errores_validacion"]="Corrige los errores.";
+		}
+		else {
+			
+			if ( ! strlen($datos["values"]["nombre"])) {
+				
+				header("Location: ".\core\URL::generar("inicio"));
+				return;
+				
+			}
+			
+			$clausulas["where"] = "nombre like '%{$datos["values"]["nombre"]}%' ";
+			$datos["filas"] = \modelos\Modelo_SQL::table("articulos")->select($clausulas);
+			
+			$datos['view_content'] = \core\Vista::generar(__FUNCTION__, $datos);
+			$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
+			\core\HTTP_Respuesta::enviar($http_body);
+			
+		}
+	}
+	
+	
 } // Fin de la clase

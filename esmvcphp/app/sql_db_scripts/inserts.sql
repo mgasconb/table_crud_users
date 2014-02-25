@@ -141,6 +141,8 @@ insert into daw2_metodos
 , ('articulos'		,'form_borrar')
 , ('articulos'		,'form_insertar')
 , ('articulos'		,'form_modificar')
+, ('articulos'		,'form_buscar')
+
 , ('pedidos'		,'mostrar')
 ;
 
@@ -149,6 +151,8 @@ insert into daw2_roles_permisos
   (rol					,controlador		,metodo) values
   ('usuarios'			,'expositor'		,'*')
 , ('usuarios'			,'carrito'			,'*')
+, ('usuarios'			,'articulos'		,'form_buscar')
+
 , ('usuarios'			,'categorias'		,'recuento_articulos')
 , ('usuarios'			,'categorias'		,'recuento_articulos_ajax')
 , ('usuarios_logueados'	,'pedidos'			,'mostrar')

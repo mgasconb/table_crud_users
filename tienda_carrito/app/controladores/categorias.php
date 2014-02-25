@@ -30,6 +30,9 @@ class categorias extends \core\Controlador {
 		$datos["filas"] = \modelos\Modelo_SQL::tabla("categorias")->recuento_articulos(); // Recupera todas las filas ordenadas
 		
 		$datos['view_content'] = \core\Vista::generar("categorias/".__FUNCTION__, $datos);
+		$datos["menu"] = $this->incluir("menu", "index");
+		$datos["carrito"] = $this->incluir("carrito", "ver");
+		
 		$http_body = \core\Vista_Plantilla::generar("DEFAULT", $datos);
 		\core\HTTP_Respuesta::enviar($http_body);
 		
