@@ -11,7 +11,7 @@ abstract class mysqli implements \core\sgbd\SQL_interface {
 	 * Variable usada para facilitar la ocultación del resultado de setencias de depuración.
 	 * @var boolean 
 	 */
-	private static $depuracion = false;
+	private static $depuracion = true;
 	
 	/**
 	 * Resource o Link que guarda la conexión con el SGBD
@@ -495,6 +495,13 @@ abstract class mysqli implements \core\sgbd\SQL_interface {
 		
 		return self::$query;
 		
+	}
+	
+	
+	public static function get_error() {
+		
+		return ((self::$result == false) ? mysqli_error(self::$connection) : null);
+			
 	}
 	
 	

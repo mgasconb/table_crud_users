@@ -239,3 +239,17 @@ engine = innodb
 default charset=utf8
 ;
 
+
+/* ************************************************** */
+/* Contador de descargas */
+/* ************************************************** */
+create table daw2_descargas
+(id integer unsigned auto_increment not null
+,fichero varchar(200) not null
+,remote_addr varchar(50) not null
+,request_time datetime not null
+
+,primary key (id)
+)
+engine=myisam;
+
