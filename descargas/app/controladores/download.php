@@ -71,7 +71,7 @@ class download extends \core\Controlador {
 //			echo("Tamaño: " .filesize($ruta.$fichero));
 //			exit(__METHOD__.$extension.\modelos\ficheros::get_mime_type($extension));
 
-			$fila["fichero"] = $datos["values"]["p3"]."/".$fichero;
+			$fila["fichero"] = $datos["values"]["p3"]."/".$datos["fichero"];
 			$fila["remote_addr"] = $_SERVER["REMOTE_ADDR"];
 			$fila["request_time"] = gmdate("Y-m-d H:i:s", $_SERVER["REQUEST_TIME"]);
 			if( ! \modelos\descargas::tabla("descargas")->insert($fila) ) {
@@ -82,9 +82,10 @@ class download extends \core\Controlador {
 //			header('Content-Disposition: attachment; filename="'.$fichero.'"');
 //			header("Content-Transfer-Encoding: binary");
 			header("Content-Length: ".filesize($datos["ruta"].$datos["fichero"]));
-			$http_body = \core\Vista::generar(__FUNCTION__, $datos);
-			echo $http_body;
-			
+//			$http_body = \core\Vista::generar(__FUNCTION__, $datos);
+//			echo $http_body;
+			$file_path = $datos["ruta"].$datos["fichero"];
+			include $file_path;
 		}
 		else {
 			header("Location: ".\core\URL::generar());

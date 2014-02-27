@@ -14,7 +14,7 @@
 		<meta name="robots" content="INDEX,FOLLOW,NOODP" /> 
 		<meta http-equiv="Content-Type" content="text/html; charset=utf8" /> 
 		<meta http-equiv="Content-Language" content="es"/>
-		<script type='text/javascript' src="<?php echo URL_APPLICATION_ROOT."download/js/carrito.js"; ?>" ></script>
+		<script type='text/javascript' src="<?php echo URL_APPLICATION_ROOT."download/js/js/carrito.js"; ?>" ></script>
 	</head>
 	<body>
 		<h1>Página de descargas</h1>

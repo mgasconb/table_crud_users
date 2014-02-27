@@ -130,7 +130,7 @@ namespace core {
 								"*" => " todos ",
 			),
 			'download' => array(
-								"file" => " logueados ",
+								"*" => " logueados ",
 			),
 
 		);

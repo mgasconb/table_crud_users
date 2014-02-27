@@ -9,17 +9,15 @@
 	RewriteEngine on
 	RewriteOptions Inherit
 
-	# Funciona
-	# URL amigable tipo .../app_root/parametro1/parametro2/parametro3/[parametro4/...]
-	# No se reescribe si la URI acaba en .extensión. Por ejemplo: .ccs, .php. .pdf, .jpg, ...
-	# Esto se hace para que las peticiónes de recursos desde el cliente web no ser reescriban,
-	# pues todas las reescrituras acaban en el fichero index.php
+	# Evitamos el acceso al código de la aplicación
+	RewriteCond %{REQUEST_URI} .*/app/.*
+	RewriteRule .* - [L,F]
 
-	# RewriteCond %{REQUEST_URI} !(\.\w+)
-	# RewriteRule .* index.php [QSA,L,NS]
-
+	# Si no es un fichero del disco del servidor
 	RewriteCond %{REQUEST_FILENAME} !-f [OR]
-	RewriteCond %{REQUEST_FILENAME} -d
+	# O si es un directorio
+	RewriteCond %{REQUEST_FILENAME} -d [OR]
+	# Se ejecuta index.php
 	RewriteRule ^(.*)$ index.php [QSA,L,NS]
     
 

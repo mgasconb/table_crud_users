@@ -1,10 +1,11 @@
 /**
  * Función que gestiona la visualización dinámica del carrito.
+ * Este script de javascript se retoca dinámicamente con php.
  */
 function carrito_ver() {
 	
 	jQuery.post(
-		"<?php \core\URL::generar('carrito/ver_ajax');?>" 
+		'<?php echo \core\URL::generar('carrito/ver_ajax');  ?>' 
 		,{is_ajax: "true"}
 		,function(data, textStatus, jqXHR) {
 			$("#carrito").html(data);
