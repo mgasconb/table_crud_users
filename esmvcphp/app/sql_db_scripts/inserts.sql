@@ -159,6 +159,13 @@ insert into daw2_roles_permisos
 , ('usuarios_logueados'	,'categorias'		,'index')
 ;
 
+-- insert into daw2_usuarios_permisos
+--   (login			,controlador			,metodo) values
+--   
+-- ;
+
+
+
 insert into daw2_categorias
   ( nombre, descripcion ) values
   ('lacteos', null)

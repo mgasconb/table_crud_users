@@ -1,11 +1,4 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace modelos;
 
 /**
@@ -20,7 +13,7 @@ class descargas  extends \core\Modelo_SQL {
 		$sql = "select count(*) as contador_descargas "
 				. " from ".self::get_prefix_tabla("descargas")
 				. " where fichero = '$fichero'"
-				. " group by fichero;";
+				. " ;";
 		
 		$filas = self::execute($sql);
 		

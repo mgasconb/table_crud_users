@@ -19,7 +19,7 @@ namespace core {
 		);
 
 		// Usar sesiones de trabajo (activar array $_SESSION)
-		public static $session_name = "PHPSESSID";
+		public static $session_name = "DESCARGASID";
 		public static $session_activate = true;
 		public static $session_lifetime = 0; // Segundos de duración de la cookie de sessionsession.cookie_lifetime
 		public static $session_cookie_path = "/";
@@ -35,8 +35,8 @@ namespace core {
 
 
 		// Gestión de usuarios si hay usuarios distintos
-		public static $usuarios = false; // True => hay usuarios, false => no hay usuarios.
-		public static $usuarios_origen = "bd"; // Valores válidos "bd" o "ACL" que es interna La lista de usuarios se define al final de esta clase
+		public static $usuarios = true; // True => hay usuarios, false => no hay usuarios.
+		public static $usuarios_origen = "ACL"; // Valores válidos "bd" o "ACL" que es interna La lista de usuarios se define al final de esta clase
 		// Regeneración de id de cookie de session al cambiar de usuario
 		public static $regenerar_session_id = true;
 		// Control acceso a recursos
@@ -48,7 +48,7 @@ namespace core {
 
 
 		// Gestión de idiomas
-		public static $idioma_sensibilidad = true;
+		public static $idioma_sensibilidad = false;
 		public static $idioma_por_defecto = "es";
 		public static $idioma_seleccionado;
 		// Idiomas reconocidos en los que puede respondeer la aplicación
@@ -126,8 +126,11 @@ namespace core {
 								'form_login_email' => ' anonimo ',
 								'form_login' => ' anonimo ',
 								),
-			'usuarios_permisos' => array(
-								"index" => "logueados",
+			'carpetas' => array(
+								"*" => " todos ",
+			),
+			'download' => array(
+								"file" => " logueados ",
 			),
 
 		);

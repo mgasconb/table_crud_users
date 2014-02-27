@@ -17,6 +17,10 @@ set names utf8;
 
 set sql_mode = 'traditional';
 
+/* ******************************************* */
+/* Para la aplicación esmvcphp                 */
+/* ******************************************* */
+
 
 drop table if exists daw2_usuarios;
 CREATE TABLE daw2_usuarios (

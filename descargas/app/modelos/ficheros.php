@@ -11,7 +11,7 @@ class ficheros {
 	
 
 	public static function get_carpetas() {
-		
+//		echo __METHOD__;
 		$carpetas = array();
 		
 		$directorio = PATH_APP."ficheros";
@@ -66,8 +66,8 @@ class ficheros {
 		
 		$mime_types = array ( 
 		
-			".mp3" => "audio/mpeg3"
-			
+			".mp3" => "audio/mpeg3",
+			".js" => "application/x-javascript",
 		);
 		
 		return (array_key_exists($extension,$mime_types) ? $mime_types[$extension] : null);
