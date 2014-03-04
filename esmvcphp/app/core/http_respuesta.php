@@ -73,7 +73,7 @@ class HTTP_Respuesta extends \core\Clase_Base {
 		
 		// Añadimos a la cabecera la longitud del cuerpo, si es mayor que cero
 		if (strlen(self::$http_body_content)) {
-			self::set_header_line("Content-Length: ", (string) strlen(self::$http_body_content) );
+			self::set_header_line("Content-Length", (string) strlen(self::$http_body_content) );
 		}
 		
 		// Enviar HEADER
