@@ -58,11 +58,14 @@ insert into daw2_metodos
 , ('usuarios'		,'form_insertar_externo')
 , ('usuarios'		,'form_modificar')
 , ('usuarios'		,'form_borrar')
-
 , ('usuarios_permisos'		,'*')
 , ('usuarios_permisos'		,'index')
 , ('usuarios_permisos'		,'form_modificar')
-
+, ('ranking'		,'*')
+, ('ranking'		,'index')
+, ('ranking'		,'form_modificar')
+, ('ranking'		,'form_borrar')
+, ('ranking'		,'form_insertar')
 ;
 
 insert into daw2_roles_permisos
@@ -70,15 +73,17 @@ insert into daw2_roles_permisos
   ('administradores'	,'*'				,'*')
 , ('usuarios'			,'inicio'			,'*')
 , ('usuarios'			,'mensajes'			,'*')
+, ('usuarios'			,'ranking'			,'index')
 , ('usuarios_logueados' ,'usuarios'			,'desconectar')
 , ('usuarios_logueados' ,'usuarios'			,'form_cambiar_password')
-
+, ('usuarios_logueados' ,'ranking'			,'index')
+, ('usuarios_logueados' ,'ranking'			,'form_modificar')
 ;
 
 insert into daw2_usuarios_roles
   (login		,rol) values
   ('admin'		,'administradores')
-, ('juan'		,'administradores')
+-- , ('juan'		,'administradores')
 -- , ('anonimo'	,'usuarios')
 -- , ('juan'		,'usuarios')
 -- , ('juan'		,'usuarios_logueados')
@@ -115,7 +120,7 @@ insert into daw2_menu
 /* ******************************************* */
 /* Para la aplicación tienda_carrito    */
 /* ******************************************* */
-
+/*
 insert into daw2_metodos
   (controlador,		metodo) values
   ('expositor'		,'*')
@@ -182,5 +187,23 @@ insert into daw2_articulos
 , (3, 'garbanzos', 0.90, 500)
 , (4, 'limonada', 1, 333)
 ;
+*/
 
 
+INSERT INTO `daw2_ranking`
+(`nombre`,
+`apellidoPaterno`,
+`apellidoMaterno`,
+`correo`,
+`username`,
+`password`,
+`puntuacion`)
+
+VALUES
+
+('miguel', 'gascon', 'biurrun', 'mgasconb@hotmail.com', 'gasbiumi', '57c121e25c962050269a0fedae41d5bf', 50.3),
+('carlos', 'gascon', 'biurrun', 'cgasconb@hotmail.com', 'gasbiuca', '7e3f40511b178afb7f9e2c1a7a9e55af', 465.23),
+('daniel', 'aaa', 'aaa', 'daa@hotmail.com', 'daaa', 'b59ece568af00848f7425a6a93f5c2e0', 560.3),
+('juan', 'aaa', 'aaa', 'jaaa@hotmail.com', 'jaaa', '5c47a79da5ece33687f062ac2260b9cb', 564.33),
+('luis', 'aaa', 'aaa', 'laaa@hotmail.com', 'laaa', '1e9043ac94d1f91538f37cfb535fcbff',  2.78)
+;

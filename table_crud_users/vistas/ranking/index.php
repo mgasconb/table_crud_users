@@ -37,7 +37,7 @@
             echo "
 				<tr>
 					<td colspan='8'></td>
-					<td><a class='boton' href='?menu=ranking&submenu=form_insertar' >insertar</a></td>
+					<td>".\core\HTML_Tag::a_boton_onclick("boton", array("ranking", "form_insertar"), "insertar")."</td>
 				</tr>
 			";
             ?>

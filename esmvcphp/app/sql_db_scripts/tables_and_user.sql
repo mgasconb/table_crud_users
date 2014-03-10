@@ -166,7 +166,7 @@ character set utf8 collate utf8_general_ci
 /* ******************************************* */
 /* Para la aplicación tienda_carrito           */
 /* ******************************************* */
-
+/*
 drop table if exists daw2_categorias;
 create table if not exists daw2_categorias
 ( id integer unsigned  auto_increment
@@ -243,6 +243,7 @@ engine = innodb
 default charset=utf8
 ;
 
+*/
 
 /* ************************************************** */
 /* Contador de descargas */
@@ -257,3 +258,24 @@ create table daw2_descargas
 )
 engine=myisam;
 
+
+/* ************************************************** */
+/* Tabla ranking */
+/* ************************************************** */
+
+/*Mi parte*/
+
+/*Password = user+00*/
+drop table if exists daw2_ranking;
+CREATE TABLE `daw2_ranking` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) NOT NULL,
+  `apellidoPaterno` varchar(50) DEFAULT NULL,
+  `apellidoMaterno` varchar(50) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(250) NOT NULL, 
+  `puntuacion` decimal(10,2) DEFAULT NULL,
+  `dt_registro` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ;
